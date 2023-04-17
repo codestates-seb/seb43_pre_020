@@ -7,10 +7,7 @@ import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.member.entity.Member;
 import preproject.stackoverflow.question.entity.Question;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +16,9 @@ import java.util.List;
 @Getter
 @Setter
 public class Answer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long answerId;
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
