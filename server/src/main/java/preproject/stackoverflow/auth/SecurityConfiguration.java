@@ -2,6 +2,7 @@ package preproject.stackoverflow.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +16,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import preproject.stackoverflow.auth.filter.JwtAuthenticationFilter;
 import preproject.stackoverflow.auth.filter.JwtVerificationFilter;
+import preproject.stackoverflow.auth.handler.MemberAccessDeniedHandler;
+import preproject.stackoverflow.auth.handler.MemberAuthenticationEntryHandler;
 import preproject.stackoverflow.auth.handler.MemberAuthenticationSuccessHandler;
 import preproject.stackoverflow.auth.jwt.JwtTokenizer;
 import preproject.stackoverflow.auth.utils.CustomAuthorityUtils;
@@ -40,8 +43,20 @@ public class SecurityConfiguration {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .exceptionHandling()
+                .accessDeniedHandler(new MemberAccessDeniedHandler())
+                .authenticationEntryPoint(new MemberAuthenticationEntryHandler())
+                .and()
                 .apply(new CustomFilterConfigurer()).and()
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
+                .authorizeHttpRequests(authorize -> authorize
+                        .antMatchers(HttpMethod.POST, "/members").permitAll()
+                        .antMatchers(HttpMethod.GET, "/members/**").permitAll()
+                        .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/questions").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/questions").permitAll()
+                        .antMatchers("/questions/**").hasRole("USER")
+                        .anyRequest().permitAll());
 
         return http.build();
     }
