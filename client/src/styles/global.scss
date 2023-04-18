@@ -1,7 +1,12 @@
+@use './reset';
+@use './colors' as v;
+
 html {
   font: 400 62.5%/1.4 -apple-system, 'system-ui', 'Segoe UI Adjusted', 'Segoe UI', 'Liberation Sans',
     sans-serif;
 }
+
 body {
   font-size: 1.6rem;
+  color: v.$font-black;
 }
