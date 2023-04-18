@@ -18,6 +18,12 @@
       {
         "labelAttributes": ["htmlFor"]
       }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
     ]
   }
 }
