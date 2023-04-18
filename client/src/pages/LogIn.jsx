@@ -29,12 +29,13 @@ function LogIn() {
           Password
           <input className={styles.input} type='password' />
         </label>
-        <button className={styles.button} type='button'>
+        <button className={styles.LoginBtn} type='button'>
           Log in
         </button>
       </form>
-      <span>Don’t have an account?</span>
-      <a href='/signup'>Sign up</a>
+      <span>
+        Don’t have an account?<a href='/signup'>Sign up</a>
+      </span>
     </div>
   )
 }
