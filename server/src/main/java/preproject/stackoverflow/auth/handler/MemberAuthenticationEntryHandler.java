@@ -1,5 +1,6 @@
 package preproject.stackoverflow.auth.handler;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -17,8 +18,13 @@ import java.io.IOException;
 public class MemberAuthenticationEntryHandler implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        //TODO : 토큰 만료시 오류메시지 반환하도록 구현
         Exception exception = (Exception) request.getAttribute("exception");
-        ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
+        if (exception instanceof ExpiredJwtException) {
+            ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "Token Expired");
+        } else {
+            ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
+        }
 
         logExceptionMessage(authException, exception);
     }

@@ -7,6 +7,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class JwtTokenizer {
     @Getter
     @Value("${jwt.key}")
@@ -29,7 +31,7 @@ public class JwtTokenizer {
     private int refreshTokenExpirationDays;
 
     public int getRefreshTokenExpirationMinutes() {
-        return refreshTokenExpirationDays * 24 * 60;
+        return refreshTokenExpirationDays * 60 * 24;
     }
 
     public String encodeBase64SecretKey(String secretKey) {
@@ -76,6 +78,17 @@ public class JwtTokenizer {
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(jws);
+    }
+
+    public String getSubject(String jws, String base64EncodedSecretKey) {
+        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+
+        Map<String, Object> body = (Map<String, Object>) Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parse(jws).getBody();
+
+        return body.get("sub").toString();
     }
 
     public Date getTokenExpiration(int expirationMinutes) {

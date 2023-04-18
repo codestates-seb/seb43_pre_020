@@ -21,6 +21,7 @@ import preproject.stackoverflow.auth.handler.MemberAuthenticationEntryHandler;
 import preproject.stackoverflow.auth.handler.MemberAuthenticationSuccessHandler;
 import preproject.stackoverflow.auth.jwt.JwtTokenizer;
 import preproject.stackoverflow.auth.utils.CustomAuthorityUtils;
+import preproject.stackoverflow.member.repository.MemberRepository;
 
 import java.util.List;
 
@@ -28,10 +29,12 @@ import java.util.List;
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final MemberRepository memberRepository;
 
-    public SecurityConfiguration(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils) {
+    public SecurityConfiguration(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils, MemberRepository memberRepository) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
+        this.memberRepository = memberRepository;
     }
 
     @Bean
@@ -44,11 +47,12 @@ public class SecurityConfiguration {
                 .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .exceptionHandling()
-                .accessDeniedHandler(new MemberAccessDeniedHandler())
                 .authenticationEntryPoint(new MemberAuthenticationEntryHandler())
+                .accessDeniedHandler(new MemberAccessDeniedHandler())
                 .and()
                 .apply(new CustomFilterConfigurer()).and()
                 .authorizeHttpRequests(authorize -> authorize
+                        .antMatchers(HttpMethod.GET, "/auth/refresh").hasRole("USER")
                         .antMatchers(HttpMethod.POST, "/members").permitAll()
                         .antMatchers(HttpMethod.GET, "/members/**").permitAll()
                         .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
@@ -70,7 +74,7 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(jwtTokenizer));
             jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils, memberRepository);
 
             builder.addFilter(jwtAuthenticationFilter)
                     .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
