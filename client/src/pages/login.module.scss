@@ -60,7 +60,7 @@
 }
 
 .form {
-  height: 240px;
+  height: 250px;
   width: 280px;
   display: flex;
   flex-direction: column;
@@ -68,6 +68,7 @@
   justify-content: center;
   border-radius: 7px;
   background-color: #fff;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .label {
@@ -82,7 +83,7 @@
 .input {
   height: 33px;
   width: 230px;
-  padding: 0.5rem;
+  padding: 1rem;
   font-size: 1.2rem;
   border-radius: 5px;
   border: 1px solid #ccc;
