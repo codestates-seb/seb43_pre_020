@@ -10,7 +10,10 @@ import java.io.IOException;
 
 public class ErrorResponder {
     public static void sendErrorResponse(HttpServletResponse response, HttpStatus status) throws IOException {
-        ErrorResponse errorResponse = new ErrorResponse(status.value(), status.getReasonPhrase());
+        sendErrorResponse(response, status, status.getReasonPhrase());
+    }
+    public static void sendErrorResponse(HttpServletResponse response, HttpStatus status, String message) throws IOException {
+        ErrorResponse errorResponse = new ErrorResponse(status.value(), message);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String responseBody = objectMapper.writeValueAsString(errorResponse);
