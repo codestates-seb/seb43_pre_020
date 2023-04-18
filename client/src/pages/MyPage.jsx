@@ -22,9 +22,9 @@ export default function MyPage() {
   return (
     <div className={styles.myPageContainer}>
       <div>
-        <h1 className={styles.headName}>{data.name}</h1>
-        <h3 className={styles.headTitle}>{data.title}</h3>
-        <p className={styles.headContent}>{data.content}</p>
+        <h1 className={styles.headName}>Name</h1>
+        <h3 className={styles.headTitle}>Title</h3>
+        <p className={styles.headContent}>About me</p>
       </div>
       <form onSubmit={onSubmit}>
         <div className={styles.inputBox}>
