@@ -1,5 +1,6 @@
 package preproject.stackoverflow.member.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import preproject.stackoverflow.exception.BusinessLogicException;
@@ -13,14 +14,17 @@ import java.util.Optional;
 @Transactional
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public MemberServiceImpl(MemberRepository memberRepository) {
+    public MemberServiceImpl(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public Member createMember(Member member) {
         verifyExistEmail(member.getEmail());
+        setPassword(member);
         return memberRepository.save(member);
     }
 
@@ -44,5 +48,11 @@ public class MemberServiceImpl implements MemberService {
         optionalMember.ifPresent(member -> {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         });
+    }
+
+    private void setPassword(Member member) {
+        String password = member.getPassword();
+        String encodedPassword = passwordEncoder.encode(password);
+        member.setPassword(encodedPassword);
     }
 }
