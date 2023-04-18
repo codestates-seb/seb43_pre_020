@@ -23,11 +23,11 @@ function LogIn() {
       <form className={styles.form}>
         <label className={styles.label}>
           Email
-          <input className={styles.input} type='email' />
+          <input className={styles.input} type='email' required />
         </label>
         <label className={styles.label}>
           Password
-          <input className={styles.input} type='password' />
+          <input className={styles.input} type='password' required />
         </label>
         <button className={styles.LoginBtn} type='button'>
           Log in
