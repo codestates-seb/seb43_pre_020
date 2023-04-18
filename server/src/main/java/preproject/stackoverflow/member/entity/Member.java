@@ -36,7 +36,7 @@ public class Member {
     @Column(nullable = false)
     private LocalDateTime joinTime = LocalDateTime.now();
     @Column(nullable = false)
-    private LocalDateTime lastJoinTime = LocalDateTime.now();
+    private LocalDateTime lastLoginTime = LocalDateTime.now();
     @Column(nullable = false)
     private LocalDateTime lastActivityTime = LocalDateTime.now();
     @OneToMany(mappedBy = "member")
