@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styles from './MyPage.module.scss'
+import Profile from '../component/Profile'
 
 export default function MyPage() {
   const [data, setData] = useState({
@@ -19,6 +20,8 @@ export default function MyPage() {
     e.preventDefault()
   }
 
+  const list = ['name', 'title', 'content']
+
   return (
     <div className={styles.myPageContainer}>
       <div>
@@ -28,24 +31,9 @@ export default function MyPage() {
       </div>
       <form onSubmit={onSubmit}>
         <div className={styles.inputBox}>
-          <div className={styles.inputContainer}>
-            <label htmlFor='name' className={styles.inputTitle}>
-              Display name
-            </label>
-            <input id='name' type='text' value={data.name} onChange={onChange} />
-          </div>
-          <div className={styles.inputContainer}>
-            <label htmlFor='title' className={styles.inputTitle}>
-              Title
-            </label>
-            <input id='title' type='text' value={data.title} onChange={onChange} />
-          </div>
-          <div className={styles.inputContainer}>
-            <label htmlFor='content' className={styles.inputTitle}>
-              About me
-            </label>
-            <input id='content' type='textarea' value={data.content} onChange={onChange} />
-          </div>
+          {list.map(element => (
+            <Profile key={element} type={element} data={data[element]} onChange={onChange} />
+          ))}
         </div>
         <button type='submit' className={styles.btn}>
           Save profile
