@@ -2,12 +2,14 @@ package preproject.stackoverflow.comment.service;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.comment.repository.CommentRepository;
 import preproject.stackoverflow.member.service.MemberService;
 
 @Service
 @Qualifier("answerCommentService")
+@Transactional
 public class AnswerCommentService extends CommentServiceImpl{
 
     public AnswerCommentService(CommentRepository commentRepository, MemberService memberService) {
