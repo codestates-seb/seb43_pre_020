@@ -1,17 +1,17 @@
-@import '../styles/base/variables';
+@use '../styles/colors' as v;
 
 .myPageContainer {
   padding: 24px 16px;
 }
 
 .headName {
-  color: $font-black;
+  color: v.$font-black;
   font-size: 4rem;
   padding: 10px 0;
 }
 
 .headTitle {
-  color: $font-gray;
+  color: v.$font-gray;
   font-size: 2.5rem;
   padding: 10px 0;
 }
