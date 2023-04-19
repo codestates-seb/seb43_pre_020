@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styles from './signup.module.scss'
 import request from '../api/instance'
 
@@ -68,6 +69,8 @@ function Oauths() {
 }
 
 function Form() {
+  const navigate = useNavigate()
+
   const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -76,8 +79,14 @@ function Form() {
     e.preventDefault()
     request
       .post('/members', { displayName, email, password })
-      .then(response => console.log(response))
-      .catch(error => console.log(error))
+      .then(response => {
+        console.log(response)
+        navigate(`/login`)
+      })
+      .catch(error => {
+        console.log(error)
+        alert('Sorry, you failed to sign up.')
+      })
   }
 
   return (
