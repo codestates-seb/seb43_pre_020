@@ -1,5 +1,7 @@
+@use '../styles/colors' as v;
+
 .ask {
-  background-color: #f8f9f9;
+  background-color: v.$bg-gray;
   padding: 48px;
 }
 
