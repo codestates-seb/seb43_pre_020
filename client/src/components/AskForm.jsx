@@ -24,7 +24,7 @@ function AskForm({ data, onChange, writeDone, setWriteDone }) {
           required
         />
       </div>
-      <div className={styles.bodyContainer}>
+      <div className={styles.bodyContainer} data-color-mode='light'>
         <label htmlFor='body' className={styles.body}>
           Body
         </label>
