@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styles from './Ask.module.scss'
-import AskForm from '../component/AskForm'
-import Preview from '../component/Preview'
+import AskForm from '../components/AskForm'
+import Preview from '../components/Preview'
 
 export default function Ask() {
   const [data, setData] = useState({
