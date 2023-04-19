@@ -7,5 +7,5 @@ public interface MemberService {
     Member updateMember(Member member);
     Member findMember(Long memberId);
     void deleteMember(Long memberId);
-
+    Member findVerifiedMember(Long memberId);
 }
