@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import styles from './signup.module.scss'
+import request from '../api/instance'
 
 function SignUp() {
   return (
@@ -66,25 +68,58 @@ function Oauths() {
 }
 
 function Form() {
+  const [displayName, setDisplayName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    request
+      .post('/members', { displayName, email, password })
+      .then(response => console.log(response))
+      .catch(error => console.log(error))
+  }
+
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <label className={styles.label}>
         Display name
-        <input className={styles.input} type='text' required />
+        <input
+          className={styles.input}
+          type='text'
+          name='displayName'
+          value={displayName}
+          onChange={e => setDisplayName(e.target.value)}
+          required
+        />
       </label>
       <label className={styles.label}>
         Email
-        <input className={styles.input} type='email' required />
+        <input
+          className={styles.input}
+          type='email'
+          name='email'
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          required
+        />
       </label>
       <label className={styles.label}>
         Password
-        <input className={styles.input} type='password' required />
+        <input
+          className={styles.input}
+          type='password'
+          name='password'
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          required
+        />
       </label>
       <p className={styles.notice}>
         Passwords must contain at least eight characters,
         <br /> including at least 1 letter and 1 number.
       </p>
-      <button className={styles.signupBtn} type='button'>
+      <button className={styles.signupBtn} type='submit'>
         Sign up
       </button>
       <p className={styles.notice}>
