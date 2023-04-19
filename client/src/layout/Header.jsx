@@ -55,10 +55,16 @@ function Logo({ path, src, alt }) {
 
 function SearchBar() {
   return (
-    <form>
-      <input type='text' required />
-      <button type='submit'>검색</button>
-    </form>
+    <div className={styles.searchForm}>
+      <form>
+        <input className={styles.searchInput} type='text' placeholder='Search...' required />
+      </form>
+      <img
+        className={styles.searchIcon}
+        src={`${process.env.PUBLIC_URL}/assets/icons/search.svg`}
+        alt='search'
+      />
+    </div>
   )
 }
 
