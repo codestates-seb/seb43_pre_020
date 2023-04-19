@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styles from './MyPage.module.scss'
-import Profile from '../component/Profile'
+import Profile from '../components/Profile'
 
 export default function MyPage() {
   const [data, setData] = useState({
