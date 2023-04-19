@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import styles from '../pages/Home.module.scss'
 
 function Questions({ data }) {
+  const { id } = useParams()
   return (
     <div className={styles.questionContainer}>
       <div className={styles.aside}>
@@ -10,7 +11,7 @@ function Questions({ data }) {
       </div>
       <div className={styles.questionBox}>
         <div>
-          <Link to='/questions/1'>{data.title} </Link>
+          <Link to={`/questions/${id}`}>{data.title} </Link>
           <div className={styles.content}>{data.content}</div>
           <div className={styles.date}>
             {data.questioner} {data.date}
