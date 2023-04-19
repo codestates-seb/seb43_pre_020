@@ -1,29 +1,56 @@
+import { useLocation } from 'react-router-dom'
 import Header from './Header'
 import Nav from './Nav'
 import styles from './GeneralLayout.module.scss'
 
-// 1. 전부 표시  : /home, questions/:id
-// 2. 헤더만 표시 : /login, /signup
-// 3. 헤더, 푸터만 표시 : /mypage, /ask
-
 export default function GeneralLayout({ children }) {
+  const { pathname } = useLocation()
+
+  if (pathname === '/login' || pathname === '/signup') {
+    return (
+      <>
+        <Header />
+        <div className={styles.signContainer}>{children}</div>
+      </>
+    )
+  }
+
+  if (pathname === '/ask') {
+    return (
+      <>
+        <Header />
+        <div className={styles.askContainer}>{children}</div>
+        <Footer />
+      </>
+    )
+  }
+
+  if (pathname === '/mypage') {
+    return (
+      <>
+        <Header />
+        <div className={styles.userContainer}>
+          <Nav />
+          {children}
+        </div>
+        <Footer />
+      </>
+    )
+  }
+
   return (
     <>
       <Header />
       <div className={styles.container}>
         <Nav />
         <div className={styles.content}>
-          <Main>{children}</Main>
+          {children}
           <Aside />
         </div>
       </div>
       <Footer />
     </>
   )
-}
-
-function Main({ children }) {
-  return <main className={styles.main}>{children}</main>
 }
 
 function Aside() {

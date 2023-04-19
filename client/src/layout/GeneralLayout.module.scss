@@ -1,7 +1,36 @@
 @use '../styles/colors' as v;
 
+.signContainer {
+  width: 100%;
+  height: calc(100% - 53px);
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  background: v.$bg-gray;
+}
+
+.askContainer {
+  width: 100%;
+  min-height: calc(100% - 373px);
+  display: flex;
+  justify-content: center;
+  background: v.$bg-gray;
+}
+
+.userContainer {
+  max-width: 1280px;
+  min-height: calc(100% - 373px);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  & > div {
+    flex-basis: calc(100% - 164px);
+  }
+}
+
 .container {
   max-width: 1280px;
+  min-height: calc(100% - 373px);
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -9,15 +38,13 @@
 }
 
 .content {
+  margin-top: 24px;
   flex-basis: calc(100% - 164px);
   display: flex;
   justify-content: space-between;
-  padding: 24px;
-  height: 1000px;
-}
-
-.main {
-  flex-basis: calc(100% - 304px);
+  & > div {
+    flex-basis: calc(100% - 304px);
+  }
 }
 
 .aside {
@@ -30,7 +57,8 @@
 
 .footerOuter {
   background: v.$font-black;
-  height: 360px;
+  color: v.$font-white;
+  height: 320px;
 }
 
 .footerInner {
