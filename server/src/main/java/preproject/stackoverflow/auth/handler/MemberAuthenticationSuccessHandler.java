@@ -22,13 +22,10 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Member member = (Member) authentication.getPrincipal();
-        ObjectMapper objectMapper = new ObjectMapper();
-        LoginDTO loginDTO = objectMapper.readValue(request.getInputStream(), LoginDTO.class);
-
         String accessToken = delegateAccessToken(member);
         response.setHeader("Authorization", "Bearer " + accessToken);
 
-        if(loginDTO.isAutoLogin()){
+        if((Boolean) request.getAttribute("autoLogin")){
             String refreshToken = delegateRefreshToken(member);
             response.setHeader("Refresh", refreshToken);
         }
