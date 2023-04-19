@@ -29,6 +29,10 @@ function LogIn() {
           Password
           <input className={styles.input} type='password' required />
         </label>
+        <label className={styles.remember}>
+          <input type='checkbox' />
+          <span> Remember me</span>
+        </label>
         <button className={styles.LoginBtn} type='button'>
           Log in
         </button>
