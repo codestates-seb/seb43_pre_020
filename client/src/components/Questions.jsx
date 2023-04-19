@@ -6,8 +6,8 @@ function Questions({ data }) {
   return (
     <div className={styles.questionContainer}>
       <div className={styles.aside}>
-        <div className={styles.votes}>{data.votes} votes</div>
-        <div className={styles.answers}>{data.answers} answers</div>
+        <div>{data.votes} votes</div>
+        <span className={data.select ? styles.answers : styles.select}>{data.answers} answers</span>
       </div>
       <div className={styles.questionBox}>
         <div>

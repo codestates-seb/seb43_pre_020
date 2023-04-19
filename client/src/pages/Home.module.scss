@@ -51,12 +51,17 @@ h3 {
   flex-shrink: 1;
 }
 
-// .votes {
-//   // 채택되면 초록색
-// }
-
 .answers {
   color: v.$font-gray;
+  font-size: 1.6rem;
+}
+
+.select {
+  font-size: 1.6rem;
+  color: v.$font-white;
+  background-color: v.$button-green;
+  border-radius: 3px;
+  padding: 2px 4px;
 }
 
 .title {
