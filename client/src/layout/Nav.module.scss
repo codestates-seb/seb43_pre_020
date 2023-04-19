@@ -1,0 +1,6 @@
+@use '../styles/colors' as v;
+
+.nav {
+  flex-basis: 164px;
+  border-right: 1px solid v.$border-gray;
+}
