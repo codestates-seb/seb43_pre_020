@@ -41,8 +41,10 @@ public class MemberVerifyAdvice {
         this.commentRepository = commentRepository;
     }
 
-    // patchMember(), deleteMember(), postAnsweredQuestion(), patchQuestion(), deleteQuestion(),
-    // patchAnswer(), deleteAnswer(), patchComment(), deleteComment()
+    /**
+     * 회원 수정, 회원 삭제 주체 검증
+     * @param joinPoint
+     */
     @Before("execution(* patchMember(..)) || execution(* deleteMember(..))")
     public void verifyMember(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -57,6 +59,10 @@ public class MemberVerifyAdvice {
         });
     }
 
+    /**
+     * 질문 수정, 질문 삭제 주체 검증
+     * @param joinPoint
+     */
     @Before("execution(* patchQuestion(..)) || execution(* deleteQuestion(..)) || execution(* postAnsweredQuestion(..))")
     public void verifyMemberInQuestion(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -73,6 +79,10 @@ public class MemberVerifyAdvice {
         });
     }
 
+    /**
+     * 답변 수정, 답변 삭제 주체 검증
+     * @param joinPoint
+     */
     @Before("execution(* patchAnswer(..)) || execution(* deleteAnswer(..))")
     public void verifyMemberInAnswer(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -88,6 +98,11 @@ public class MemberVerifyAdvice {
             throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
         });
     }
+
+    /**
+     * 댓글 수정, 댓글 삭제 주체 검증
+     * @param joinPoint
+     */
     @Before("execution(* patchComment(..)) || execution(* deleteComment(..))")
     public void verifyMemberInComment(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -104,6 +119,12 @@ public class MemberVerifyAdvice {
         });
     }
 
+    /**
+     * URI에서 id값을 추출하는 메서드
+     * @param request
+     * @param prefix 추출할 id를 지정하기 위한 prefix
+     * @return id
+     */
     private long extractIdFromUri(HttpServletRequest request, String prefix) {
         String servletPath = request.getServletPath();
 

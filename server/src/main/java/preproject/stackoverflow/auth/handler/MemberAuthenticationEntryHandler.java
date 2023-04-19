@@ -18,7 +18,6 @@ import java.io.IOException;
 public class MemberAuthenticationEntryHandler implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        //TODO : 토큰 만료시 오류메시지 반환하도록 구현
         Exception exception = (Exception) request.getAttribute("exception");
         if (exception instanceof ExpiredJwtException) {
             ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "Token Expired");
