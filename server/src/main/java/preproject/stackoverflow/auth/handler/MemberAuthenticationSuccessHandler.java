@@ -1,8 +1,10 @@
 package preproject.stackoverflow.auth.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import preproject.stackoverflow.auth.dto.LoginDTO;
 import preproject.stackoverflow.auth.jwt.JwtTokenizer;
 import preproject.stackoverflow.member.entity.Member;
 
@@ -20,11 +22,16 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Member member = (Member) authentication.getPrincipal();
-        String accessToken = delegateAccessToken(member);
-        String refreshToken = delegateRefreshToken(member);
+        ObjectMapper objectMapper = new ObjectMapper();
+        LoginDTO loginDTO = objectMapper.readValue(request.getInputStream(), LoginDTO.class);
 
+        String accessToken = delegateAccessToken(member);
         response.setHeader("Authorization", "Bearer " + accessToken);
-        response.setHeader("Refresh", refreshToken);
+
+        if(loginDTO.isAutoLogin()){
+            String refreshToken = delegateRefreshToken(member);
+            response.setHeader("Refresh", refreshToken);
+        }
     }
 
     private String delegateAccessToken(Member member) {
