@@ -22,7 +22,6 @@ public class AnswerCommentController {
     private final AnswerCommentMapper mapper;
     private final static String ANSWER_COMMENT_DEFAULT_URL = "/questions/{question-id}/answers/{answer-id}/comments";
 
-
     public AnswerCommentController(@Qualifier("answerCommentService") CommentService commentService,
                                    AnswerCommentMapper mapper) {
         this.commentService = commentService;

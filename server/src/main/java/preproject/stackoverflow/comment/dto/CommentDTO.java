@@ -34,6 +34,7 @@ public class CommentDTO {
 
     @Getter
     public static class Patch {
+        @Setter
         private Long commentId;
         @NotBlank
         private String body;

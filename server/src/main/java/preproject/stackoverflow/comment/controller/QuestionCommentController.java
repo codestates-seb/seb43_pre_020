@@ -51,9 +51,10 @@ public class QuestionCommentController {
                                           @Valid CommentDTO.Patch patch) {
         // TODO: 질문에 달린 댓글을 수정하는 핸들러 메서드를 구현하세요
         /* DTO 클래스와 mapper 클래스는 이미 구현되어 있습니다.
-        1. mapper 클래스를 이용해 DTO 클래스를 엔티티 클래스로 변환 후, 엔티티 클래스를 서비스 계층으로 보냅니다.
-        2. 서비스 계층으로부터 반환된 엔티티 클래스를 다시 mapper를 이용해서 DTO 클래스로 변환합니다.
-        3. DTO 클래스를 ResponseEntity에 담아 반환합니다.
+        1. DTO 클래스에 commentId를 주입힙니다.
+        2. mapper 클래스를 이용해 DTO 클래스를 엔티티 클래스로 변환 후, 엔티티 클래스를 서비스 계층으로 보냅니다.
+        3. 서비스 계층으로부터 반환된 엔티티 클래스를 다시 mapper를 이용해서 DTO 클래스로 변환합니다.
+        4. DTO 클래스를 ResponseEntity에 담아 반환합니다.
         답변에 달린 댓글도 위와 유사하게 구현할 수 있습니다. 직접 구현해보세요.
          */
 
