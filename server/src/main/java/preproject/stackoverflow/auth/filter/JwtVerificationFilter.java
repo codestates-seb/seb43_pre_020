@@ -5,6 +5,7 @@ import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.filter.OncePerRequestFilter;
 import preproject.stackoverflow.auth.jwt.JwtTokenizer;
 import preproject.stackoverflow.auth.utils.CustomAuthorityUtils;
@@ -18,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -48,6 +50,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     private void verifyAccessToken(HttpServletRequest request) {
         Map<String, Object> claims = verifyAccessJws(request);
         setAuthenticationToContext(claims);
+        setActivityTime((String) claims.get("username"));
     }
 
     private void verifyRefreshToken(HttpServletRequest request, HttpServletResponse response) {
@@ -75,6 +78,14 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         List<String> roles = (List<String>) claims.get("roles");
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorityUtils.getAuthorities(roles));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    }
+
+    @Transactional
+    private void setActivityTime(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        Member member = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        member.setLastActivityTime(LocalDateTime.now());
+        memberRepository.save(member);
     }
 
     private String verifyRefreshJws(HttpServletRequest request) {
