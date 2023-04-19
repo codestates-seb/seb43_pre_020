@@ -41,11 +41,11 @@ public class Member {
     private LocalDateTime lastActivityTime = LocalDateTime.now();
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
-    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "member")
     private List<Question> questions = new ArrayList<>();
-    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "member")
     private List<Answer> answers = new ArrayList<>();
-    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
 
     public void addQuestion(Question question) {
