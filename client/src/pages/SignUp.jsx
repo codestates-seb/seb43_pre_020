@@ -121,6 +121,8 @@ function Form() {
           name='password'
           value={password}
           onChange={e => setPassword(e.target.value)}
+          pattern='^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$'
+          title='최소 8자, 문자와 숫자를 모두 포함해야 합니다.'
           required
         />
       </label>
