@@ -1,0 +1,41 @@
+@use '../styles/colors' as v;
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.content {
+  flex-basis: calc(100% - 164px);
+  display: flex;
+  justify-content: space-between;
+  padding: 24px;
+  height: 1000px;
+}
+
+.main {
+  flex-basis: calc(100% - 304px);
+}
+
+.aside {
+  flex-basis: 280px;
+  height: 500px;
+  background: #fcf7e4;
+  border: 1px solid #efe5c0;
+  border-radius: 3px;
+}
+
+.footerOuter {
+  background: v.$font-black;
+  height: 360px;
+}
+
+.footerInner {
+  margin: 0 auto;
+  max-width: 1280px;
+  display: flex;
+  justify-content: space-between;
+}
