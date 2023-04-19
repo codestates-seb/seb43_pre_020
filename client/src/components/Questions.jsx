@@ -13,8 +13,9 @@ function Questions({ data }) {
         <div>
           <Link to={`/questions/${id}`}>{data.title} </Link>
           <div className={styles.content}>{data.content}</div>
-          <div className={styles.date}>
-            {data.questioner} {data.date}
+          <div className={styles.nameAndDate}>
+            <span className={styles.questioner}>{data.questioner}</span>
+            <span className={styles.date}>{data.date}</span>
           </div>
         </div>
       </div>

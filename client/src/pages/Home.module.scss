@@ -84,7 +84,19 @@ h3 {
   text-overflow: ellipsis;
 }
 
+.nameAndDate {
+  text-align: right;
+}
+
+.questioner {
+  font-size: 1.6rem;
+  color: v.$font-blue;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
 .date {
+  font-size: 1.6rem;
   color: v.$font-gray;
   text-align: right;
 }
