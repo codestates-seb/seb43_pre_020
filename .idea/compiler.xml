@@ -11,6 +11,5 @@
         <module name="stackoverflow.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="11" />
   </component>
 </project>
