@@ -1,6 +1,10 @@
 import MDEditor from '@uiw/react-md-editor'
 import styles from '../pages/Ask.module.scss'
 
+const TITLE_TEXT = `Be specific and imagine you're asking a question to another person.`
+const BODY_TEXT =
+  'The body of your question contains your problem details and results. Minimum 30 characters.'
+
 function AskForm({ data, onChange, writeDone, setWriteDone }) {
   const onPreviewSubmit = e => {
     e.preventDefault()
@@ -13,7 +17,7 @@ function AskForm({ data, onChange, writeDone, setWriteDone }) {
         <label htmlFor='title' className={styles.title}>
           Title
         </label>
-        <p>{`Be specific and imagine you're asking a question to another person.`}</p>
+        <p>{TITLE_TEXT}</p>
         <input
           id='title'
           type='text'
@@ -28,10 +32,7 @@ function AskForm({ data, onChange, writeDone, setWriteDone }) {
         <label htmlFor='body' className={styles.body}>
           Body
         </label>
-        <p>
-          The body of your question contains your problem details and results. Minimum 30
-          characters.
-        </p>
+        <p> {BODY_TEXT}</p>
         <MDEditor id='body' value={data.content} onChange={onChange} preview='edit' required />
       </div>
       <button className={styles.btn} type='submit'>

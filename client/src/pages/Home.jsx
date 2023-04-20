@@ -8,10 +8,7 @@ export default function Home() {
   const [datas, setData] = useState([])
 
   useEffect(() => {
-    getQuestions({ page: 1, size: 15 }).then(res => {
-      console.log(res)
-      setData(res)
-    })
+    getQuestions({ page: 1, size: 15 }).then(res => setData(res))
   }, [])
 
   return (
