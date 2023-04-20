@@ -8,8 +8,12 @@ import preproject.stackoverflow.member.entity.Member;
 import preproject.stackoverflow.question.entity.Question;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+
+
 
 @Entity
 @NoArgsConstructor
@@ -19,12 +23,34 @@ public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
+    @Column(nullable = false)
+    private String body;
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
     @ManyToOne
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
-    @OneToMany(mappedBy = "answer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "answer")
     private List<Comment> comments = new ArrayList<>();
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 30, nullable = false)
+    private AnswerStatus answerStatus = AnswerStatus.ANSWER_REGISTRATION;
+    public enum AnswerStatus{
+        ANSWER_REGISTRATION( "답변 등록"),
+        ANSWER_CHOICE( "답변 채택");
+        @Getter
+        private String status;
+
+        AnswerStatus(String status){
+            this.status =status;
+        }
+
+
+    }
 }
+
+

@@ -1,49 +1,34 @@
-package preproject.stackoverflow.comment.dto;
+package preproject.stackoverflow.answer.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import preproject.stackoverflow.comment.dto.CommentDTO;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
+import java.util.List;
 
-public class CommentDTO {
+public class AnswerDTO {
     @Getter
     public static class Post {
         @Positive
         private long memberId;
-        @NotBlank
-        private String body;
-    }
-
-    @Getter
-    @Setter
-    public static class QuestionPost extends Post {
-        private long questionId;
-    }
-
-    @Getter
-    @Setter
-    public static class AnswerPost extends Post {
-        private long answerId;
-    }
-
-    @Getter
-    public static class Patch {
         @Setter
-        private Long commentId;
+        private long questionId;
         @NotBlank
         private String body;
-    }
 
+    }
     @Getter
     @AllArgsConstructor
     public static class Response {
-        private long commentId;
+        private long answerId;
         private String body;
         private long memberId;
-        private String commenter;
+        private String answerer;
         private LocalDateTime date;
+        private List<CommentDTO.Response> comments;
     }
 }

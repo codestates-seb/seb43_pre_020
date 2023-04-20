@@ -39,6 +39,15 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
             String refreshToken = delegateRefreshToken(member);
             response.setHeader("Refresh", refreshToken);
         }
+
+        setMemberIdToBody(response, member);
+    }
+
+    private void setMemberIdToBody(HttpServletResponse response, Member member) throws IOException {
+        Map<String, Long> loginResponse = new HashMap<>();
+        loginResponse.put("memberId", member.getMemberId());
+        ObjectMapper objectMapper = new ObjectMapper();
+        response.getWriter().write(objectMapper.writeValueAsString(loginResponse));
     }
 
     @Transactional

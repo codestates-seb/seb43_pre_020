@@ -19,6 +19,7 @@ import java.net.URI;
 @RequestMapping("/members")
 @Validated
 public class MemberController {
+
     private final MemberService memberService;
     private final MemberMapper mapper;
     private final static String MEMBER_DEFAULT_URL = "/members";
