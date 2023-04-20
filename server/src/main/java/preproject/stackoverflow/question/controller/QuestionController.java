@@ -37,6 +37,12 @@ public class QuestionController {
         return ResponseEntity.created(uri).build();
     }
 
+    @GetMapping("/{question-id}")
+    public ResponseEntity<?> getQuestion(@Positive @PathVariable("question-id") long questionId) {
+        Question question = questionService.findQuestion(questionId);
+        return new ResponseEntity<>(mapper.questionToQuestionResponseDTO(question), HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<?> getQuestions(@Positive @RequestParam int page, @Positive @RequestParam int size) {
         Page<Question> questionPage = questionService.findQuestions(page, size);
