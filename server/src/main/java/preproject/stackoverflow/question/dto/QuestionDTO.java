@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
+import preproject.stackoverflow.answer.dto.AnswerDTO;
+import preproject.stackoverflow.comment.dto.CommentDTO;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -29,6 +31,20 @@ public class QuestionDTO {
         private String title;
         @Pattern(regexp = "\\S+")
         private String content;
+
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class Response {
+        private long questionId;
+        private String title;
+        private String content;
+        private LocalDateTime date;
+        private long memberId;
+        private String questioner;
+        private List<AnswerDTO.Response> answers;
+        private List<CommentDTO.Response> comments;
 
     }
 
