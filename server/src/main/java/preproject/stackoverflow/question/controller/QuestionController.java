@@ -19,6 +19,7 @@ import java.net.URI;
 @RequestMapping("/questions")
 @Validated
 public class QuestionController {
+
     private final QuestionService questionService;
     private final QuestionMapper mapper;
     private final static String QUESTION_DEFAULT_URL = "/questions";
@@ -27,6 +28,7 @@ public class QuestionController {
         this.questionService = questionService;
         this.mapper = mapper;
     }
+
     @PostMapping
     public ResponseEntity<?> postQuestion(@Valid @RequestBody QuestionDTO.Post post) {
         Question question = questionService.createQuestion(mapper.memberPostDTOToMember(post));

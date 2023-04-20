@@ -23,10 +23,8 @@ public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
-    @Column(name = "BODY", nullable = false)
+    @Column(nullable = false)
     private String body;
-
-
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
@@ -36,18 +34,14 @@ public class Answer {
     @OneToMany(mappedBy = "answer")
     private List<Comment> comments = new ArrayList<>();
 
-    @Column(name = "CREATION_DATE", nullable = false)
-    private LocalDateTime creationdate = LocalDateTime.now();
-
-
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "ANSWER_STATUS" , length = 20, nullable = false)
+    @Column(length = 30, nullable = false)
     private AnswerStatus answerStatus = AnswerStatus.ANSWER_REGISTRATION;
-    public  enum AnswerStatus{
+    public enum AnswerStatus{
         ANSWER_REGISTRATION( "답변 등록"),
         ANSWER_CHOICE( "답변 채택");
-
-
         @Getter
         private String status;
 

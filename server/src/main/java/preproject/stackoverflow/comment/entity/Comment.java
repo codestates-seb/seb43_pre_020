@@ -19,10 +19,10 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false)
     private String body;
     @Column(nullable = false)
-    private LocalDateTime creationDate = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;

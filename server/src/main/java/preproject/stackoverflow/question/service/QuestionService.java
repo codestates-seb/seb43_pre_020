@@ -13,4 +13,6 @@ public interface QuestionService {
     Page<Question> findQuestions(int page, int size);
 
     void deleteQuestion(Long questionId);
+
+    Question findVerifiedQuestion(Long questionId);
 }

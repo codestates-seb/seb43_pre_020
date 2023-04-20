@@ -27,7 +27,7 @@ public class Question {
     @Column(nullable = false)
     private String content;
     @Column(nullable = false)
-    private LocalDateTime createTime = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
     @Column(nullable = false)
     private Integer view = 0;
 

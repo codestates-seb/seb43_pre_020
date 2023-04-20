@@ -3,7 +3,6 @@ package preproject.stackoverflow.comment.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.parameters.P;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
@@ -45,6 +44,6 @@ public class CommentDTO {
     public static class Response {
         private long commentId;
         private String body;
-        private LocalDateTime creationDate;
+        private LocalDateTime createdAt;
     }
 }
