@@ -100,3 +100,20 @@ h3 {
   color: v.$font-gray;
   text-align: right;
 }
+
+@media screen and (max-width: 950px) {
+  .questionContainer {
+    flex-direction: column;
+  }
+  .aside {
+    display: flex;
+    padding-left: 20px;
+  }
+  .answers,
+  .select {
+    margin: 0px 10px;
+  }
+  .questionBox {
+    flex-basis: 0px;
+  }
+}

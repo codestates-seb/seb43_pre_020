@@ -7,9 +7,10 @@ import axios from '../api/instance'
 export default function Home() {
   const [datas, setData] = useState([])
 
-  const getData = async () => {
+  const getData = async ({ page, size }) => {
+    const query = `page=${page}&size=${size}`
     try {
-      const { data } = await axios.get('/data')
+      const { data } = await axios.get(`/questions?${query}`)
       setData(data)
     } catch (error) {
       console.log(error.message)
@@ -17,7 +18,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    getData()
+    getData({ page: 0, size: 6 })
   }, [])
 
   return (
