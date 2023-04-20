@@ -4,8 +4,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import preproject.stackoverflow.answer.entity.Answer;
 import preproject.stackoverflow.answer.repository.AnswerRepository;
+import preproject.stackoverflow.exception.BusinessLogicException;
+import preproject.stackoverflow.exception.ExceptionCode;
 import preproject.stackoverflow.member.service.MemberService;
 import preproject.stackoverflow.question.service.QuestionService;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -32,6 +36,11 @@ public class AnswerServiceImpl implements AnswerService{
     @Override
     public void deleteAnswer(Answer answer) {
 
+    }
+    @Override
+    public Answer findVerifiedAnswer(Long answerId) {
+        Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
+        return optionalAnswer.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
     }
 
     private void verifyAnswer(Answer answer) {

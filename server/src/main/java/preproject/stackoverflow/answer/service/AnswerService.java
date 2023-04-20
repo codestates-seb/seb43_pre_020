@@ -8,4 +8,6 @@ public interface AnswerService {
     Answer updateAnswer(Answer answer);
 
     void deleteAnswer(Answer answer);
+
+    Answer findVerifiedAnswer(Long answerId);
 }
