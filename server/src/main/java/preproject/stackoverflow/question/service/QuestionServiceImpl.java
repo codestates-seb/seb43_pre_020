@@ -37,7 +37,9 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public Question findQuestion(Long questionId) {
-        return findVerifiedQuestion(questionId);
+        Question question = findVerifiedQuestion(questionId);
+        question.setView(question.getView() + 1);
+        return question;
     }
 
     @Override

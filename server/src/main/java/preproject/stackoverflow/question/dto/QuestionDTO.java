@@ -43,6 +43,7 @@ public class QuestionDTO {
         private LocalDateTime date;
         private long memberId;
         private String questioner;
+        private long view;
         private List<AnswerDTO.Response> answers;
         private List<CommentDTO.Response> comments;
 
