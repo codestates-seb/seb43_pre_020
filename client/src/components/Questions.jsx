@@ -3,11 +3,18 @@ import styles from '../pages/Home.module.scss'
 
 function Questions({ data }) {
   const { id } = useParams()
+  const date = new Date(data.date)
+  const YEAR = date.getFullYear()
+  const MONTH = date.getMonth() + 1
+  const DATE = date.getDate()
+
   return (
     <div className={styles.questionContainer}>
       <div className={styles.aside}>
-        <div>{data.votes} votes</div>
-        <span className={data.select ? styles.answers : styles.select}>{data.answers} answers</span>
+        <div>{0} votes</div>
+        <span className={data.select ? styles.answers : styles.select}>
+          {data.answers.length} answers
+        </span>
       </div>
       <div className={styles.questionBox}>
         <div>
@@ -15,7 +22,7 @@ function Questions({ data }) {
           <div className={styles.content}>{data.content}</div>
           <div className={styles.nameAndDate}>
             <span className={styles.questioner}>{data.questioner}</span>
-            <span className={styles.date}>{data.date}</span>
+            <span className={styles.date}>{`${YEAR}-${MONTH}-${DATE}`}</span>
           </div>
         </div>
       </div>

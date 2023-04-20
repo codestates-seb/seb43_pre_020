@@ -8,15 +8,18 @@ export default function Home() {
   const [datas, setData] = useState([])
 
   useEffect(() => {
-    getQuestions({ page: 0, size: 15 }).then(res => setData(res))
+    getQuestions({ page: 1, size: 15 }).then(res => {
+      console.log(res)
+      setData(res)
+    })
   }, [])
 
   return (
     <div className={styles.homeContainer}>
-      <HomeHeader datas={datas} />
+      <HomeHeader length={datas.length} />
       {datas.map(d => {
         return (
-          <div key={d.id}>
+          <div key={d.questionId}>
             <div className={styles.line} />
             <Questions data={d} />
           </div>
@@ -26,7 +29,7 @@ export default function Home() {
   )
 }
 
-function HomeHeader({ datas }) {
+function HomeHeader({ length }) {
   return (
     <div>
       <div className={styles.homeHeader}>
@@ -35,7 +38,7 @@ function HomeHeader({ datas }) {
           Ask Question
         </Link>
       </div>
-      <h3>{datas.length} questions</h3>
+      <h3>{length} questions</h3>
     </div>
   )
 }

@@ -10,21 +10,20 @@ function Preview({ data, writeDone, setWriteDone }) {
     setWriteDone(!writeDone)
   }
 
-  const body = {
+  const body = JSON.stringify({
     title: data.title,
-    votes: 0,
-    answers: 0,
     content: data.content,
-    date: new Date(),
-    select: false,
-    questioner: 'unknown',
-  }
+    memberId: 1,
+  })
 
   const onSubmit = e => {
     e.preventDefault()
     axios.post('/questions', body).then(res => {
-      console.log(res)
-      window.location.replace('http://localhost:3000/')
+      if (!res.ok) {
+        alert('질문 등록에 실패했습니다.')
+      } else {
+        window.location.replace('http://localhost:3000/')
+      }
     })
   }
 
