@@ -1,6 +1,8 @@
 package preproject.stackoverflow.question.service;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import preproject.stackoverflow.exception.BusinessLogicException;
@@ -40,7 +42,8 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public Page<Question> findQuestions(int page, int size) {
-        return null;
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by("questionId").descending());
+        return questionRepository.findAllByQuestionNotDeleted(pageRequest);
     }
 
     @Override
