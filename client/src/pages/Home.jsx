@@ -2,23 +2,13 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import styles from './Home.module.scss'
 import Questions from '../components/Questions'
-import axios from '../api/instance'
+import getQuestions from '../api/question'
 
 export default function Home() {
   const [datas, setData] = useState([])
 
-  const getData = async ({ page, size }) => {
-    const query = `page=${page}&size=${size}`
-    try {
-      const { data } = await axios.get(`/questions?${query}`)
-      setData(data)
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
-
   useEffect(() => {
-    getData({ page: 0, size: 6 })
+    getQuestions({ page: 0, size: 15 }).then(res => setData(res))
   }, [])
 
   return (
