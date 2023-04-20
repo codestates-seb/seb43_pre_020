@@ -1,4 +1,5 @@
 import MDEditor from '@uiw/react-md-editor'
+import axios from '../api/instance'
 import styles from '../pages/Ask.module.scss'
 
 const BODYTEXT =
@@ -9,10 +10,28 @@ function Preview({ data, writeDone, setWriteDone }) {
     setWriteDone(!writeDone)
   }
 
+  const body = {
+    title: data.title,
+    votes: 0,
+    answers: 0,
+    content: data.content,
+    date: new Date(),
+    select: false,
+    questioner: 'unknown',
+  }
+
+  const onSubmit = e => {
+    e.preventDefault()
+    axios.post('/questions', body).then(res => {
+      console.log(res)
+      window.location.replace('http://localhost:3000/')
+    })
+  }
+
   return (
     <div>
       <TitleForm title={data.title} />
-      <form className={styles.preview}>
+      <form className={styles.preview} onSubmit={onSubmit}>
         <div className={styles.bodyContainer}>
           <h2 className={styles.body}>Body</h2>
           <p>{BODYTEXT}</p>
