@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './signup.module.scss'
-import request from '../api/instance'
+import axios from '../api/instance'
 
 function SignUp() {
   return (
@@ -77,15 +77,19 @@ function Form() {
 
   const handleSubmit = e => {
     e.preventDefault()
-    request
+    axios
       .post('/members', { displayName, email, password })
       .then(response => {
         console.log(response)
         navigate(`/login`)
       })
       .catch(error => {
-        console.log(error)
-        alert('Sorry, you failed to sign up.')
+        if (error.response.status === 409) {
+          alert('This email has already been registered.')
+        } else {
+          console.log(error)
+          alert('Sorry, you failed to sign up.')
+        }
       })
   }
 
