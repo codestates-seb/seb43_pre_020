@@ -4,11 +4,10 @@ import lombok.Getter;
 
 public enum ExceptionCode {
     MEMBER_NOT_FOUND(404, "Member Not Found"),
-    MEMBER_EXISTS(409, "Member exists");
-//    QUESTION_NOT_FOUNDE(404, "존재하지 않는 질문입니다."),
-//    DELETED_QUESTION(406, "삭제된 질문입니다."),
-//    ANSWERD_QUESTION(406, "답변 완료된 질문입니다.");
-
+    MEMBER_EXISTS(409, "Member Exists"),
+    QUESTION_NOT_FOUND(404, "Question Not Found"),
+    ANSWER_NOT_FOUND(404, "Answer Not Found"),
+    COMMENT_NOT_FOUND(404, "Comment Not Found");
     @Getter
     private int status;
     @Getter

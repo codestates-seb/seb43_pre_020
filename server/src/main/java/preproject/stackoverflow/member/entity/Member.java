@@ -8,6 +8,7 @@ import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.question.entity.Question;
 
 import javax.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,8 @@ public class Member {
     private LocalDateTime lastLoginTime = LocalDateTime.now();
     @Column(nullable = false)
     private LocalDateTime lastActivityTime = LocalDateTime.now();
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
     @OneToMany(mappedBy = "member")
     private List<Question> questions = new ArrayList<>();
     @OneToMany(mappedBy = "member")

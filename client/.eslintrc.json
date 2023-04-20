@@ -19,6 +19,7 @@
         "labelAttributes": ["htmlFor"]
       }
     ],
+    "react/prop-types": "off",
     "prettier/prettier": [
       "error",
       {

@@ -1,0 +1,126 @@
+@use '../styles/colors' as v;
+
+.outer {
+  position: fixed;
+  top: 0;
+  z-index: 500;
+  width: 100%;
+  border-top: 3px solid #f48024;
+  background: v.$bg-lightgray;
+  box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.05),
+    0 2px 8px hsla(0, 0%, 0%, 0.05);
+}
+
+.inner {
+  margin: 0 auto;
+  max-width: 1280px;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  padding: 0 16px;
+  height: 100%;
+  &:hover {
+    background: v.$bg-gray;
+  }
+  img {
+    width: 140px;
+  }
+  a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+}
+
+.btnWrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+}
+
+.linkBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 32px;
+  padding: 8px;
+  font-size: 1.3rem;
+  border-radius: 4px;
+}
+
+.mypageBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px;
+  width: 50px;
+  height: 50px;
+  &:hover {
+    background: v.$bg-gray;
+  }
+}
+
+.loginBtn {
+  @extend .linkBtn;
+  color: v.$font-blue;
+  background: v.$button-gray;
+  border: 1px solid v.$font-blue;
+  &:hover {
+    background: v.$button-hovergray;
+  }
+}
+
+.signupBtn {
+  @extend .linkBtn;
+  color: v.$font-white;
+  background: v.$button-blue;
+  &:hover {
+    background: v.$button-hoverblue;
+  }
+}
+
+.logOutBtn {
+  @extend .linkBtn;
+  color: v.$font-white;
+  background: v.$button-blue;
+  &:hover {
+    background: v.$button-hoverblue;
+  }
+}
+
+.clearfix {
+  &::before {
+    content: '';
+    display: block;
+    clear: both;
+    height: 53px;
+  }
+}
+
+.searchForm {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  height: 32px;
+}
+
+.searchInput {
+  width: 100%;
+  height: 32px;
+  padding: 0 32px;
+  font-size: 1.3rem;
+  ::placeholder {
+    color: v.$font-gray;
+  }
+}
+.searchIcon {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+}
