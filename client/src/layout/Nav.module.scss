@@ -1,0 +1,28 @@
+@use '../styles/colors' as v;
+
+.nav {
+  padding-top: 24px;
+  flex-basis: 164px;
+  border-right: 1px solid v.$border-gray;
+}
+
+.item {
+  padding: 0 8px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  height: 33px;
+  font-size: 1.3rem;
+  color: v.$font-gray;
+  &:hover {
+    color: v.$font-black;
+  }
+}
+
+.itemActive {
+  @extend .item;
+  color: v.$font-black;
+  font-weight: bold;
+  background: v.$bg-gray;
+  border-right: 3px solid #f48024;
+}

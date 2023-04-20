@@ -8,12 +8,12 @@ import preproject.stackoverflow.member.entity.Member;
 import preproject.stackoverflow.question.entity.Question;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
+
+
 
 @Entity
 @NoArgsConstructor
@@ -23,9 +23,9 @@ public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
-
     @Column(name = "BODY", nullable = false)
     private String body;
+
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
@@ -58,4 +58,5 @@ public class Answer {
 
     }
 }
+
 

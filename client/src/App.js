@@ -1,5 +1,11 @@
-function App() {
-  return <>App</>
-}
+import { Outlet } from 'react-router-dom'
+import './styles/global.scss'
+import GeneralLayout from './layout/GeneralLayout'
 
-export default App
+export default function App() {
+  return (
+    <GeneralLayout>
+      <Outlet />
+    </GeneralLayout>
+  )
+}

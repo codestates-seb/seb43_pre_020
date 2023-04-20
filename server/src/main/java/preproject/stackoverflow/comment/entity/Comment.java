@@ -7,15 +7,22 @@ import preproject.stackoverflow.answer.entity.Answer;
 import preproject.stackoverflow.member.entity.Member;
 import preproject.stackoverflow.question.entity.Question;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
 public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long commentId;
+    @Column(nullable = false, length = 500)
+    private String body;
+    @Column(nullable = false)
+    private LocalDateTime creationDate = LocalDateTime.now();
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
