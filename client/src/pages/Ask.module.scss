@@ -50,10 +50,9 @@ p {
   margin: 0 8px;
   border-radius: 3px;
   box-shadow: inset 0 1px 0 0 hsla(0, 0%, 100%, 0.4);
-}
-
-.btn:hover {
-  background-color: #3172c6;
+  &:hover {
+    background-color: #3172c6;
+  }
 }
 
 .preview {

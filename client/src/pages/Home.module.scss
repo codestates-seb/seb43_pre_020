@@ -1,0 +1,119 @@
+@use '../styles/colors' as v;
+
+.homeContainer {
+  padding: 24px 16px;
+}
+
+.homeHeader {
+  display: flex;
+  justify-content: space-between;
+  h2 {
+    font-size: 2.7rem;
+  }
+  margin-bottom: 12px;
+}
+h3 {
+  font-size: 2rem;
+}
+
+.line {
+  border: 0.7px solid #d7d9dc;
+  margin-top: 12px;
+}
+
+.btn {
+  cursor: pointer;
+  background-color: v.$button-blue;
+  color: #fff;
+  padding: 10.4px;
+  margin: 0 8px;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 0 hsla(0, 0%, 100%, 0.4);
+  &:hover {
+    background-color: #3172c6;
+    color: #fff;
+  }
+}
+
+.questionContainer {
+  display: flex;
+  padding-top: 20px;
+}
+
+.aside {
+  width: 108px;
+  text-align: right;
+}
+
+.questionBox {
+  padding-left: 20px;
+  flex-basis: 1080px;
+  flex-shrink: 1;
+}
+
+.answers {
+  color: v.$font-gray;
+  font-size: 1.6rem;
+}
+
+.select {
+  font-size: 1.6rem;
+  color: v.$font-white;
+  background-color: v.$button-green;
+  border-radius: 3px;
+  padding: 2px 4px;
+}
+
+.title {
+  color: v.$font-blue;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+
+.content {
+  color: v.$font-gray;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  text-overflow: ellipsis;
+}
+
+.nameAndDate {
+  text-align: right;
+}
+
+.questioner {
+  font-size: 1.6rem;
+  color: v.$font-blue;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.date {
+  font-size: 1.6rem;
+  color: v.$font-gray;
+  text-align: right;
+}
+
+@media screen and (max-width: 950px) {
+  .questionContainer {
+    flex-direction: column;
+  }
+  .aside {
+    display: flex;
+    padding-left: 20px;
+  }
+  .answers,
+  .select {
+    margin: 0px 10px;
+  }
+  .questionBox {
+    flex-basis: 0px;
+  }
+}
