@@ -7,6 +7,7 @@ import preproject.stackoverflow.answer.entity.Answer;
 import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.member.entity.Member;
 
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Question {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;

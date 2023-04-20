@@ -10,6 +10,7 @@ import preproject.stackoverflow.question.entity.Question;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+
 @Entity
 @NoArgsConstructor
 @Getter
