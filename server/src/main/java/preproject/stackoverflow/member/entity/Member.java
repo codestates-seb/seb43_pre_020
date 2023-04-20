@@ -27,7 +27,6 @@ public class Member {
     private String email;
     @Column(length = 100)
     private String displayName;
-    @Column(length = 500)
     private String aboutMe;
     @Column(length = 100)
     private String title;
@@ -35,7 +34,7 @@ public class Member {
     @Column(nullable = false, length = 20)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
     @Column(nullable = false)
-    private LocalDateTime joinTime = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
     @Column(nullable = false)
     private LocalDateTime lastLoginTime = LocalDateTime.now();
     @Column(nullable = false)
