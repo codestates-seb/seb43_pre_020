@@ -10,9 +10,9 @@ export async function getQuestions({ page, size }) {
   }
 }
 
-export async function getDetails({ questionId }) {
+export async function getDetails(id) {
   try {
-    const { data } = await axios.get(`/questions/${questionId}`)
+    const { data } = await axios.get(`/questions/${id}`)
     return data
   } catch (error) {
     throw new Error(error)
