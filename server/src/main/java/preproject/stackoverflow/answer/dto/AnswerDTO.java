@@ -17,4 +17,11 @@ public class AnswerDTO {
         private String body;
 
     }
+    @Getter
+    public  static class Patch{
+        @Setter
+        private long answerId;
+        @NotBlank
+        private String body;
+    }
 }
