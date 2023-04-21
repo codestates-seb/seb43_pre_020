@@ -10,14 +10,17 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import preproject.stackoverflow.answer.dto.AnswerDTO;
 import preproject.stackoverflow.answer.entity.Answer;
 import preproject.stackoverflow.answer.repository.AnswerRepository;
+import preproject.stackoverflow.comment.dto.CommentDTO;
 import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.comment.repository.CommentRepository;
 import preproject.stackoverflow.exception.BusinessLogicException;
 import preproject.stackoverflow.exception.ExceptionCode;
 import preproject.stackoverflow.member.entity.Member;
 import preproject.stackoverflow.member.repository.MemberRepository;
+import preproject.stackoverflow.question.dto.QuestionDTO;
 import preproject.stackoverflow.question.entity.Question;
 import preproject.stackoverflow.question.repository.QuestionRepository;
 
@@ -117,6 +120,35 @@ public class MemberVerifyAdvice {
         }, () -> {
             throw new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND);
         });
+    }
+
+    /**
+     * 질문 등록, 답변 등록, 댓글 등록 주체 검증
+     * @param joinPoint
+     */
+    @Before("execution(* postQuestion(..)) || execution(* postAnswer(..)) || execution(* postComment(..))")
+    public void verifyMemberInRegistration(JoinPoint joinPoint) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        String email = request.getUserPrincipal().getName();
+        Object arg = joinPoint.getArgs()[0];
+        long memberId = 0L;
+        if (arg instanceof QuestionDTO.Post) {
+            QuestionDTO.Post post = (QuestionDTO.Post) arg;
+            memberId = post.getMemberId();
+        } else if (arg instanceof AnswerDTO.Post) {
+            AnswerDTO.Post post = (AnswerDTO.Post) arg;
+            memberId = post.getMemberId();
+        } else if (arg instanceof CommentDTO.Post) {
+            CommentDTO.Post post = (CommentDTO.Post) arg;
+            memberId = post.getMemberId();
+        }
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        optionalMember.ifPresentOrElse(member -> {
+            if (!member.getEmail().equals(email)) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
+        }, () -> {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+        });
+
     }
 
     /**
