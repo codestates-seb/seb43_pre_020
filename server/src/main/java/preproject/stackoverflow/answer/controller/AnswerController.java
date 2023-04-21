@@ -12,7 +12,7 @@ import preproject.stackoverflow.answer.service.AnswerServiceImpl;
 import preproject.stackoverflow.utils.UriCreator;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Positive ;
+import javax.validation.constraints.Positive;
 import java.net.URI;
 
 @RestController
@@ -46,4 +46,10 @@ public class AnswerController {
 
         return new ResponseEntity<>( HttpStatus.OK);
     }
+    @DeleteMapping("/{answer-id}")
+    public ResponseEntity<?> deleteAnswer(@PathVariable("answer-id")@Positive long answerId){
+        answerService.deleteAnswer(answerId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
