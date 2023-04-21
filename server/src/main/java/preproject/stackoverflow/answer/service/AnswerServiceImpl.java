@@ -39,7 +39,7 @@ public class AnswerServiceImpl implements AnswerService{
     }
 
     @Override
-    public void deleteAnswer(Answer answer) {
+    public void deleteAnswer(Long answerId) {
 
     }
     @Override

@@ -25,18 +25,17 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class MemberAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-    private final JwtTokenizer jwtTokenizer;
-    private final MemberRepository memberRepository;
+    private final AuthenticationSuccessHandlerUtils authenticationSuccessHandlerUtils;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Member member = (Member) authentication.getPrincipal();
-        setLoginTime(member);
+        authenticationSuccessHandlerUtils.setLoginTime(member);
 
-        String accessToken = delegateAccessToken(member);
+        String accessToken = authenticationSuccessHandlerUtils.delegateAccessToken(member);
         response.setHeader("Authorization", "Bearer " + accessToken);
 
         if((Boolean) request.getAttribute("autoLogin")){
-            String refreshToken = delegateRefreshToken(member);
+            String refreshToken = authenticationSuccessHandlerUtils.delegateRefreshToken(member);
             response.setHeader("Refresh", refreshToken);
         }
 
@@ -50,32 +49,4 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         response.getWriter().write(objectMapper.writeValueAsString(loginResponse));
     }
 
-    @Transactional
-    private void setLoginTime(Member member) {
-        Member findMember = memberRepository.findById(member.getMemberId())
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        findMember.setLastLoginTime(LocalDateTime.now());
-        memberRepository.save(findMember);
-    }
-
-
-    private String delegateAccessToken(Member member) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("username", member.getEmail());
-        claims.put("roles", member.getRoles());
-
-        String subject = member.getEmail();
-        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
-
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-
-        return jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
-    }
-
-    private String delegateRefreshToken(Member member) {
-        String subject = member.getEmail();
-        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-        return jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
-    }
 }
