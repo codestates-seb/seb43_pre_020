@@ -3,6 +3,10 @@
 .ask {
   background-color: v.$bg-gray;
   padding: 48px;
+  p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 }
 
 .headline {
@@ -27,11 +31,6 @@
 .body {
   font-size: 1.5rem;
   font-weight: 600;
-}
-
-p {
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 
 .titleInput,
