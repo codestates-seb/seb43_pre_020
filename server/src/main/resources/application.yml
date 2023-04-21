@@ -9,10 +9,26 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${SOF_GOOGLE_CLIENT_ID}
+            clientSecret: ${SOF_GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
 server:
   servlet:
     encoding:
       force-response: true
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: DEBUG
 jwt:
   key: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 60
