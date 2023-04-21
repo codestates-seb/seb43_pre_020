@@ -49,7 +49,7 @@ export default function Home() {
           <button
             key={btn}
             type='button'
-            className={styles.pageBtn}
+            className={offset === btn ? styles.clickedBtn : styles.pageBtn}
             onClick={() => handlePage(btn)}
           >
             {btn}
