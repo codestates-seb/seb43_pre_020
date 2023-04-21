@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import preproject.stackoverflow.question.dto.QuestionDTO;
 import preproject.stackoverflow.question.entity.Question;
+import preproject.stackoverflow.question.entity.QuestionVote;
 import preproject.stackoverflow.question.mapper.QuestionMapper;
 import preproject.stackoverflow.question.service.QuestionService;
 import preproject.stackoverflow.question.service.QuestionServiceImpl;
@@ -58,4 +59,14 @@ public class QuestionController {
         List<QuestionDTO.ResponseList.SimpleResponse> simpleResponses = mapper.questionsToSimpleResponses(questionPage.getContent());
         return new ResponseEntity<>(new QuestionDTO.ResponseList(simpleResponses, questionPage), HttpStatus.OK);
     }
+
+    @PostMapping("/{question-id}/votes")
+    public ResponseEntity<?> postQuestionVotes(@Valid @RequestBody QuestionDTO.VotePost votePost,
+                                               @Positive @PathVariable("question-id") long questionId) {
+        votePost.setQuestionId(questionId);
+        QuestionVote questionVote = mapper.questionVoteDTOToQuestionVote(votePost);
+        Question question = questionService.addVoteToQuestion(questionVote);
+        return new ResponseEntity<>(question.getVotes(), HttpStatus.OK);
+    }
+
 }

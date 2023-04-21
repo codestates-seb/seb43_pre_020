@@ -45,6 +45,22 @@ public class Question {
     private List<Answer> answers = new ArrayList<>();
     @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<QuestionVote> questionVotes = new ArrayList<>();
+
+    public void addQuestionVote(QuestionVote questionVote) {
+        questionVotes.add(questionVote);
+    }
+
+    public long getVotes() {
+        long upVotes = questionVotes.stream()
+                .filter(questionVote -> questionVote.getQuestionVoteStatus() == QuestionVote.QuestionVoteStatus.UPVOTE)
+                .count();
+        long downVotes = questionVotes.stream()
+                .filter(questionVote -> questionVote.getQuestionVoteStatus() == QuestionVote.QuestionVoteStatus.DOWNVOTE)
+                .count();
+        return upVotes - downVotes;
+    }
 
     public enum QuestionStatus {
         QUESTION_REGISTRATION("질문 등록"),
