@@ -6,6 +6,7 @@ import SignUp from '../pages/SignUp'
 import MyPage from '../pages/MyPage'
 import Question from '../pages/Question'
 import Ask from '../pages/Ask'
+import Members from '../pages/Members'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: '/mypage', element: <MyPage /> },
       { path: '/questions/:id', element: <Question /> },
       { path: '/ask', element: <Ask /> },
+      { path: '/members/:memberId', element: <Members /> },
     ],
   },
 ])
