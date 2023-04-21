@@ -28,6 +28,8 @@ public class Question {
     private String content;
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+//    @Column(nullable = false)
+//    private LocalDateTime modifiedAt = LocalDateTime.now();
     @Column(nullable = false)
     private Long view = 0L;
 

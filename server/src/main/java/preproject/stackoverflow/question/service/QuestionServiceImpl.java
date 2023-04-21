@@ -11,6 +11,7 @@ import preproject.stackoverflow.member.service.MemberService;
 import preproject.stackoverflow.question.entity.Question;
 import preproject.stackoverflow.question.repository.QuestionRepository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -32,7 +33,26 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public Question updateQuestion(Question question) {
-        return null;
+        // 인증된 회원인지는 시큐리티를 통해서 인증
+        Question findQuestion = findVerifiedQuestion(question.getQuestionId());
+//        isUpdatable(findQuestion.getQuestionStatus()); // 질문 수정 가능 여부. 추후 수정 요망
+        // 질문 수정시 업데이트 되는 내용 : 제목, 내용, 질문상태, 답변, 접근은 필요없음, 조회수?
+        Optional.ofNullable(question.getTitle())
+                .ifPresent(findQuestion::setTitle);
+        Optional.ofNullable(question.getContent())
+                .ifPresent(findQuestion::setContent);
+
+        // TODO : 수정시간 추후 업데이트
+//        findQuestion.setModifiedAt(LocalDateTime.now());
+
+        // Todo : 질문 수정 시 상태값만 반환
+        return questionRepository.save(findQuestion);
+    }
+    // Todo : 답변이 채택 된 상태에서 질문 수정이 가능한지 논의 필요
+    private void isUpdatable(Question.QuestionStatus questionStatus) {
+        if(!questionStatus.equals(Question.QuestionStatus.QUESTION_REGISTRATION)) {
+            throw new BusinessLogicException(ExceptionCode.CANNOT_UPDATE);
+        }
     }
 
     @Override

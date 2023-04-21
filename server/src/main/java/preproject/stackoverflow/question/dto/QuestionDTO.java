@@ -13,6 +13,8 @@ import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import preproject.stackoverflow.answer.entity.Answer;
+
 public class QuestionDTO {
     @Getter
     public static class Post {
@@ -34,6 +36,7 @@ public class QuestionDTO {
 
     }
 
+
     @Getter
     @AllArgsConstructor
     public static class Response {
@@ -46,7 +49,6 @@ public class QuestionDTO {
         private long view;
         private List<AnswerDTO.Response> answers;
         private List<CommentDTO.Response> comments;
-
     }
 
 

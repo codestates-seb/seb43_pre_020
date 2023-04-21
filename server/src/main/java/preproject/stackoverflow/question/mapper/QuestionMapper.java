@@ -16,6 +16,7 @@ public interface QuestionMapper {
     // Post 기능 매핑
     @Mapping(source = "memberId", target = "member.memberId")
     Question questionPostDTOToQuestion(QuestionDTO.Post post);
+    Question questionPatchDtoToQuestion(QuestionDTO.Patch patch);
 
     @Mapping(source = "question.member.memberId", target = "memberId")
     @Mapping(source = "question.member.displayName", target = "questioner")
