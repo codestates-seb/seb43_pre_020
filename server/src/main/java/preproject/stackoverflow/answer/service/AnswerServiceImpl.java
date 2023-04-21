@@ -30,7 +30,12 @@ public class AnswerServiceImpl implements AnswerService{
 
     @Override
     public Answer updateAnswer(Answer answer) {
-        return null;
+        Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
+
+        Optional.ofNullable(answer.getBody())
+                .ifPresent(body-> findAnswer.setBody(body));
+
+        return answerRepository.save(findAnswer);
     }
 
     @Override
