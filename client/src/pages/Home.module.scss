@@ -2,6 +2,9 @@
 
 .homeContainer {
   padding: 24px 16px;
+  h3 {
+    font-size: 2rem;
+  }
 }
 
 .homeHeader {
@@ -11,9 +14,6 @@
     font-size: 2.7rem;
   }
   margin-bottom: 12px;
-}
-h3 {
-  font-size: 2rem;
 }
 
 .line {
