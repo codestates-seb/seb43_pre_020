@@ -57,7 +57,9 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public Question findQuestion(Long questionId) {
-        return null;
+        Question question = findVerifiedQuestion(questionId);
+        question.setView(question.getView() + 1);
+        return question;
     }
 
     @Override
@@ -72,7 +74,7 @@ public class QuestionServiceImpl implements QuestionService{
     }
     @Override
     public Question findVerifiedQuestion(Long questionId) {
-        Optional<Question> optionalQuestion = questionRepository.findById(questionId);
+        Optional<Question> optionalQuestion = questionRepository.findByIdNotDeleted(questionId);
         return optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
     }
 

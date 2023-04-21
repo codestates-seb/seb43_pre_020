@@ -31,7 +31,7 @@ public class Question {
 //    @Column(nullable = false)
 //    private LocalDateTime modifiedAt = LocalDateTime.now();
     @Column(nullable = false)
-    private Integer view = 0;
+    private Long view = 0L;
 
     // 질문 상태 : 등록, 답변 완료, 삭제
     @Enumerated(EnumType.STRING)

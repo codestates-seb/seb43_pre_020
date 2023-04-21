@@ -1,5 +1,6 @@
 package preproject.stackoverflow.answer.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import preproject.stackoverflow.answer.service.AnswerServiceImpl;
 import preproject.stackoverflow.utils.UriCreator;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Positive ;
+import javax.validation.constraints.Positive;
 import java.net.URI;
 
 @RestController
@@ -37,4 +38,18 @@ public class AnswerController {
         URI uri = UriCreator.createUri(ANSWER_DEFAULT_URL, answer.getAnswerId());
         return ResponseEntity.created(uri).build();
     }
+    @PatchMapping("/{answer-id}")
+    public ResponseEntity<?> patchAnswer(@Valid @RequestBody AnswerDTO.Patch patch,
+                                         @Positive @PathVariable("answer-id") long answerId){
+        patch.setAnswerId(answerId);
+        Answer answer = answerService.updateAnswer(mapper.answerPatchDtoToAnswer(patch));
+
+        return new ResponseEntity<>( HttpStatus.OK);
+    }
+    @DeleteMapping("/{answer-id}")
+    public ResponseEntity<?> deleteAnswer(@PathVariable("answer-id")@Positive long answerId){
+        answerService.deleteAnswer(answerId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

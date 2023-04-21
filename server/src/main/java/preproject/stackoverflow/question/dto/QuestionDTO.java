@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
+import preproject.stackoverflow.answer.dto.AnswerDTO;
+import preproject.stackoverflow.comment.dto.CommentDTO;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -34,19 +36,19 @@ public class QuestionDTO {
 
     }
 
-    // 질문 수정시 응답 데이터
+
     @Getter
     @AllArgsConstructor
     public static class Response {
-        private Long questionId;
+        private long questionId;
         private String title;
         private String content;
-//        private String username;
-        private String questionStatus;
-        // List 형태로 받아야됨
-        private List<Answer> answers;
-        private LocalDateTime createAt;
-        private LocalDateTime updateAt;
+        private LocalDateTime date;
+        private long memberId;
+        private String questioner;
+        private long view;
+        private List<AnswerDTO.Response> answers;
+        private List<CommentDTO.Response> comments;
     }
 
 

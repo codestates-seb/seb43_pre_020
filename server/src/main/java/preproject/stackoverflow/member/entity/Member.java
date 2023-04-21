@@ -33,6 +33,9 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private OAuth2Status oAuth2Status = OAuth2Status.NONE;
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
     @Column(nullable = false)
@@ -68,5 +71,9 @@ public class Member {
         MemberStatus(String status) {
             this.status = status;
         }
+    }
+
+    public enum OAuth2Status {
+        NONE, GOOGLE, GITHUB
     }
 }

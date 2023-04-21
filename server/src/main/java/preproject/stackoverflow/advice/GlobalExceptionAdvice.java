@@ -63,6 +63,10 @@ public class GlobalExceptionAdvice {
         ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
+    @ExceptionHandler
+    public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException e) {
+        throw e;
+    }
 
     @ExceptionHandler
     public ResponseEntity<?> handleException(Exception e) {
