@@ -6,6 +6,17 @@
   align-items: center;
   justify-content: center;
   background-color: v.$bg-gray;
+  span {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    a {
+      margin-left: 5px;
+      color: v.$font-blue;
+      &:hover {
+        color: lighten($color: v.$font-blue, $amount: 15%);
+      }
+    }
+  }
 }
 
 .logoImg {
@@ -102,17 +113,5 @@
   width: 230px;
   input {
     vertical-align: middle;
-  }
-}
-
-span {
-  margin-top: 30px;
-  font-size: 1.2rem;
-  a {
-    margin-left: 5px;
-    color: v.$font-blue;
-    &:hover {
-      color: lighten($color: v.$font-blue, $amount: 15%);
-    }
   }
 }
