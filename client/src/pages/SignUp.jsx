@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import styles from './signup.module.scss'
+import styles from './SignUp.module.scss'
 import signin from '../api/user'
 
 function SignUp() {

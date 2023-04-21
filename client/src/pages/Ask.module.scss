@@ -3,6 +3,10 @@
 .ask {
   background-color: v.$bg-gray;
   padding: 48px;
+  p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 }
 
 .headline {
@@ -29,11 +33,6 @@
   font-weight: 600;
 }
 
-p {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
 .titleInput,
 .titlePreview,
 .bodyPreview {
@@ -56,7 +55,7 @@ p {
 }
 
 .preview {
-  padding: 24px;
+  padding: 24px 0;
 }
 
 .btnAmend {
