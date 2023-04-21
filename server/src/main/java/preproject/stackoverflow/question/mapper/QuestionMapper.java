@@ -2,8 +2,6 @@ package preproject.stackoverflow.question.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import preproject.stackoverflow.answer.dto.AnswerDTO;
-import preproject.stackoverflow.answer.entity.Answer;
 import preproject.stackoverflow.answer.mapper.AnswerMapper;
 import preproject.stackoverflow.comment.mapper.QuestionCommentMapper;
 import preproject.stackoverflow.question.dto.QuestionDTO;
