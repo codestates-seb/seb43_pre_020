@@ -51,12 +51,12 @@ public class MemberVerifyAdvice {
     @Before("execution(* patchMember(..)) || execution(* deleteMember(..))")
     public void verifyMember(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        String email = request.getUserPrincipal().getName();
+        long authenticatedMemberId = Long.parseLong(request.getUserPrincipal().getName());
         long memberId = extractIdFromUri(request, "/members/");
 
         Optional<Member> optionalMember = memberRepository.findById(memberId);
         optionalMember.ifPresentOrElse(member -> {
-            if (!member.getEmail().equals(email)) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
+            if (member.getMemberId() != authenticatedMemberId) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
         }, () -> {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         });
@@ -69,13 +69,13 @@ public class MemberVerifyAdvice {
     @Before("execution(* patchQuestion(..)) || execution(* deleteQuestion(..)) || execution(* postAnsweredQuestion(..))")
     public void verifyMemberInQuestion(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        String email = request.getUserPrincipal().getName();
+        long authenticatedMemberId = Long.parseLong(request.getUserPrincipal().getName());
         long questionId = extractIdFromUri(request, "/questions/");
 
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         optionalQuestion.ifPresentOrElse(question -> {
             if (question.getMember() != null) {
-                if (!question.getMember().getEmail().equals(email)) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
+                if (question.getMember().getMemberId() != authenticatedMemberId) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
             }
         }, () -> {
             throw new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND);
@@ -89,13 +89,13 @@ public class MemberVerifyAdvice {
     @Before("execution(* patchAnswer(..)) || execution(* deleteAnswer(..))")
     public void verifyMemberInAnswer(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        String email = request.getUserPrincipal().getName();
+        long authenticatedMemberId = Long.parseLong(request.getUserPrincipal().getName());
         long answerId = extractIdFromUri(request, "/answers/");
 
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
         optionalAnswer.ifPresentOrElse(answer -> {
             if(answer.getMember() != null){
-                if(!answer.getMember().getEmail().equals(email)) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
+                if(answer.getMember().getMemberId() != authenticatedMemberId) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
             }
         }, () -> {
             throw new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND);
@@ -109,13 +109,13 @@ public class MemberVerifyAdvice {
     @Before("execution(* patchComment(..)) || execution(* deleteComment(..))")
     public void verifyMemberInComment(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        String email = request.getUserPrincipal().getName();
+        long authenticatedMemberId = Long.parseLong(request.getUserPrincipal().getName());
         long commentId = extractIdFromUri(request, "/comments/");
 
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         optionalComment.ifPresentOrElse(comment -> {
             if(comment.getMember() != null){
-                if(!comment.getMember().getEmail().equals(email)) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
+                if(comment.getMember().getMemberId() != authenticatedMemberId) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
             }
         }, () -> {
             throw new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND);
@@ -129,7 +129,7 @@ public class MemberVerifyAdvice {
     @Before("execution(* postQuestion(..)) || execution(* postAnswer(..)) || execution(* postComment(..))")
     public void verifyMemberInRegistration(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        String email = request.getUserPrincipal().getName();
+        long authenticatedMemberId = Long.parseLong(request.getUserPrincipal().getName());
         Object arg = joinPoint.getArgs()[0];
         long memberId = 0L;
         if (arg instanceof QuestionDTO.Post) {
@@ -144,7 +144,7 @@ public class MemberVerifyAdvice {
         }
         Optional<Member> optionalMember = memberRepository.findById(memberId);
         optionalMember.ifPresentOrElse(member -> {
-            if (!member.getEmail().equals(email)) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
+            if (member.getMemberId() != authenticatedMemberId) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
         }, () -> {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         });

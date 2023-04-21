@@ -36,6 +36,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private OAuth2Status oAuth2Status = OAuth2Status.NONE;
+    private Long githubId;
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
     @Column(nullable = false)

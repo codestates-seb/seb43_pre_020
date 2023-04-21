@@ -47,15 +47,24 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * Access Token 검증 및 후속 작업
+     * @param request
+     */
     private void verifyAccessToken(HttpServletRequest request) {
         Map<String, Object> claims = verifyAccessJws(request);
         setAuthenticationToContext(claims);
-        setActivityTime((String) claims.get("username"));
+        setActivityTime(Long.parseLong(claims.get("sub").toString()));
     }
 
+    /**
+     * Refresh Token 검증 및 후속 작업
+     * @param request
+     * @param response
+     */
     private void verifyRefreshToken(HttpServletRequest request, HttpServletResponse response) {
-        String email = verifyRefreshJws(request);
-        String accessToken = delegateAccessToken(email);
+        Long memberId = Long.parseLong(verifyRefreshJws(request));
+        String accessToken = delegateAccessToken(memberId);
         response.setHeader("Authorization", "Bearer " + accessToken);
     }
 
@@ -67,35 +76,58 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                 (!request.getServletPath().equals("/auth/refresh") || refresh == null);
     }
 
+    /**
+     * Access Token 검증
+      * @param request
+     * @return
+     */
     private Map<String, Object> verifyAccessJws(HttpServletRequest request) {
         String accessToken = request.getHeader("Authorization").replace("Bearer ", "");
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         return jwtTokenizer.getClaims(accessToken, base64EncodedSecretKey).getBody();
     }
 
+    /**
+     * 인증정보를 SecurityContextHolder에 저장
+     * @param claims
+     */
     private void setAuthenticationToContext(Map<String, Object> claims) {
-        String username = (String) claims.get("username");
+        String memberId = (String) claims.get("sub");
         List<String> roles = (List<String>) claims.get("roles");
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorityUtils.getAuthorities(roles));
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, null, authorityUtils.getAuthorities(roles));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
+    /**
+     * 마지막 활동시각을 기록
+     * @param email
+     */
     @Transactional
-    private void setActivityTime(String email) {
-        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+    private void setActivityTime(Long memberId) {
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
         Member member = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         member.setLastActivityTime(LocalDateTime.now());
         memberRepository.save(member);
     }
 
+    /**
+     * Refresh Token을 검증
+     * @param request
+     * @return
+     */
     private String verifyRefreshJws(HttpServletRequest request) {
         String refreshToken = request.getHeader("Refresh");
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-        return jwtTokenizer.getSubject(refreshToken, base64EncodedSecretKey);
+        return (String) jwtTokenizer.getClaims(refreshToken, base64EncodedSecretKey).getBody().get("sub");
     }
 
-    private String delegateAccessToken(String email) {
-        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+    /**
+     * Refresh Token을 검증 후 Access Token을 생성
+     * @param email
+     * @return
+     */
+    private String delegateAccessToken(Long memberId) {
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
         Member member = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         Map<String, Object> claims = new HashMap<>();
@@ -104,7 +136,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
         setAuthenticationToContext(claims);
 
-        String subject = member.getEmail();
+        String subject = member.getMemberId().toString();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
 
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());

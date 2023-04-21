@@ -37,7 +37,7 @@ public class AuthenticationSuccessHandlerUtils {
         claims.put("username", member.getEmail());
         claims.put("roles", member.getRoles());
 
-        String subject = member.getEmail();
+        String subject = member.getMemberId().toString();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
 
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
@@ -46,7 +46,7 @@ public class AuthenticationSuccessHandlerUtils {
     }
 
     String delegateRefreshToken(Member member) {
-        String subject = member.getEmail();
+        String subject = member.getMemberId().toString();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         return jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);

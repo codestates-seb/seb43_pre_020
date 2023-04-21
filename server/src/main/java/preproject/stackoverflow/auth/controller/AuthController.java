@@ -26,8 +26,8 @@ public class AuthController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(Authentication authentication) {
-        String email = (String) authentication.getPrincipal();
-        Member member = authService.findMemberByEmail(email);
+        Long memberId = Long.parseLong(authentication.getPrincipal().toString());
+        Member member = authService.findMember(memberId);
         return new ResponseEntity<>(mapper.MemberToProfileDTO(member), HttpStatus.OK);
     }
 }
