@@ -42,12 +42,10 @@ public class AnswerServiceImpl implements AnswerService{
     public void deleteAnswer(Answer answer) {
 
     }
-    public Answer findVerifiedAnswer(long answerId){
+    @Override
+    public Answer findVerifiedAnswer(Long answerId) {
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
-        Answer findAnswer =
-                optionalAnswer.orElseThrow(()->
-                        new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
-        return findAnswer;
+        return optionalAnswer.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
     }
 
     private void verifyAnswer(Answer answer) {

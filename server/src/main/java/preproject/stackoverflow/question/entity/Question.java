@@ -29,7 +29,7 @@ public class Question {
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
     @Column(nullable = false)
-    private Integer view = 0;
+    private Long view = 0L;
 
     // 질문 상태 : 등록, 답변 완료, 삭제
     @Enumerated(EnumType.STRING)
@@ -47,7 +47,7 @@ public class Question {
     public enum QuestionStatus {
         QUESTION_REGISTRATION("질문 등록"),
         QUESTION_ANSWERED("답변 완료"),
-        QUESTION_DELETE("질문 삭제");
+        QUESTION_DELETED("질문 삭제");
         @Getter
         private final String status;
 
