@@ -30,11 +30,6 @@ import java.util.List;
 
 @Configuration
 public class SecurityConfiguration {
-    @Value("${spring.security.oauth2.client.registration.google.clientId}")  // (1)
-    private String clientId;
-
-    @Value("${spring.security.oauth2.client.registration.google.clientSecret}") // (2)
-    private String clientSecret;
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final MemberRepository memberRepository;
@@ -108,18 +103,5 @@ public class SecurityConfiguration {
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return urlBasedCorsConfigurationSource;
     }
-//    @Bean
-//    public ClientRegistrationRepository clientRegistrationRepository() {
-//        ClientRegistration clientRegistration = clientRegistration();
-//        return new InMemoryClientRegistrationRepository(clientRegistration);
-//    }
-//
-//    private ClientRegistration clientRegistration() {
-//        return CommonOAuth2Provider
-//                .GOOGLE
-//                .getBuilder("google")
-//                .clientId(clientId)
-//                .clientSecret(clientSecret)
-//                .build();
-//    }
+
 }
