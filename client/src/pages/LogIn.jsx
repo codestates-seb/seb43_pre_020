@@ -1,4 +1,4 @@
-import styles from './login.module.scss'
+import styles from './LogIn.module.scss'
 
 function LogIn() {
   return (

@@ -7,7 +7,6 @@ import getQuestions from '../api/question'
 const SIZE = 5
 export default function Home() {
   const [datas, setData] = useState([])
-  const [pageInfo, setPageInfo] = useState({})
   const [offset, setOffset] = useState(1)
   const [pageBtn, setPageBtn] = useState([1])
 
@@ -15,22 +14,21 @@ export default function Home() {
     const needPage = Math.ceil(totalElements / SIZE)
     const newPageBtn = Array(needPage)
       .fill()
-      .map((el, i) => i + 1)
-    setPageBtn(newPageBtn)
+      .map((_, i) => i + 1)
+    return newPageBtn
   }
 
   const handlePage = btn => {
-    console.log(1)
     setOffset(btn)
   }
 
   useEffect(() => {
     async function makePage() {
-      await getQuestions({ page: offset, size: SIZE }).then(res => {
-        setData(res.data)
-        setPageInfo(res.pageInfo)
+      await getQuestions({ page: offset, size: SIZE }).then(({ data, pageInfo }) => {
+        const newPageBtn = makePageBtn(pageInfo.totalElements)
+        setData(data)
+        setPageBtn(newPageBtn)
       })
-      makePageBtn(pageInfo.totalElements)
     }
     makePage()
   }, [offset])
