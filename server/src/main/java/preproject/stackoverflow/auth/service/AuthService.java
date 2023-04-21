@@ -18,8 +18,8 @@ public class AuthService {
         this.memberRepository = memberRepository;
     }
 
-    public Member findMemberByEmail(String email) {
-        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+    public Member findMember(Long memberId) {
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
         return optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 }
