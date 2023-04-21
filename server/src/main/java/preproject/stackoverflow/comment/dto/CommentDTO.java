@@ -20,14 +20,12 @@ public class CommentDTO {
     @Getter
     @Setter
     public static class QuestionPost extends Post {
-        @Positive
         private long questionId;
     }
 
     @Getter
     @Setter
     public static class AnswerPost extends Post {
-        @Positive
         private long answerId;
     }
 
@@ -44,6 +42,8 @@ public class CommentDTO {
     public static class Response {
         private long commentId;
         private String body;
-        private LocalDateTime createdAt;
+        private long memberId;
+        private String commenter;
+        private LocalDateTime date;
     }
 }

@@ -1,5 +1,6 @@
 package preproject.stackoverflow.answer.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,5 +37,13 @@ public class AnswerController {
         Answer answer = answerService.createAnswer(mapper.answerPostDtoToAnswer(post));
         URI uri = UriCreator.createUri(ANSWER_DEFAULT_URL, answer.getAnswerId());
         return ResponseEntity.created(uri).build();
+    }
+    @PatchMapping("/{answer-id}")
+    public ResponseEntity<?> patchAnswer(@Valid @RequestBody AnswerDTO.Patch patch,
+                                         @Positive@PathVariable("answer-id") long answerId){
+        patch.setAnswerId(answerId);
+        Answer answer = answerService.updateAnswer(mapper.answerPatchDtoToAnswer(patch));
+
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 }

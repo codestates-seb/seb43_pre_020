@@ -6,6 +6,17 @@
   align-items: center;
   justify-content: center;
   background-color: v.$bg-gray;
+  span {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    a {
+      margin-left: 5px;
+      color: v.$font-blue;
+      &:hover {
+        color: lighten($color: v.$font-blue, $amount: 15%);
+      }
+    }
+  }
 }
 
 .logoImg {
@@ -39,16 +50,8 @@
 }
 
 .githubBtn {
-  height: 38px;
-  width: 278px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  border: 1px solid #d6d9dc;
-  border-radius: 5px;
+  @extend .googleBtn;
   background-color: #303337;
-  font-size: 1.2rem;
   color: #fff;
   img {
     filter: invert(100%);
@@ -110,17 +113,5 @@
   width: 230px;
   input {
     vertical-align: middle;
-  }
-}
-
-span {
-  margin-top: 30px;
-  font-size: 1.2rem;
-  a {
-    margin-left: 5px;
-    color: v.$font-blue;
-    &:hover {
-      color: lighten($color: v.$font-blue, $amount: 15%);
-    }
   }
 }
