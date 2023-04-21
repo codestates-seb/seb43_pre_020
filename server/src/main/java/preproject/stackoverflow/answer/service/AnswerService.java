@@ -7,7 +7,7 @@ public interface AnswerService {
 
     Answer updateAnswer(Answer answer);
 
-    void deleteAnswer(Answer answer);
+    void deleteAnswer(long answerId);
 
     Answer findVerifiedAnswer(Long answerId);
 }

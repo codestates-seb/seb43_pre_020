@@ -39,8 +39,9 @@ public class AnswerServiceImpl implements AnswerService{
     }
 
     @Override
-    public void deleteAnswer(Answer answer) {
-
+    public void deleteAnswer(long answerId) {
+        Answer findAnswer= findVerifiedAnswer(answerId);
+        answerRepository.delete(findAnswer);
     }
     @Override
     public Answer findVerifiedAnswer(Long answerId) {
