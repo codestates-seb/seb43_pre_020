@@ -2,6 +2,7 @@ package preproject.stackoverflow.question.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import preproject.stackoverflow.member.entity.Member;
 import preproject.stackoverflow.question.dto.QuestionDTO;
 import preproject.stackoverflow.question.entity.Question;
 
@@ -12,6 +13,7 @@ public interface QuestionMapper {
     // Post 기능 매핑
     @Mapping(source = "memberId", target = "member.memberId")
     Question questionPostDTOToQuestion(QuestionDTO.Post post);
+    Question questionPatchDtoToQuestion(QuestionDTO.Patch patch);
 
     @Mapping(source = "createdAt", target = "date")
     @Mapping(source = "question.member.memberId", target = "memberId")

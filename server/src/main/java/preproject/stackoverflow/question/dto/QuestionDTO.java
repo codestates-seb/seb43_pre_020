@@ -11,6 +11,8 @@ import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import preproject.stackoverflow.answer.entity.Answer;
+
 public class QuestionDTO {
     @Getter
     public static class Post {
@@ -30,6 +32,21 @@ public class QuestionDTO {
         @Pattern(regexp = "\\S+")
         private String content;
 
+    }
+
+    // 질문 수정시 응답 데이터
+    @Getter
+    @AllArgsConstructor
+    public static class Response {
+        private Long questionId;
+        private String title;
+        private String content;
+//        private String username;
+        private String questionStatus;
+        // List 형태로 받아야됨
+        private List<Answer> answers;
+        private LocalDateTime createAt;
+        private LocalDateTime updateAt;
     }
 
 

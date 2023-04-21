@@ -9,6 +9,7 @@ import preproject.stackoverflow.question.dto.QuestionDTO;
 import preproject.stackoverflow.question.entity.Question;
 import preproject.stackoverflow.question.mapper.QuestionMapper;
 import preproject.stackoverflow.question.service.QuestionService;
+import preproject.stackoverflow.question.service.QuestionServiceImpl;
 import preproject.stackoverflow.utils.UriCreator;
 
 import javax.validation.Valid;
@@ -42,5 +43,14 @@ public class QuestionController {
         Page<Question> questionPage = questionService.findQuestions(page, size);
         List<QuestionDTO.ResponseList.SimpleResponse> simpleResponses = mapper.questionsToSimpleResponses(questionPage.getContent());
         return new ResponseEntity<>(new QuestionDTO.ResponseList(simpleResponses, questionPage), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{question-id}")
+    public ResponseEntity<?> patchQuestion(@Positive @PathVariable("question-id") long questionId, @Valid @RequestBody QuestionDTO.Patch questionPatchDto) {
+
+        // Todo : 컨텐츠 내용. questionId를 따로 받기(O)
+        questionPatchDto.setQuestionId(questionId);
+        Question question = questionService.updateQuestion(mapper.questionPatchDtoToQuestion(questionPatchDto));
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
