@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import styles from './Home.module.scss'
 import Questions from '../components/Questions'
-import getQuestions from '../api/question'
+import { getQuestions } from '../api/question'
 
 const SIZE = 5
 export default function Home() {
