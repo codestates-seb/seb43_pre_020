@@ -1,27 +1,34 @@
 function calDate(date) {
+  const aMinute = 1000 * 60
+  const anHour = 1000 * 60 * 60
+  const aDay = 1000 * 60 * 60 * 24
+  const aWeek = 1000 * 60 * 60 * 24 * 7
+  const aMonth = 1000 * 60 * 60 * 24 * 30.5
+  const anYear = 1000 * 60 * 60 * 24 * 365
+
   const created = new Date(date)
   const difference = new Date() - created
-  if (difference < 1000 * 60) {
+  if (difference < aMinute) {
     return 'now'
   }
-  if (difference < 1000 * 60 * 60) {
-    const minute = parseInt(difference / (1000 * 60), 10)
+  if (difference < anHour) {
+    const minute = parseInt(difference / aMinute, 10)
     return `${minute}분 전`
   }
-  if (difference < 1000 * 60 * 60 * 24) {
-    const hour = parseInt(difference / (1000 * 60 * 60), 10)
+  if (difference < aDay) {
+    const hour = parseInt(difference / anHour, 10)
     return `${hour}시간 전`
   }
-  if (difference < 1000 * 60 * 60 * 24 * 7) {
-    const day = parseInt(difference / (1000 * 60 * 60 * 24), 10)
+  if (difference < aWeek) {
+    const day = parseInt(difference / anHour, 10)
     return `${day}일 전`
   }
-  if (difference < 1000 * 60 * 60 * 24 * 7 * 4) {
-    const week = parseInt(difference / (1000 * 60 * 60 * 24 * 7), 10)
+  if (difference < aMonth) {
+    const week = parseInt(difference / aWeek, 10)
     return `${week}주 전`
   }
-  if (difference < 1000 * 60 * 60 * 24 * 7 * 4 * 12) {
-    const month = parseInt(difference / (1000 * 60 * 60 * 24 * 7 * 4), 10)
+  if (difference < anYear) {
+    const month = parseInt(difference / aMonth, 10)
     return `${month}개월 전`
   }
   const year = created.getFullYear()
