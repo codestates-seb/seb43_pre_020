@@ -34,7 +34,18 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member updateMember(Member member) {
-        return null;
+        Member findMember = findVerifiedMember(member.getMemberId());
+
+        // DiplayName, title, aboutMe 수정
+        Optional.ofNullable(member.getDisplayName())
+                .ifPresent(findMember::setDisplayName);
+        Optional.ofNullable(member.getTitle())
+                .ifPresent(findMember::setTitle);
+        Optional.ofNullable(member.getAboutMe())
+                .ifPresent(findMember::setAboutMe);
+        // 비밀번호 수정 논의
+
+        return memberRepository.save(findMember);
     }
 
     @Override
