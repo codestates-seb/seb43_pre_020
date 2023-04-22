@@ -59,7 +59,7 @@ public class QuestionController {
         return new ResponseEntity<>(new QuestionDTO.ResponseList(simpleResponses, questionPage), HttpStatus.OK);
     }
 
-    @GetMapping("/{question-id}")
+    @DeleteMapping("/{question-id}")
     public ResponseEntity<?> deleteQuestion(@PathVariable("question-id") @Positive long questionId) {
         questionService.deleteQuestion(questionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
