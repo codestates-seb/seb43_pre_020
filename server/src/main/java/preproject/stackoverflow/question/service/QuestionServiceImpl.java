@@ -71,7 +71,11 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public void deleteQuestion(Long questionId) {
-
+        Question findQuestion = findVerifiedQuestion(questionId);
+        // 질문 상태를 삭제로 반환
+        findQuestion.setQuestionStatus(Question.QuestionStatus.QUESTION_DELETED);
+        questionRepository.save(findQuestion);
+//        questionRepository.delete(findQuestion);
     }
 
     /**

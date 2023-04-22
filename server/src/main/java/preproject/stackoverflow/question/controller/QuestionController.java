@@ -60,6 +60,12 @@ public class QuestionController {
         return new ResponseEntity<>(new QuestionDTO.ResponseList(simpleResponses, questionPage), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{question-id}")
+    public ResponseEntity<?> deleteQuestion(@PathVariable("question-id") @Positive long questionId) {
+        questionService.deleteQuestion(questionId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    
     @PostMapping("/{question-id}/votes")
     public ResponseEntity<?> postQuestionVotes(@Valid @RequestBody QuestionDTO.VotePost votePost,
                                                @Positive @PathVariable("question-id") long questionId) {
@@ -68,5 +74,4 @@ public class QuestionController {
         Question question = questionService.addVoteToQuestion(questionVote);
         return new ResponseEntity<>(question.getVotes(), HttpStatus.OK);
     }
-
 }
