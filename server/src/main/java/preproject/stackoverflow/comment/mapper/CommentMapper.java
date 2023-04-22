@@ -12,8 +12,8 @@ import java.util.List;
 public interface CommentMapper {
     Comment commentPatchDTOToComment(CommentDTO.Patch patch);
     @Mapping(source = "createdAt", target = "date")
-    @Mapping(source = "comment.member.memberId", target = "memberId")
-    @Mapping(source = "comment.member.displayName", target = "commenter")
+    @Mapping(source = "member.memberId", target = "memberId")
+    @Mapping(source = "member.displayName", target = "commenter")
     CommentDTO.Response commentToCommentResponseDTO(Comment comment);
 
     @Named("commentsToCommentResponseDTOs")

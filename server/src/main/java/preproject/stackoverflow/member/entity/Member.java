@@ -6,6 +6,7 @@ import lombok.Setter;
 import preproject.stackoverflow.answer.entity.Answer;
 import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.question.entity.Question;
+import preproject.stackoverflow.question.entity.QuestionVote;
 
 import javax.persistence.*;
 
@@ -51,6 +52,8 @@ public class Member {
     private List<Answer> answers = new ArrayList<>();
     @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<QuestionVote> questionVotes = new ArrayList<>();
 
     public void addQuestion(Question question) {
         questions.add(question);

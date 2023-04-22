@@ -18,8 +18,8 @@ public interface AnswerMapper {
 
 
     @Mapping(source = "createdAt", target = "date")
-    @Mapping(source = "answer.member.memberId", target = "memberId")
-    @Mapping(source = "answer.member.displayName", target = "answerer")
+    @Mapping(source = "member.memberId", target = "memberId")
+    @Mapping(source = "member.displayName", target = "answerer")
     @Mapping(target = "comments", qualifiedByName = "commentsToCommentResponseDTOs")
     AnswerDTO.Response answerToAnswerResponseDTO(Answer answer);
 

@@ -9,6 +9,7 @@ import preproject.stackoverflow.exception.BusinessLogicException;
 import preproject.stackoverflow.exception.ExceptionCode;
 import preproject.stackoverflow.member.service.MemberService;
 import preproject.stackoverflow.question.entity.Question;
+import preproject.stackoverflow.question.entity.QuestionVote;
 import preproject.stackoverflow.question.repository.QuestionRepository;
 
 import java.time.LocalDateTime;
@@ -76,6 +77,36 @@ public class QuestionServiceImpl implements QuestionService{
         questionRepository.save(findQuestion);
 //        questionRepository.delete(findQuestion);
     }
+
+    /**
+     * questionId를 기반으로 질문을 찾습니다.
+     * 질문에는 투표(좋아요, 싫어요) 내역이 들어 있습니다.
+     * 투표 내역에 현재 투표 요청을 한 유저의 투표가 있을 경우 그 투표를 수정합니다.
+     * 없을 경우 투표 내역을 추가합니다.
+     * @param questionVote
+     * @return
+     */
+    @Override
+    public Question addVoteToQuestion(QuestionVote questionVote) {
+        Question findQuestion = findVerifiedQuestion(questionVote.getQuestion().getQuestionId());
+        Optional<QuestionVote> vote = findQuestion.getQuestionVotes().stream()
+                .filter(findQuestionVote -> findQuestionVote.getMember().getMemberId() == questionVote.getMember().getMemberId())
+                .findAny();
+        if (vote.isPresent()) {
+            QuestionVote findQuestionVote = vote.get();
+            if (questionVote.getQuestionVoteStatus() == QuestionVote.QuestionVoteStatus.NONE) {
+                findQuestion.getQuestionVotes().remove(findQuestionVote);
+                findQuestionVote.setQuestion(null);
+                findQuestionVote.setMember(null);
+            } else {
+                findQuestionVote.setQuestionVoteStatus(questionVote.getQuestionVoteStatus());
+            }
+        } else if (questionVote.getQuestionVoteStatus() != QuestionVote.QuestionVoteStatus.NONE){
+            findQuestion.addQuestionVote(questionVote);
+        }
+        return findQuestion;
+    }
+
     @Override
     public Question findVerifiedQuestion(Long questionId) {
         Optional<Question> optionalQuestion = questionRepository.findByIdNotDeleted(questionId);

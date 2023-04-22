@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import preproject.stackoverflow.answer.entity.Answer;
+import preproject.stackoverflow.question.entity.QuestionVote;
 
 public class QuestionDTO {
     @Getter
@@ -36,6 +37,15 @@ public class QuestionDTO {
 
     }
 
+    @Getter
+    public static class VotePost {
+        @Setter
+        private long questionId;
+        @Positive
+        private long memberId;
+        private QuestionVote.QuestionVoteStatus voteStatus;
+    }
+
 
     @Getter
     @AllArgsConstructor
@@ -47,6 +57,7 @@ public class QuestionDTO {
         private long memberId;
         private String questioner;
         private long view;
+        private long votes;
         private List<AnswerDTO.Response> answers;
         private List<CommentDTO.Response> comments;
     }
@@ -73,6 +84,7 @@ public class QuestionDTO {
             private long memberId;
             private String questioner;
             private long answers;
+            private long votes;
 
         }
 

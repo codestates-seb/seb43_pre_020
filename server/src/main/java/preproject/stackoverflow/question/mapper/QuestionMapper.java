@@ -6,6 +6,7 @@ import preproject.stackoverflow.answer.mapper.AnswerMapper;
 import preproject.stackoverflow.comment.mapper.QuestionCommentMapper;
 import preproject.stackoverflow.question.dto.QuestionDTO;
 import preproject.stackoverflow.question.entity.Question;
+import preproject.stackoverflow.question.entity.QuestionVote;
 
 import java.util.List;
 
@@ -15,17 +16,21 @@ public interface QuestionMapper {
     @Mapping(source = "memberId", target = "member.memberId")
     Question questionPostDTOToQuestion(QuestionDTO.Post post);
     Question questionPatchDtoToQuestion(QuestionDTO.Patch patch);
+    @Mapping(source = "memberId", target = "member.memberId")
+    @Mapping(source = "questionId", target = "question.questionId")
+    @Mapping(source = "voteStatus", target = "questionVoteStatus")
+    QuestionVote questionVoteDTOToQuestionVote(QuestionDTO.VotePost votePost);
 
-    @Mapping(source = "question.member.memberId", target = "memberId")
-    @Mapping(source = "question.member.displayName", target = "questioner")
+    @Mapping(source = "member.memberId", target = "memberId")
+    @Mapping(source = "member.displayName", target = "questioner")
     @Mapping(source = "createdAt", target = "date")
     @Mapping(target = "answers", qualifiedByName = "answersToAnswerResponseDTOs")
     @Mapping(target = "comments", qualifiedByName = "commentsToCommentResponseDTOs")
     QuestionDTO.Response questionToQuestionResponseDTO(Question question);
 
     @Mapping(source = "createdAt", target = "date")
-    @Mapping(source = "question.member.memberId", target = "memberId")
-    @Mapping(source = "question.member.displayName", target = "questioner")
+    @Mapping(source = "member.memberId", target = "memberId")
+    @Mapping(source = "member.displayName", target = "questioner")
     @Mapping(target = "answers", expression = "java(question.getAnswers().size())")
     QuestionDTO.ResponseList.SimpleResponse questionToSimpleResponse(Question question);
 
