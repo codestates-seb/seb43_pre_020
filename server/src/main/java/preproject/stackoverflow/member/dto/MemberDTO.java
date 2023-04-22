@@ -40,6 +40,7 @@ public class MemberDTO {
     public static class Response {
         // TODO : Response에 담을 변수 정확히 공부
         private long memberId;
+        private String email;
         private String displayName;
         private String title;
         private String aboutMe;

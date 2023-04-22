@@ -41,7 +41,6 @@ public class MemberController {
         memberPatchDto.setMemberId(memberId);
         Member member = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto));
         return new ResponseEntity<>(mapper.memberToMemberResponseDTO(member), HttpStatus.OK);
-//        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
