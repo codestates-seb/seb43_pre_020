@@ -87,10 +87,17 @@ public class QuestionServiceImpl implements QuestionService{
         Question findQuestion = findVerifiedQuestion(questionVote.getQuestion().getQuestionId());
         Optional<QuestionVote> vote = findQuestion.getQuestionVotes().stream()
                 .filter(findQuestionVote -> findQuestionVote.getMember().getMemberId() == questionVote.getMember().getMemberId())
-                .findFirst();
+                .findAny();
         if (vote.isPresent()) {
-            vote.get().setQuestionVoteStatus(questionVote.getQuestionVoteStatus());
-        } else {
+            QuestionVote findQuestionVote = vote.get();
+            if (questionVote.getQuestionVoteStatus() == QuestionVote.QuestionVoteStatus.NONE) {
+                findQuestion.getQuestionVotes().remove(findQuestionVote);
+                findQuestionVote.setQuestion(null);
+                findQuestionVote.setMember(null);
+            } else {
+                findQuestionVote.setQuestionVoteStatus(questionVote.getQuestionVoteStatus());
+            }
+        } else if (questionVote.getQuestionVoteStatus() != QuestionVote.QuestionVoteStatus.NONE){
             findQuestion.addQuestionVote(questionVote);
         }
         return findQuestion;
