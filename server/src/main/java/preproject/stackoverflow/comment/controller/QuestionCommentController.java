@@ -2,6 +2,7 @@ package preproject.stackoverflow.comment.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import preproject.stackoverflow.comment.dto.CommentDTO;
 import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.comment.mapper.QuestionCommentMapper;
 import preproject.stackoverflow.comment.service.CommentService;
+import preproject.stackoverflow.comment.service.QuestionCommentService;
 import preproject.stackoverflow.utils.UriCreator;
 
 import javax.validation.Valid;
@@ -48,7 +50,7 @@ public class QuestionCommentController {
 
     @PatchMapping("/{comment-id}")
     public ResponseEntity<?> patchComment(@Positive @PathVariable("comment-id") long commentId,
-                                          @Valid CommentDTO.Patch patch) {
+                                          @Valid  CommentDTO.Patch patch) {
         // TODO: 질문에 달린 댓글을 수정하는 핸들러 메서드를 구현하세요
         /* DTO 클래스와 mapper 클래스는 이미 구현되어 있습니다.
         1. DTO 클래스에 commentId를 주입힙니다.
@@ -57,8 +59,10 @@ public class QuestionCommentController {
         4. DTO 클래스를 ResponseEntity에 담아 반환합니다.
         답변에 달린 댓글도 위와 유사하게 구현할 수 있습니다. 직접 구현해보세요.
          */
+        patch.setCommentId(commentId); // 1.
+        Comment comment = commentService.updateComment(mapper.commentPatchDTOToComment(patch)); // 2.
+        return new ResponseEntity<>(mapper.commentToCommentResponseDTO(comment), HttpStatus.OK);// 3. / 4.
 
-        return null;
     }
 
     @DeleteMapping("/{comment-id}")
