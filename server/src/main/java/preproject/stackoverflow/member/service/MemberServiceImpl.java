@@ -40,13 +40,12 @@ public class MemberServiceImpl implements MemberService {
         Optional.ofNullable(member.getDisplayName())
                 .ifPresent(findMember::setDisplayName);
         Optional.ofNullable(member.getTitle())
-                .ifPresent(member::setTitle);
+                .ifPresent(findMember::setTitle);
         Optional.ofNullable(member.getAboutMe())
-                .ifPresent(member::setAboutMe);
+                .ifPresent(findMember::setAboutMe);
         // 비밀번호 수정 논의
 
-//        return memberRepository.save(findMember);
-        return findMember;
+        return memberRepository.save(findMember);
     }
 
     @Override
