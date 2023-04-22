@@ -3,7 +3,11 @@ package preproject.stackoverflow.comment.service;
 import lombok.Getter;
 import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.comment.repository.CommentRepository;
+import preproject.stackoverflow.exception.BusinessLogicException;
+import preproject.stackoverflow.exception.ExceptionCode;
 import preproject.stackoverflow.member.service.MemberService;
+
+import java.util.Optional;
 
 @Getter
 public abstract class CommentServiceImpl implements CommentService{
@@ -25,7 +29,13 @@ public abstract class CommentServiceImpl implements CommentService{
         3. 댓글을 save 하고, 반환합니다.
          */
 
-        return null;
+        Comment findComment = findVerifiedCommemt(comment.getCommentId());
+
+        Optional.ofNullable(comment.getBody())
+                .ifPresent(body-> findComment.setBody(body));
+
+        return  commentRepository.save(findComment);
+
     }
 
     @Override
@@ -37,5 +47,12 @@ public abstract class CommentServiceImpl implements CommentService{
          */
 
 
+    }
+
+    public Comment findVerifiedCommemt(long commentId){
+        Optional<Comment> optionalComment = commentRepository.findById(commentId);
+        Comment findComment = optionalComment.orElseThrow(()->
+                new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+        return findComment;
     }
 }
