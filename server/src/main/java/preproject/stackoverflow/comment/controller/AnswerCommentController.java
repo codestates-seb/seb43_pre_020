@@ -45,4 +45,9 @@ public class AnswerCommentController {
         Comment comment = commentService.updateComment(mapper.commentPatchDTOToComment(patch));
         return new ResponseEntity<>(mapper.commentToCommentResponseDTO(comment), HttpStatus.OK);
     }
+    @DeleteMapping("/{comment-id}")
+    public ResponseEntity deleteComment(@Positive @PathVariable("comment-id")long commentId){
+        commentService.deleteComment(commentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
