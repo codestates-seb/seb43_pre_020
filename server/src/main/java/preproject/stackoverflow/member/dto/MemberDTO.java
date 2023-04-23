@@ -3,6 +3,7 @@ package preproject.stackoverflow.member.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import preproject.stackoverflow.validator.NotSpace;
 
 import javax.persistence.Column;
 import javax.validation.constraints.Email;
@@ -27,11 +28,11 @@ public class MemberDTO {
         // DiplayName, title, aboutMe 수정
         @Setter
         private Long memberId;
-        @Pattern(regexp = "\\S+")
+        @NotSpace
         private String displayName;
-        @Pattern(regexp = "\\S+")
+        @NotSpace
         private String title;
-        @Pattern(regexp = "\\S+")
+        @NotSpace
         private String aboutMe;
     }
 
