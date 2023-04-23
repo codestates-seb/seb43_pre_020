@@ -15,6 +15,8 @@ public interface QuestionService {
 
     void deleteQuestion(Long questionId);
 
+    void adoptAnswerInQuestion(Long questionId, Long answerId);
+
     Question addVoteToQuestion(QuestionVote questionVote);
 
     Question findVerifiedQuestion(Long questionId);
