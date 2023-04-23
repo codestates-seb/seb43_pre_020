@@ -29,7 +29,7 @@ public abstract class CommentServiceImpl implements CommentService{
         3. 댓글을 save 하고, 반환합니다.
          */
 
-        Comment findComment = findVerifiedCommemt(comment.getCommentId());
+        Comment findComment = findVerifiedComment(comment.getCommentId());
 
         Optional.ofNullable(comment.getBody())
                 .ifPresent(body-> findComment.setBody(body));
@@ -45,11 +45,11 @@ public abstract class CommentServiceImpl implements CommentService{
         Hint : 1. 위에서 만들었던 댓글이 null이 아닌지 확인하는 메서드를 사용해서 댓글을 가져옵니다.
         commentRepository의 delete 메서드로 댓글을 삭제합니다.
          */
-
-
+          Comment comment = findVerifiedComment(commentId);
+          commentRepository.delete(comment);
     }
 
-    public Comment findVerifiedCommemt(long commentId){
+    public Comment findVerifiedComment(long commentId){
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         Comment findComment = optionalComment.orElseThrow(()->
                 new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));

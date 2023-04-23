@@ -73,7 +73,8 @@ public class QuestionCommentController {
         2. delete의 경우 반환 데이터는 없습니다. 상태코드가 204 No Content 가 되도록 해주세요.
         답변에 달린 댓글도 위와 유사하게 구현할 수 있습니다. 직접 구현해보세요.
          */
+        commentService.deleteComment(commentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-        return null;
     }
 }
