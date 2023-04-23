@@ -48,4 +48,10 @@ public class MemberController {
         Member member = memberService.findMember(memberId);
         return new ResponseEntity<>(mapper.memberToMemberResponseDTO(member), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{member-id}")
+    public ResponseEntity<?> deleteMember(@Positive @PathVariable("member-id") long memberId){
+        memberService.deleteMember(memberId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

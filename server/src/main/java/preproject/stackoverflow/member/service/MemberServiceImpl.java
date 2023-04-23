@@ -55,7 +55,10 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void deleteMember(Long memberId) {
-
+        // 회원 상태값 -> 탈퇴로 반환
+        Member findMember = findVerifiedMember(memberId);
+        findMember.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
+        memberRepository.save(findMember);
     }
     @Override
     public Member findVerifiedMember(Long memberId) {
