@@ -16,6 +16,7 @@ import java.util.List;
 import preproject.stackoverflow.answer.entity.Answer;
 import preproject.stackoverflow.question.entity.Question;
 import preproject.stackoverflow.question.entity.QuestionVote;
+import preproject.stackoverflow.validator.NotSpace;
 
 public class QuestionDTO {
     @Getter
@@ -31,9 +32,9 @@ public class QuestionDTO {
     public static class Patch {
         @Setter
         private Long questionId;
-        @Pattern(regexp = "\\S+")
+        @NotSpace
         private String title;
-        @Pattern(regexp = "\\S+")
+        @NotSpace
         private String content;
 
     }
