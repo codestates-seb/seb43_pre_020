@@ -8,7 +8,8 @@ public enum ExceptionCode {
     QUESTION_NOT_FOUND(404, "Question Not Found"),
     ANSWER_NOT_FOUND(404, "Answer Not Found"),
     COMMENT_NOT_FOUND(404, "Comment Not Found"),
-    CANNOT_UPDATE(406, "Already Answered Question");
+    QUESTION_CANNOT_UPDATE(403, "Already Answered Question"),
+    ANSWER_CANNOT_ADOPT(403, "Answer Already Adopted");
     @Getter
     private int status;
     @Getter

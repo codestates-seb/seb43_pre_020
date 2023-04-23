@@ -65,6 +65,14 @@ public class QuestionController {
         questionService.deleteQuestion(questionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping("/{question-id}")
+    public ResponseEntity<?> postAnsweredQuestion(@Positive @PathVariable("question-id") long questionId,
+                                                  @Valid @RequestBody QuestionDTO.PostAnswered postAnswered) {
+        long answerId = postAnswered.getAnswerId();
+        questionService.adoptAnswerInQuestion(questionId, answerId);
+        return new ResponseEntity<>(answerId, HttpStatus.OK);
+    }
     
     @PostMapping("/{question-id}/votes")
     public ResponseEntity<?> postQuestionVotes(@Valid @RequestBody QuestionDTO.VotePost votePost,

@@ -39,8 +39,8 @@ public class Answer {
     @Column(length = 30, nullable = false)
     private AnswerStatus answerStatus = AnswerStatus.ANSWER_REGISTRATION;
     public enum AnswerStatus{
-        ANSWER_REGISTRATION( "답변 등록"),
-        ANSWER_CHOICE( "답변 채택");
+        ANSWER_REGISTRATION("답변 등록"),
+        ANSWER_ADOPTED("답변 채택");
         @Getter
         private String status;
 

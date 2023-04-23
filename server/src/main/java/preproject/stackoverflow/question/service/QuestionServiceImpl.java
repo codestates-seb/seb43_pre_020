@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import preproject.stackoverflow.answer.entity.Answer;
 import preproject.stackoverflow.exception.BusinessLogicException;
 import preproject.stackoverflow.exception.ExceptionCode;
 import preproject.stackoverflow.member.service.MemberService;
@@ -12,7 +13,6 @@ import preproject.stackoverflow.question.entity.Question;
 import preproject.stackoverflow.question.entity.QuestionVote;
 import preproject.stackoverflow.question.repository.QuestionRepository;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -52,7 +52,7 @@ public class QuestionServiceImpl implements QuestionService{
     // Todo : 답변이 채택 된 상태에서 질문 수정이 가능한지 논의 필요
     private void isUpdatable(Question.QuestionStatus questionStatus) {
         if(!questionStatus.equals(Question.QuestionStatus.QUESTION_REGISTRATION)) {
-            throw new BusinessLogicException(ExceptionCode.CANNOT_UPDATE);
+            throw new BusinessLogicException(ExceptionCode.QUESTION_CANNOT_UPDATE);
         }
     }
 
@@ -76,6 +76,20 @@ public class QuestionServiceImpl implements QuestionService{
         findQuestion.setQuestionStatus(Question.QuestionStatus.QUESTION_DELETED);
         questionRepository.save(findQuestion);
 //        questionRepository.delete(findQuestion);
+    }
+
+    @Override
+    public void adoptAnswerInQuestion(Long questionId, Long answerId) {
+        Question findQuestion = findVerifiedQuestion(questionId);
+        if (findQuestion.getQuestionStatus() == Question.QuestionStatus.QUESTION_ANSWERED) {
+            throw new BusinessLogicException(ExceptionCode.ANSWER_CANNOT_ADOPT);
+        }
+        Optional<Answer> optionalAnswer = findQuestion.getAnswers().stream()
+                .filter(answer -> answer.getAnswerId() == answerId)
+                .findAny();
+        Answer answer = optionalAnswer.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
+        answer.setAnswerStatus(Answer.AnswerStatus.ANSWER_ADOPTED);
+        findQuestion.setQuestionStatus(Question.QuestionStatus.QUESTION_ANSWERED);
     }
 
     /**

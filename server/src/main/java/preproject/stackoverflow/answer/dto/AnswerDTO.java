@@ -3,6 +3,7 @@ package preproject.stackoverflow.answer.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import preproject.stackoverflow.answer.entity.Answer;
 import preproject.stackoverflow.comment.dto.CommentDTO;
 
 import javax.validation.constraints.NotBlank;
@@ -36,6 +37,7 @@ public class AnswerDTO {
         private String body;
         private long memberId;
         private String answerer;
+        private Answer.AnswerStatus answerStatus;
         private LocalDateTime date;
         private List<CommentDTO.Response> comments;
     }
