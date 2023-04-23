@@ -4,6 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -123,31 +126,30 @@ public class MemberVerifyAdvice {
     }
 
     /**
-     * 질문 등록, 답변 등록, 댓글 등록 주체 검증
+     * 질문 등록, 답변 등록, 댓글 등록, 질문 추천, 답변 추천 주체 검증
      * @param joinPoint
      */
-    @Before("execution(* postQuestion(..)) || execution(* postAnswer(..)) || execution(* postComment(..))")
+    @Before("execution(* postQuestion(..)) || execution(* postAnswer(..)) || execution(* postComment(..)) || execution(* *Votes(..))")
     public void verifyMemberInRegistration(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         long authenticatedMemberId = Long.parseLong(request.getUserPrincipal().getName());
-        Object arg = joinPoint.getArgs()[0];
-        long memberId = 0L;
-        if (arg instanceof QuestionDTO.Post) {
-            QuestionDTO.Post post = (QuestionDTO.Post) arg;
-            memberId = post.getMemberId();
-        } else if (arg instanceof AnswerDTO.Post) {
-            AnswerDTO.Post post = (AnswerDTO.Post) arg;
-            memberId = post.getMemberId();
-        } else if (arg instanceof CommentDTO.Post) {
-            CommentDTO.Post post = (CommentDTO.Post) arg;
-            memberId = post.getMemberId();
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+
+        Class parameterType = null;
+        Object arg = null;
+        for (int i = 0; i < joinPoint.getArgs().length; i++) {
+            parameterType = signature.getParameterTypes()[i];
+            if (parameterType.toString().contains("DTO")) {
+                arg = joinPoint.getArgs()[i];
+                break;
+            }
         }
+        BeanWrapper beanWrapper = new BeanWrapperImpl(parameterType.cast(arg));
+        long memberId = Long.parseLong(beanWrapper.getPropertyValue("memberId").toString());
+        if(memberId != authenticatedMemberId) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
+
         Optional<Member> optionalMember = memberRepository.findById(memberId);
-        optionalMember.ifPresentOrElse(member -> {
-            if (member.getMemberId() != authenticatedMemberId) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
-        }, () -> {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
-        });
+        optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
     }
 
