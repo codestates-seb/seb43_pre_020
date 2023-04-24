@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getMemberDate } from '../api/user'
-import styles from './Members.module.scss'
+import { getMemberData } from '../api/user'
+import styles from './Member.module.scss'
 import calDate from '../utils/calDate'
 import calJoinDate from '../utils/calJoinDate'
 
@@ -17,7 +17,7 @@ export default function Members() {
   const [memberData, setMemberData] = useState(initialData)
   const { memberId } = useParams()
   useEffect(() => {
-    getMemberDate(memberId).then(({ displayName, title, aboutMe, lastActivityTime, createdAt }) => {
+    getMemberData(memberId).then(({ displayName, title, aboutMe, lastActivityTime, createdAt }) => {
       setMemberData({
         displayName,
         title,

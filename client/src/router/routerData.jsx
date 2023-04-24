@@ -6,6 +6,7 @@ const SignUp = lazy(() => import('../pages/SignUp'))
 const MyPage = lazy(() => import('../pages/MyPage'))
 const Question = lazy(() => import('../pages/Question'))
 const Ask = lazy(() => import('../pages/Ask'))
+const Member = lazy(() => import('../pages/Member'))
 
 export const routerData = [
   {
@@ -53,7 +54,7 @@ export const routerData = [
   {
     id: 6,
     path: '/members/:memberId',
-    element: <div>유저 조회 페이지</div>,
+    element: <Member />,
     label: 'User',
     onNav: false,
   },
