@@ -45,14 +45,14 @@ export const routerData = [
   },
   {
     id: 5,
-    path: '/users',
+    path: '/members',
     element: <div>전체 유저 조회 페이지</div>,
     label: 'Users',
     onNav: true,
   },
   {
     id: 6,
-    path: '/users/:id',
+    path: '/members/:memberId',
     element: <div>유저 조회 페이지</div>,
     label: 'User',
     onNav: false,
