@@ -50,7 +50,7 @@ function LogIn() {
       <form className={styles.form} onSubmit={logInSubmitHandler}>
         <label className={styles.label}>
           Email
-          <input className={styles.input} type='email' name='email' placeholder='' required />
+          <input className={styles.input} type='email' name='email' required />
         </label>
         <label className={styles.label}>
           Password
