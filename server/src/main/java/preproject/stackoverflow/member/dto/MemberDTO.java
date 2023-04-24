@@ -30,9 +30,7 @@ public class MemberDTO {
         private Long memberId;
         @NotSpace
         private String displayName;
-        @NotSpace
         private String title;
-        @NotSpace
         private String aboutMe;
     }
 
