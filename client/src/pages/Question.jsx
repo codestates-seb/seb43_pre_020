@@ -48,7 +48,6 @@ function Question() {
           <AddComment />
         </div>
       </div>
-      <h1>Answer</h1>
       <Answer data={data} />
       <AnswerForm />
     </div>
@@ -127,6 +126,7 @@ function AddComment() {
 function Answer({ data }) {
   return (
     <div className={styles.answer}>
+      <h1>{data.answers.length} Answers</h1>
       {data.answers &&
         data.answers.map(answer => (
           <div className={styles.content} key={answer.answerId}>
