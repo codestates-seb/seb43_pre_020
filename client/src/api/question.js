@@ -25,7 +25,7 @@ export async function postComment({ id, body, memberId }) {
       body,
       memberId,
     }
-    await axios.post(`/questions/${id}/answers`, data)
+    await axios.post(`/questions/${id}/comments`, data)
     return 'success'
   } catch (error) {
     console.log(error)

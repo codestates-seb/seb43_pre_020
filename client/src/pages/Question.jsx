@@ -9,6 +9,7 @@ import AnswerForm from '../components/AnswerForm'
 
 function Question() {
   const [data, setData] = useState({})
+  const [send, setSend] = useState(0)
   const date = calDate(data.date)
   const { id } = useParams()
   const { isLogin, userInfo } = useSelector(state => state.auth)
@@ -20,7 +21,7 @@ function Question() {
       setData(details)
     }
     fetchData()
-  }, [id])
+  }, [id, send])
 
   return (
     <div className={styles.container}>
@@ -47,7 +48,11 @@ function Question() {
             </div>
           </div>
           <Qcomment data={data} />
-          {isLogin ? <AddComment id={id} memberId={userInfo.memberId} /> : navigate('/login')}
+          {isLogin ? (
+            <AddComment id={id} memberId={userInfo.memberId} send={send} setSend={setSend} />
+          ) : (
+            navigate('/login')
+          )}
         </div>
       </div>
       <Answer data={data} />
@@ -111,7 +116,7 @@ function Acomment({ answer }) {
   )
 }
 
-function AddComment({ id, memberId }) {
+function AddComment({ id, memberId, send, setSend }) {
   const [body, setBody] = useState('')
   const handleCommentChange = e => {
     setBody(e.target.value)
@@ -120,8 +125,7 @@ function AddComment({ id, memberId }) {
     e.preventDefault()
     postComment({ id, body, memberId }).then(res => {
       if (res === 'success') {
-        // window.location.reload()
-        alert('Your comment has been successfully registered.')
+        setSend(send + 1)
         setBody('')
       }
     })
