@@ -28,10 +28,11 @@ public class Question {
     private String content;
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
-//    @Column(nullable = false)
-//    private LocalDateTime modifiedAt = LocalDateTime.now();
+
     @Column(nullable = false)
     private Long view = 0L;
+    @Column(nullable = false)
+    private Long votes = 0L;
 
     // 질문 상태 : 등록, 답변 완료, 삭제
     @Enumerated(EnumType.STRING)
@@ -52,14 +53,14 @@ public class Question {
         questionVotes.add(questionVote);
     }
 
-    public long getVotes() {
+    public void setVotes() {
         long upVotes = questionVotes.stream()
                 .filter(questionVote -> questionVote.getQuestionVoteStatus() == QuestionVote.QuestionVoteStatus.UPVOTE)
                 .count();
         long downVotes = questionVotes.stream()
                 .filter(questionVote -> questionVote.getQuestionVoteStatus() == QuestionVote.QuestionVoteStatus.DOWNVOTE)
                 .count();
-        return upVotes - downVotes;
+        votes = upVotes - downVotes;
     }
 
     public enum QuestionStatus {

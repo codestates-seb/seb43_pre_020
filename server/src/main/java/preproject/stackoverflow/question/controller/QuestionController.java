@@ -1,6 +1,7 @@
 package preproject.stackoverflow.question.controller;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -54,8 +55,12 @@ public class QuestionController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getQuestions(@Positive @RequestParam int page, @Positive @RequestParam int size) {
-        Page<Question> questionPage = questionService.findQuestions(page, size);
+    public ResponseEntity<?> getQuestions(@Positive @RequestParam int page,
+                                          @Positive @RequestParam int size,
+                                          @RequestParam(defaultValue = "questionId") String sortBy,
+                                          @RequestParam(defaultValue = "DESC") Sort.Direction direction,
+                                          @RequestParam(defaultValue = "all") String answered) {
+        Page<Question> questionPage = questionService.findQuestions(page, size, sortBy, direction, answered);
         List<QuestionDTO.ResponseList.SimpleResponse> simpleResponses = mapper.questionsToSimpleResponses(questionPage.getContent());
         return new ResponseEntity<>(new QuestionDTO.ResponseList(simpleResponses, questionPage), HttpStatus.OK);
     }
