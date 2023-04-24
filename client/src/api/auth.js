@@ -1,6 +1,7 @@
 import {
   saveRefreshTokenToLocalStorage,
   getRefreshTokenFromLocalStorage,
+  removeRefreshTokenFromLocalStorage,
 } from '../utils/refreshTokenHandler'
 import axios from './instance'
 
@@ -38,5 +39,14 @@ export const refreshAccessToken = async () => {
   } catch (error) {
     removeRefreshTokenFromLocalStorage()
     return 'fail'
+  }
+}
+
+export const getCurrentUserInfo = async () => {
+  try {
+    const userInfoRes = await axios.get('/profile')
+    return userInfoRes.data
+  } catch (error) {
+    return null
   }
 }
