@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './SignUp.module.scss'
-import signup from '../api/user'
+import signup from '../api/auth'
 
 function SignUp() {
   return (
