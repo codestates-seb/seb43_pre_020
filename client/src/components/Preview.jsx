@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux'
 import MDEditor from '@uiw/react-md-editor'
 import axios from '../api/instance'
 import styles from '../pages/Ask.module.scss'
@@ -6,6 +7,7 @@ const BODYTEXT =
   'The body of your question contains your problem details and results. Minimum 30 characters.'
 
 function Preview({ data, writeDone, setWriteDone }) {
+  const { userInfo } = useSelector(state => state.auth)
   const onAmendClick = () => {
     setWriteDone(!writeDone)
   }
@@ -13,7 +15,7 @@ function Preview({ data, writeDone, setWriteDone }) {
   const body = JSON.stringify({
     title: data.title,
     content: data.content,
-    memberId: 1,
+    memberId: userInfo.memberId,
   })
 
   const onSubmit = e => {
