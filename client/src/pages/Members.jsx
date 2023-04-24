@@ -8,8 +8,8 @@ import calJoinDate from '../utils/calJoinDate'
 const initialData = {
   displayName: '',
   title: '',
-  joinDate: new Date(),
-  lastActivityDate: new Date(),
+  createdAt: new Date(),
+  lastActivityTime: new Date(),
   aboutMe: '',
 }
 
@@ -21,14 +21,14 @@ export default function Members() {
       setMemberData({
         displayName,
         title,
-        joinDate: createdAt,
-        lastActivityDate: lastActivityTime,
+        createdAt,
+        lastActivityTime,
         aboutMe,
       })
     })
   }, [])
-  const joinDate = calJoinDate(memberData.joinDate)
-  const activeDate = calDate(memberData.lastActivityDate)
+  const joinDate = calJoinDate(memberData.createdAt)
+  const activeDate = calDate(memberData.lastActivityTime)
 
   return (
     <div className={styles.memberContainer}>
