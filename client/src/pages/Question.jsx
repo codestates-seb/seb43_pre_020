@@ -4,6 +4,7 @@ import MDEditor from '@uiw/react-md-editor'
 import { getDetails } from '../api/question'
 import styles from './Question.module.scss'
 import calDate from '../utils/calDate'
+import AnswerForm from '../components/AnswerForm'
 
 function Question() {
   const [data, setData] = useState({})
@@ -49,6 +50,7 @@ function Question() {
       </div>
       <h1>Answer</h1>
       <Answer data={data} />
+      <AnswerForm />
     </div>
   )
 }
