@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styles from './SignUp.module.scss'
 import { signup } from '../api/auth'
 
@@ -11,7 +11,7 @@ function SignUp() {
         <Oauths />
         <Form />
         <span>
-          Already have an account?<a href='/login'>Log in</a>
+          Already have an account?<Link to='/login'>Log in</Link>
         </span>
       </div>
     </div>
