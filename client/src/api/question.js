@@ -18,3 +18,17 @@ export async function getDetails(id) {
     throw new Error(error)
   }
 }
+
+export async function postComment({ id, body, memberId }) {
+  try {
+    const data = {
+      body,
+      memberId,
+    }
+    await axios.post(`/questions/${id}/answers`, data)
+    return 'success'
+  } catch (error) {
+    console.log(error)
+    return 'fail'
+  }
+}

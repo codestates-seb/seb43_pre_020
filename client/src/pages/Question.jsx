@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import MDEditor from '@uiw/react-md-editor'
-import { getDetails } from '../api/question'
+import { getDetails, postComment } from '../api/question'
 import styles from './Question.module.scss'
 import calDate from '../utils/calDate'
 import AnswerForm from '../components/AnswerForm'
@@ -9,8 +10,9 @@ import AnswerForm from '../components/AnswerForm'
 function Question() {
   const [data, setData] = useState({})
   const date = calDate(data.date)
-
   const { id } = useParams()
+  const { isLogin, userInfo } = useSelector(state => state.auth)
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function fetchData() {
@@ -45,7 +47,7 @@ function Question() {
             </div>
           </div>
           <Qcomment data={data} />
-          <AddComment />
+          {isLogin ? <AddComment id={id} memberId={userInfo.memberId} /> : navigate('/login')}
         </div>
       </div>
       <Answer data={data} />
@@ -109,13 +111,34 @@ function Acomment({ answer }) {
   )
 }
 
-function AddComment() {
+function AddComment({ id, memberId }) {
+  const [body, setBody] = useState('')
+  const handleCommentChange = e => {
+    setBody(e.target.value)
+  }
+  const handleSubmit = e => {
+    e.preventDefault()
+    postComment({ id, body, memberId }).then(res => {
+      if (res === 'success') {
+        // window.location.reload()
+        alert('Your comment has been successfully registered.')
+        setBody('')
+      }
+    })
+  }
   return (
-    <form className={styles.addComment}>
-      <label className={styles.label} htmlFor='answer'>
+    <form className={styles.addComment} onSubmit={handleSubmit}>
+      <label className={styles.label} htmlFor='comment'>
         Add comment
       </label>
-      <textarea className={styles.input} id='answer' name='answer' required />
+      <textarea
+        className={styles.input}
+        id='comment'
+        name='comment'
+        value={body}
+        onChange={handleCommentChange}
+        required
+      />
       <button className={styles.btn} type='submit'>
         Submit
       </button>
