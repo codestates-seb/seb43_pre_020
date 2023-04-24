@@ -1,41 +1,28 @@
 import { useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+// import { useEffect, useState } from 'react'
 import styles from './MyPage.module.scss'
 import Profile from '../components/Profile'
 import axios from '../api/instance'
+import useRouter from '../hooks/useRouter'
 
 export default function MyPage() {
   const { userInfo } = useSelector(state => state.auth)
-  const [data, setData] = useState({
-    displayName: '',
-    title: '',
-    aboutMe: '',
-  })
+  const { routeTo } = useRouter()
 
-  useEffect(() => {
-    const { displayName, title, aboutMe } = userInfo
-    setData({ displayName, title, aboutMe })
-  }, [])
+  const onSubmit = async event => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    const displayName = formData.get('displayName')
+    const title = formData.get('title')
+    const aboutMe = formData.get('aboutMe')
 
-  const onChange = e => {
-    const { id, value } = e.target
-    setData(prev => {
-      return { ...prev, [id]: value }
+    await axios.patch(`/members/${userInfo.memberId}`, {
+      displayName,
+      title,
+      aboutMe,
     })
-  }
 
-  const body = JSON.stringify({
-    displayName: data.displayName,
-    title: data.title,
-    aboutMe: data.aboutMe,
-  })
-
-  const onSubmit = e => {
-    e.preventDefault()
-    axios.patch(`/members/${userInfo.memberId}`, body).then(res => {
-      const { displayName, title, aboutMe } = res.data
-      setData({ displayName, title, aboutMe })
-    })
+    routeTo(`/members/${userInfo.memberId}`)
   }
 
   const list = ['displayName', 'title', 'aboutMe']
@@ -43,14 +30,14 @@ export default function MyPage() {
   return (
     <div className={styles.myPageContainer}>
       <div>
-        <h1 className={styles.headName}>{data.displayName}</h1>
-        <h3 className={styles.headTitle}>{data.title}</h3>
-        <p className={styles.headContent}>{data.aboutMe}</p>
+        <h1 className={styles.headName}>{userInfo.displayName || 'Display name'}</h1>
+        <h3 className={styles.headTitle}>{userInfo.title || 'Title'}</h3>
+        <p className={styles.headContent}>{userInfo.aboutMe || 'About me'}</p>
       </div>
       <form onSubmit={onSubmit}>
         <div className={styles.inputBox}>
           {list.map(element => (
-            <Profile key={element} type={element} data={data[element]} onChange={onChange} />
+            <Profile key={element} type={element} />
           ))}
         </div>
         <button type='submit' className={styles.btn}>

@@ -1,6 +1,6 @@
 import styles from '../pages/MyPage.module.scss'
 
-function Profile({ data, onChange, type }) {
+function Profile({ type }) {
   const label = { displayName: 'Display name', title: 'Title', aboutMe: 'About me' }
 
   return (
@@ -8,7 +8,13 @@ function Profile({ data, onChange, type }) {
       <label htmlFor={type} className={styles.inputTitle}>
         {label[type]}
       </label>
-      <input id={type} type='text' value={data || ''} onChange={onChange} />
+      <input
+        id={type}
+        name={type}
+        type='text'
+        onKeyDown={e => e.code === 'Enter' && e.preventDefault()}
+        required
+      />
     </div>
   )
 }
