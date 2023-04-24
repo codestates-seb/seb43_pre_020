@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import useRouter from '../hooks/useRouter'
 import styles from './SignUp.module.scss'
-import { signup } from '../api/auth'
+import { signup } from '../api/user'
 
 function SignUp() {
   return (

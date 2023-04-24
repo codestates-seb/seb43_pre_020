@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import useRouter from '../hooks/useRouter'
 import styles from './LogIn.module.scss'
-import { login, getCurrentUserInfo } from '../api/auth'
+import { login, getCurrentUserInfo } from '../api/user'
 import { LOGIN } from '../store/authSlice'
 
 function LogIn() {

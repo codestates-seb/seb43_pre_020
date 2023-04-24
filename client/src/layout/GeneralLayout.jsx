@@ -5,7 +5,7 @@ import Nav from './Nav'
 import Footer from './Footer'
 import Aside from './Aside'
 import styles from './GeneralLayout.module.scss'
-import { getCurrentUserInfo, refreshAccessToken } from '../api/auth'
+import { getCurrentUserInfo, refreshAccessToken } from '../api/user'
 import { getRefreshTokenFromLocalStorage } from '../utils/refreshTokenHandler'
 import { LOGIN } from '../store/authSlice'
 
