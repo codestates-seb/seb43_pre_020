@@ -12,7 +12,7 @@ function SignUp() {
         <Oauths />
         <Form />
         <span>
-          Already have an account?<Link to='/login'>Log in</Link>
+          Already have an account? <Link to='/login'>Log in</Link>
         </span>
       </div>
     </div>

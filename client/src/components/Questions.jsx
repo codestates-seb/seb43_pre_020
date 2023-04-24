@@ -4,14 +4,13 @@ import calDate from '../utils/calDate'
 
 function Questions({ data }) {
   const date = calDate(data.date)
+  const select = data.questionStatus === 'QUESTION_ANSWERED'
 
   return (
     <div className={styles.questionContainer}>
       <div className={styles.aside}>
         <div>{data.votes} votes</div>
-        <span className={data.select ? styles.answers : styles.select}>
-          {data.answers.length} answers
-        </span>
+        <span className={select ? styles.select : styles.answers}>{data.answers} answers</span>
       </div>
       <div className={styles.questionBox}>
         <div>

@@ -51,7 +51,7 @@ export const getCurrentUserInfo = async () => {
   }
 }
 
-export const getMemberDate = async memberId => {
+export const getMemberData = async memberId => {
   try {
     const { data } = await axios.get(`/members/${memberId}`)
     return data
