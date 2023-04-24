@@ -17,10 +17,7 @@ export default function GeneralLayout({ children }) {
 
   const authHandler = async () => {
     const userInfoRes = await getCurrentUserInfo()
-    if (userInfoRes) {
-      dispatch(LOGIN(userInfoRes))
-      return
-    }
+    if (userInfoRes) return
 
     if (!getRefreshTokenFromLocalStorage()) return
 
