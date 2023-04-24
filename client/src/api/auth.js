@@ -1,4 +1,7 @@
-import { saveRefreshTokenToLocalStorage } from '../utils/refreshTokenHandler'
+import {
+  saveRefreshTokenToLocalStorage,
+  getRefreshTokenFromLocalStorage,
+} from '../utils/refreshTokenHandler'
 import axios from './instance'
 
 export const signup = async ({ displayName, email, password }) => {
@@ -19,6 +22,21 @@ export const login = async ({ username, password, autoLogin = true }) => {
     return 'success'
   } catch (error) {
     console.log(error)
+    return 'fail'
+  }
+}
+
+export const refreshAccessToken = async () => {
+  try {
+    const { headers } = await axios.get('/auth/refresh', {
+      headers: {
+        Refresh: getRefreshTokenFromLocalStorage(),
+      },
+    })
+    axios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
+    return 'success'
+  } catch (error) {
+    removeRefreshTokenFromLocalStorage()
     return 'fail'
   }
 }
