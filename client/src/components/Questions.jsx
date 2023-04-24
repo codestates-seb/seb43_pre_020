@@ -1,25 +1,26 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styles from '../pages/Home.module.scss'
 import calDate from '../utils/calDate'
 
 function Questions({ data }) {
-  const { id } = useParams()
   const date = calDate(data.date)
 
   return (
     <div className={styles.questionContainer}>
       <div className={styles.aside}>
-        <div>{0} votes</div>
+        <div>{data.votes} votes</div>
         <span className={data.select ? styles.answers : styles.select}>
           {data.answers.length} answers
         </span>
       </div>
       <div className={styles.questionBox}>
         <div>
-          <Link to={`/questions/${id}`}>{data.title} </Link>
+          <Link to={`/questions/${data.questionId}`}>{data.title} </Link>
           <div className={styles.content}>{data.content}</div>
           <div className={styles.nameAndDate}>
-            <span className={styles.questioner}>{data.questioner}</span>
+            <Link to={`/members/${data.memberId}`} className={styles.questioner}>
+              {data.questioner}
+            </Link>
             <span className={styles.date}>{date}</span>
           </div>
         </div>

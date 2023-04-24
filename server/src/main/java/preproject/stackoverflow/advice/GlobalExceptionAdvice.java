@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import preproject.stackoverflow.exception.BusinessLogicException;
 import preproject.stackoverflow.response.ErrorMapper;
 import preproject.stackoverflow.response.ErrorResponse;
@@ -41,6 +42,7 @@ public class GlobalExceptionAdvice {
     public ResponseEntity<?> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         HttpStatus status = HttpStatus.METHOD_NOT_ALLOWED;
         ErrorResponse response = ErrorResponse.of(status);
+        log.info("HttpRequestMethodNotSupportedException : {}", response);
         return new ResponseEntity<>(response, status);
     }
 
@@ -48,6 +50,7 @@ public class GlobalExceptionAdvice {
     public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ErrorResponse response = ErrorResponse.of(status, e.getMostSpecificCause().toString());
+        log.info("HttpMessageNotReadableException : {}", response);
         return new ResponseEntity<>(response, status);
     }
 
@@ -55,12 +58,22 @@ public class GlobalExceptionAdvice {
     public ResponseEntity<?> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ErrorResponse response = ErrorResponse.of(status, e.getMessage());
+        log.info("MissingServletRequestParameterException : {}", response);
+        return new ResponseEntity<>(response, status);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorResponse response = ErrorResponse.of(status, e.getCause().toString());
+        log.info("MethodArgumentTypeMismatchException : {}", response);
         return new ResponseEntity<>(response, status);
     }
 
     @ExceptionHandler
     public ResponseEntity<?> handleBusinessLogicException(BusinessLogicException e) {
         ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
+        log.info("BusinessLogicException : {}", response);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
     @ExceptionHandler

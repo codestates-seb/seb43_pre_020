@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import preproject.stackoverflow.exception.ExceptionCode;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
 public class ErrorResponse {
     private int status;
     private String message;

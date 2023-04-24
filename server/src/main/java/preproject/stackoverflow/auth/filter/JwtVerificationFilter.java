@@ -100,7 +100,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     /**
      * 마지막 활동시각을 기록
-     * @param email
+     * @param memberId
      */
     @Transactional
     private void setActivityTime(Long memberId) {
@@ -123,7 +123,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     /**
      * Refresh Token을 검증 후 Access Token을 생성
-     * @param email
+     * @param memberId
      * @return
      */
     private String delegateAccessToken(Long memberId) {

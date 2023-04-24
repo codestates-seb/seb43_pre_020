@@ -1,8 +1,6 @@
 package preproject.stackoverflow.question.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import preproject.stackoverflow.answer.entity.Answer;
@@ -13,7 +11,10 @@ import preproject.stackoverflow.question.entity.Question;
 import preproject.stackoverflow.question.entity.QuestionVote;
 import preproject.stackoverflow.question.repository.QuestionRepository;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -64,9 +65,20 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public Page<Question> findQuestions(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by("questionId").descending());
-        return questionRepository.findAllByQuestionNotDeleted(pageRequest);
+    public Page<Question> findQuestions(int page, int size, String sortBy, Sort.Direction direction, String answered) {
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by(direction, sortBy));
+
+        Page<Question> questionPage = null;
+        if (answered.equals("all")) {
+            questionPage = questionRepository.findAllByQuestionNotDeleted(pageRequest);
+        } else if (answered.equals("true")){
+            questionPage =  questionRepository.findAllByQuestionStatus(pageRequest, Question.QuestionStatus.QUESTION_ANSWERED);
+        } else if (answered.equals("false")) {
+            questionPage = questionRepository.findAllByQuestionStatus(pageRequest, Question.QuestionStatus.QUESTION_REGISTRATION);
+        }
+
+        return Optional.ofNullable(questionPage).orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_REQUEST_NOT_VALID));
+
     }
 
     @Override
@@ -118,6 +130,7 @@ public class QuestionServiceImpl implements QuestionService{
         } else if (questionVote.getQuestionVoteStatus() != QuestionVote.QuestionVoteStatus.NONE){
             findQuestion.addQuestionVote(questionVote);
         }
+        findQuestion.setVotes();
         return findQuestion;
     }
 

@@ -1,0 +1,26 @@
+.memberContainer {
+  padding: 24px 16px;
+  h2 {
+    font-size: 4rem;
+    font-weight: 500;
+  }
+  h3 {
+    font-size: 2.5rem;
+  }
+  h4 {
+    font-size: 2rem;
+    font-weight: 500;
+    color: #9199a0;
+  }
+}
+
+.dateContainer {
+  display: flex;
+  > * {
+    padding: 5px 10px 5px 0;
+    color: #9199a0;
+  }
+  img {
+    filter: invert(55%) sepia(1%) saturate(4021%) hue-rotate(166deg) brightness(118%) contrast(64%);
+  }
+}
