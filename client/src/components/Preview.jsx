@@ -1,13 +1,16 @@
 import { useSelector } from 'react-redux'
 import MDEditor from '@uiw/react-md-editor'
-import axios from '../api/instance'
 import styles from '../pages/Ask.module.scss'
+import { postQuestion } from '../api/question'
+import useRouter from '../hooks/useRouter'
 
 const BODYTEXT =
   'The body of your question contains your problem details and results. Minimum 30 characters.'
 
 function Preview({ data, writeDone, setWriteDone }) {
   const { userInfo } = useSelector(state => state.auth)
+  const { routeTo } = useRouter()
+
   const onAmendClick = () => {
     setWriteDone(!writeDone)
   }
@@ -20,22 +23,8 @@ function Preview({ data, writeDone, setWriteDone }) {
 
   const onSubmit = e => {
     e.preventDefault()
-    axios
-      .post('/questions', body)
-      .then(res => {
-        if (res.status !== 201) {
-          alert('질문 등록에 실패했습니다.')
-        }
-        window.location.replace('http://localhost:3000/')
-      })
-      .catch(error => {
-        if (error.response.data.message === 'Bad Request') {
-          const { fieldErrors, violationErrors } = error.response.data
-          console.log('fieldErrors 출력', fieldErrors || violationErrors)
-        } else {
-          console.log('일반 에러 메세지', error.message)
-        }
-      })
+    postQuestion(body)
+    routeTo('/')
   }
 
   return (
