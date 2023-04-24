@@ -3,6 +3,7 @@ import styles from './MyPage.module.scss'
 import Profile from '../components/Profile'
 import useRouter from '../hooks/useRouter'
 import { changeUserInfo } from '../api/user'
+import ImgInput from '../components/ImgInput'
 
 export default function MyPage() {
   const { userInfo } = useSelector(state => state.auth)
@@ -14,6 +15,8 @@ export default function MyPage() {
     const displayName = formData.get('displayName')
     const title = formData.get('title')
     const aboutMe = formData.get('aboutMe')
+    const image = formData.get('image')
+    console.log('formData', image)
     const body = { displayName, title, aboutMe }
 
     const response = await changeUserInfo(userInfo.memberId, body)
@@ -36,6 +39,7 @@ export default function MyPage() {
       </div>
       <form onSubmit={onSubmit}>
         <div className={styles.inputBox}>
+          <ImgInput />
           {list.map(element => (
             <Profile key={element} type={element} />
           ))}
