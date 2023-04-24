@@ -1,9 +1,8 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styles from '../pages/Home.module.scss'
 import calDate from '../utils/calDate'
 
 function Questions({ data }) {
-  const { id } = useParams()
   const date = calDate(data.date)
 
   return (
@@ -16,7 +15,7 @@ function Questions({ data }) {
       </div>
       <div className={styles.questionBox}>
         <div>
-          <Link to={`/questions/${id}`}>{data.title} </Link>
+          <Link to={`/questions/${data.questionId}`}>{data.title} </Link>
           <div className={styles.content}>{data.content}</div>
           <div className={styles.nameAndDate}>
             <span className={styles.questioner}>{data.questioner}</span>
