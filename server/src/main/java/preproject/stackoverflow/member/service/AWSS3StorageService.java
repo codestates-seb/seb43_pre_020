@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -42,12 +43,14 @@ public class AWSS3StorageService implements StorageService{
                 .build();
     }
     @Override
-    public String store(MultipartFile image) {
+    public String store(MultipartFile image, String formerKey) {
         UUID uuid = UUID.randomUUID();
         String uploadImageName = uuid + "_" + image.getOriginalFilename();
         try {
             InputStream inputStream = image.getInputStream();
-            return upload(inputStream, uploadImageName, image.getContentType(), image.getSize());
+            String uploadedFileName = upload(inputStream, uploadImageName, image.getContentType(), image.getSize());
+            Optional.ofNullable(formerKey).ifPresent(this::delete);
+            return uploadedFileName;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

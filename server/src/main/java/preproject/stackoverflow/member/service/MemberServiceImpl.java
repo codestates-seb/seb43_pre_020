@@ -47,7 +47,7 @@ public class MemberServiceImpl implements MemberService {
         Optional.ofNullable(member.getAboutMe())
                 .ifPresent(findMember::setAboutMe);
         Optional.ofNullable(memberImage)
-                .ifPresent(file -> findMember.setImageFileName(storageService.store(file)));
+                .ifPresent(file -> findMember.setImageFileName(storageService.store(file, findMember.getImageFileName())));
         // 비밀번호 수정 논의
 
         return memberRepository.save(findMember);
