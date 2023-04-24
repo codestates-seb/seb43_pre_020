@@ -15,3 +15,13 @@ const signin = async ({ displayName, email, password }) => {
 }
 
 export default signin
+
+export const getMemberDate = async memberId => {
+  try {
+    const { data } = await axios.get(`/members/${memberId}`)
+    return data
+  } catch (error) {
+    console.log(error.message)
+    throw new Error()
+  }
+}

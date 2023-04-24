@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
+import { getMemberDate } from '../api/user'
 import styles from './Members.module.scss'
 import calDate from '../utils/calDate'
 import calJoinDate from '../utils/calJoinDate'
@@ -17,11 +17,13 @@ export default function Members() {
   const [memberData, setMemberData] = useState(initialData)
   const { memberId } = useParams()
   useEffect(() => {
-    axios.get(`http://localhost:4000/members`).then(({ data }) => {
-      data.forEach(d => {
-        if (d.memberId === memberId) {
-          setMemberData(d)
-        }
+    getMemberDate(memberId).then(({ displayName, title, aboutMe, lastActivityTime, createdAt }) => {
+      setMemberData({
+        displayName,
+        title,
+        joinDate: createdAt,
+        lastActivityDate: lastActivityTime,
+        aboutMe,
       })
     })
   }, [])
