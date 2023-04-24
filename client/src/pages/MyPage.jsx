@@ -13,13 +13,14 @@ export default function MyPage() {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
     const displayName = formData.get('displayName')
-    const title = formData.get('title')
-    const aboutMe = formData.get('aboutMe')
+    const title = formData.get('title') || ''
+    const aboutMe = formData.get('aboutMe') || ''
     const image = formData.get('image')
     console.log('formData', image)
-    const body = { displayName, title, aboutMe }
+    const memberPatchDto = { displayName, title, aboutMe }
+    const memberImage = { image }
 
-    const response = await changeUserInfo(userInfo.memberId, body)
+    const response = await changeUserInfo(userInfo.memberId, { memberPatchDto, memberImage })
     if (response === 'Fail') {
       alert('유저 정보 수정에 실패했습니다.')
       return
