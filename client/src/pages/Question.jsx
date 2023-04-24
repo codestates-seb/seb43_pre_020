@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import MDEditor from '@uiw/react-md-editor'
 import { getDetails } from '../api/question'
 import styles from './Question.module.scss'
 import calDate from '../utils/calDate'
@@ -33,8 +34,8 @@ function Question() {
             alt='likes down button'
           />
         </div>
-        <div className={styles.paragraph}>
-          {data.content}
+        <div className={styles.paragraph} data-color-mode='light'>
+          <MDEditor.Markdown source={data.content} />
           <div className={styles.contentDown}>
             <Edit />
             <div className={styles.writer}>
