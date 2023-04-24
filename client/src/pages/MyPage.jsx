@@ -1,9 +1,8 @@
 import { useSelector } from 'react-redux'
-// import { useEffect, useState } from 'react'
 import styles from './MyPage.module.scss'
 import Profile from '../components/Profile'
-import axios from '../api/instance'
 import useRouter from '../hooks/useRouter'
+import { changeUserInfo } from '../api/user'
 
 export default function MyPage() {
   const { userInfo } = useSelector(state => state.auth)
@@ -15,12 +14,13 @@ export default function MyPage() {
     const displayName = formData.get('displayName')
     const title = formData.get('title')
     const aboutMe = formData.get('aboutMe')
+    const body = { displayName, title, aboutMe }
 
-    await axios.patch(`/members/${userInfo.memberId}`, {
-      displayName,
-      title,
-      aboutMe,
-    })
+    const response = await changeUserInfo(userInfo.memberId, body)
+    if (response === 'Fail') {
+      alert('유저 정보 수정에 실패했습니다.')
+      return
+    }
 
     routeTo(`/members/${userInfo.memberId}`)
   }
