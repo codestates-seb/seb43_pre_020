@@ -30,6 +30,7 @@ public class Member {
     private String displayName;
     @Column(length = 100)
     private String title;
+    @Column(length = 2000)
     private String aboutMe;
     private String imageFileName;
     @Enumerated(EnumType.STRING)

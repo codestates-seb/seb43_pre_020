@@ -23,7 +23,7 @@ public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     private String body;
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
