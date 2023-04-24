@@ -8,7 +8,7 @@ function Questions({ data }) {
   return (
     <div className={styles.questionContainer}>
       <div className={styles.aside}>
-        <div>{0} votes</div>
+        <div>{data.votes} votes</div>
         <span className={data.select ? styles.answers : styles.select}>
           {data.answers.length} answers
         </span>
@@ -18,7 +18,9 @@ function Questions({ data }) {
           <Link to={`/questions/${data.questionId}`}>{data.title} </Link>
           <div className={styles.content}>{data.content}</div>
           <div className={styles.nameAndDate}>
-            <span className={styles.questioner}>{data.questioner}</span>
+            <Link to={`/members/${data.memberId}`} className={styles.questioner}>
+              {data.questioner}
+            </Link>
             <span className={styles.date}>{date}</span>
           </div>
         </div>
