@@ -11,7 +11,6 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,10 +24,8 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class AWSS3StorageService implements StorageService{
-    @Getter
     @Value("${aws.s3.access-key}")
     private String accessKey;
-    @Getter
     @Value("${aws.s3.secret-access-key}")
     private String secretKey;
     private AmazonS3 s3Client;
