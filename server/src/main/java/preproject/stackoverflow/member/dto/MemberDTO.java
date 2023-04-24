@@ -45,6 +45,7 @@ public class MemberDTO {
         private String displayName;
         private String title;
         private String aboutMe;
+        private String imageFileName;
         private LocalDateTime createdAt;
         private LocalDateTime lastLoginTime;
         private LocalDateTime lastActivityTime;

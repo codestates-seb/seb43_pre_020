@@ -28,9 +28,10 @@ public class Member {
     private String email;
     @Column(length = 100)
     private String displayName;
-    private String aboutMe;
     @Column(length = 100)
     private String title;
+    private String aboutMe;
+    private String imageFileName;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
