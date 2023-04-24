@@ -1,11 +1,13 @@
-import { Outlet } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { RouterProvider } from 'react-router-dom'
+import router from './router'
+import store from './store'
 import './styles/global.scss'
-import GeneralLayout from './layout/GeneralLayout'
 
 export default function App() {
   return (
-    <GeneralLayout>
-      <Outlet />
-    </GeneralLayout>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   )
 }
