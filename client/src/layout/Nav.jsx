@@ -1,35 +1,30 @@
 import { Link, useLocation } from 'react-router-dom'
 import styles from './Nav.module.scss'
+import { navContent } from '../router/routerData'
 
 export default function Nav() {
   const { pathname } = useLocation()
-
-  const linkMap = [
-    { id: 1, label: 'Questions', path: '/' },
-    { id: 2, label: 'Tags', path: '/tags' },
-    { id: 3, label: 'Users', path: '/mypage' },
-    { id: 4, label: 'Companies', path: '/companies' },
-  ]
-
-  const isActive = path => pathname === path
-
-  const isQuestion = label =>
-    label === 'Questions' && (pathname === '/' || pathname.includes('/questions'))
+  const getClassName = path => (pathname === path ? styles.itemActive : styles.item)
 
   return (
     <nav className={styles.nav}>
-      {linkMap.map(link => (
-        <Link
-          key={link.id}
-          to={link.path}
-          className={isActive(link.path) ? styles.itemActive : styles.item}
-        >
-          {isQuestion(link.label) && (
-            <img src={`${process.env.PUBLIC_URL}/assets/icons/globe.svg`} alt='Questions' />
-          )}
-          {link.label}
+      {navContent.map(({ id, path, label }) => (
+        <Link key={id} to={path} className={getClassName(path)}>
+          <Label label={label} />
         </Link>
       ))}
     </nav>
+  )
+}
+
+function Label({ label }) {
+  const isQuestion = label === 'Questions'
+  return (
+    <>
+      {isQuestion && (
+        <img src={`${process.env.PUBLIC_URL}/assets/icons/globe.svg`} alt='Questions' />
+      )}
+      {label}
+    </>
   )
 }

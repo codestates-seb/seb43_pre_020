@@ -13,4 +13,16 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   )
+  app.use(
+    createProxyMiddleware('/auth', {
+      target: process.env.REACT_APP_NGROK_URL,
+      changeOrigin: true,
+    })
+  )
+  app.use(
+    createProxyMiddleware('/profile', {
+      target: process.env.REACT_APP_NGROK_URL,
+      changeOrigin: true,
+    })
+  )
 }

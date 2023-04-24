@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import useRouter from '../hooks/useRouter'
 import styles from './SignUp.module.scss'
-import signin from '../api/user'
+import { signup } from '../api/user'
 
 function SignUp() {
   return (
@@ -11,7 +12,7 @@ function SignUp() {
         <Oauths />
         <Form />
         <span>
-          Already have an account?<a href='/login'>Log in</a>
+          Already have an account?<Link to='/login'>Log in</Link>
         </span>
       </div>
     </div>
@@ -69,7 +70,7 @@ function Oauths() {
 }
 
 function Form() {
-  const navigate = useNavigate()
+  const { routeTo } = useRouter()
 
   const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
@@ -77,9 +78,9 @@ function Form() {
 
   const handleSubmit = e => {
     e.preventDefault()
-    signin({ displayName, email, password }).then(res => {
+    signup({ displayName, email, password }).then(res => {
       if (res === 'success') {
-        navigate('/login')
+        routeTo('/login')
       } else if (res === '409-fail') {
         alert('This email has already been registered.')
       } else {

@@ -1,28 +1,26 @@
 import { createBrowserRouter } from 'react-router-dom'
-import App from '../App'
-import Home from '../pages/Home'
-import LogIn from '../pages/LogIn'
-import SignUp from '../pages/SignUp'
-import MyPage from '../pages/MyPage'
-import Question from '../pages/Question'
-import Ask from '../pages/Ask'
-import Members from '../pages/Members'
+import { Suspense } from 'react'
+import GeneralLayout from '../layout/GeneralLayout'
+import Spinner from '../components/Spinner'
+import { routerData } from './routerData'
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    errorElement: <div>404</div>,
-    children: [
-      { index: true, element: <Home /> },
-      { path: '/login', element: <LogIn /> },
-      { path: '/signup', element: <SignUp /> },
-      { path: '/mypage', element: <MyPage /> },
-      { path: '/questions/:id', element: <Question /> },
-      { path: '/ask', element: <Ask /> },
-      { path: '/members/:memberId', element: <Members /> },
-    ],
-  },
-])
+const router = createBrowserRouter(
+  routerData.reduce((prev, router) => {
+    const { path, element, label } = router
+    return label === '404'
+      ? [...prev, { path, element }]
+      : [
+          ...prev,
+          {
+            path,
+            element: (
+              <GeneralLayout>
+                <Suspense fallback={<Spinner label={label} />}>{element}</Suspense>
+              </GeneralLayout>
+            ),
+          },
+        ]
+  }, [])
+)
 
 export default router

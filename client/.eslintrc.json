@@ -20,6 +20,7 @@
       }
     ],
     "react/prop-types": "off",
+    "no-shadow": "off",
     "prettier/prettier": [
       "error",
       {
