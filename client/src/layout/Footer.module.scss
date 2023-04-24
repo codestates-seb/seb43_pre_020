@@ -1,0 +1,14 @@
+@use '../styles/colors' as v;
+
+.footerOuter {
+  background: v.$font-black;
+  color: v.$font-white;
+  height: 320px;
+}
+
+.footerInner {
+  margin: 0 auto;
+  max-width: 1280px;
+  display: flex;
+  justify-content: space-between;
+}

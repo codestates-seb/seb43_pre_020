@@ -1,7 +1,9 @@
 import { useLocation } from 'react-router-dom'
+import styles from './GeneralLayout.module.scss'
 import Header from './Header'
 import Nav from './Nav'
-import styles from './GeneralLayout.module.scss'
+import Footer from './Footer'
+import Aside from './Aside'
 
 export default function GeneralLayout({ children }) {
   const { pathname } = useLocation()
@@ -50,17 +52,5 @@ export default function GeneralLayout({ children }) {
       </div>
       <Footer />
     </>
-  )
-}
-
-function Aside() {
-  return <aside className={styles.aside}>aside</aside>
-}
-
-function Footer() {
-  return (
-    <footer className={styles.footerOuter}>
-      <div className={styles.footerInner}>footer</div>
-    </footer>
   )
 }
