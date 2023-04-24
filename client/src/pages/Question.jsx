@@ -175,8 +175,8 @@ function Answer({ data }) {
                 />
               ) : null}
             </div>
-            <div className={styles.paragraph}>
-              <p>{answer.body}</p>
+            <div className={styles.paragraph} data-color-mode='light'>
+              <MDEditor.Markdown source={answer.body} />
               <div className={styles.contentDown}>
                 <Edit />
                 <div className={styles.writer}>
