@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './SignUp.module.scss'
-import signin from '../api/user'
+import signup from '../api/user'
 
 function SignUp() {
   return (
@@ -77,7 +77,7 @@ function Form() {
 
   const handleSubmit = e => {
     e.preventDefault()
-    signin({ displayName, email, password }).then(res => {
+    signup({ displayName, email, password }).then(res => {
       if (res === 'success') {
         navigate('/login')
       } else if (res === '409-fail') {

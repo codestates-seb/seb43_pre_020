@@ -1,6 +1,6 @@
 import axios from './instance'
 
-const signin = async ({ displayName, email, password }) => {
+const signup = async ({ displayName, email, password }) => {
   try {
     const response = await axios.post('/members', { displayName, email, password })
     console.log(response)
@@ -14,4 +14,4 @@ const signin = async ({ displayName, email, password }) => {
   }
 }
 
-export default signin
+export default signup
