@@ -15,4 +15,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query("FROM Question q WHERE q.questionStatus <> 'QUESTION_DELETED'")
     Page<Question> findAllByQuestionNotDeleted(Pageable pageable);
+
+    Page<Question> findAllByQuestionStatus(Pageable pageable, Question.QuestionStatus questionStatus);
 }
