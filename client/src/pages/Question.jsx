@@ -56,7 +56,7 @@ function Question() {
         </div>
       </div>
       <Answer data={data} />
-      <AnswerForm />
+      <AnswerForm id={id} memberId={userInfo.memberId} send={send} setSend={setSend} />
     </div>
   )
 }
