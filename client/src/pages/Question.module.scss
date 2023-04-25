@@ -33,7 +33,7 @@
     margin-right: 2rem;
     color: v.$font-gray;
     span {
-      margin-left: 1rem;
+      margin-left: 2px;
       color: v.$font-black;
     }
   }
@@ -76,10 +76,11 @@ h1 {
 .contentDown {
   margin-top: 80px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   height: 120px;
   border-bottom: 1px solid v.$border-gray;
   .edit {
+    margin-right: auto;
     font-size: 2rem;
     color: v.$font-gray;
     span {
