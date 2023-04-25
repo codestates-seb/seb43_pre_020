@@ -1,5 +1,7 @@
 package preproject.stackoverflow.member.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +53,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findMember(Long memberId) {
         return findVerifiedMember(memberId);
+    }
+
+    @Override
+    public Page<Member> findMembers(int page, int size) {
+        return memberRepository.findAllByMemberStatus(PageRequest.of(page - 1, size), Member.MemberStatus.MEMBER_ACTIVE);
     }
 
     @Override
