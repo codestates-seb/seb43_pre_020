@@ -10,6 +10,7 @@ export default function Home() {
   const [page, setPage] = useState(1)
   const [pageBtn, setPageBtn] = useState([1])
   const [sortQuery, setSortQuery] = useState('')
+  const [sortedValue, setSortedValue] = useState('questionId')
 
   const makePageBtn = totalElements => {
     const needPage = Math.ceil(totalElements / SIZE)
@@ -32,11 +33,25 @@ export default function Home() {
       })
     }
     makePage()
-  }, [page, sortQuery])
+
+    switch (sortedValue) {
+      case 'questionId':
+        setSortQuery('&sortBy=questionId&direction=DESC')
+        break
+      case 'votes':
+        setSortQuery('&sortBy=votes&direction=DESC')
+        break
+      case 'answered':
+        setSortQuery('&answered=false')
+        break
+      default:
+        setSortQuery('')
+    }
+  }, [page, sortQuery, sortedValue])
 
   return (
     <div className={styles.homeContainer}>
-      <HomeHeader length={datas.length} setQuery={setSortQuery} />
+      <HomeHeader length={datas.length} sortedValue={sortedValue} setSortedValue={setSortedValue} />
       {datas.map(d => {
         return (
           <div key={d.questionId}>
@@ -61,27 +76,10 @@ export default function Home() {
   )
 }
 
-function HomeHeader({ length, setQuery }) {
-  const [sortedValue, setSortedValue] = useState('questionId')
+function HomeHeader({ length, sortedValue, setSortedValue }) {
   const handleClick = e => {
     setSortedValue(e.target.name)
   }
-
-  useEffect(() => {
-    switch (sortedValue) {
-      case 'questionId':
-        setQuery('&sortBy=questionId&direction=DESC')
-        break
-      case 'votes':
-        setQuery('&sortBy=votes&direction=DESC')
-        break
-      case 'answered':
-        setQuery('&answered=false')
-        break
-      default:
-        setQuery('')
-    }
-  }, [sortedValue])
 
   const sortBtn = [
     ['Newest', 'questionId'],
