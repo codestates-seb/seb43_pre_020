@@ -3,7 +3,7 @@ import {
   getRefreshTokenFromLocalStorage,
   removeRefreshTokenFromLocalStorage,
 } from '../utils/refreshTokenHandler'
-import axios from './instance'
+import axios, { fileAxiso } from './instance'
 
 export const signup = async ({ displayName, email, password }) => {
   try {
@@ -60,11 +60,11 @@ export const getMemberData = async memberId => {
   }
 }
 
-export const changeUserInfo = async (memberId, body) => {
+export const changeUserInfo = async (memberId, formData) => {
   try {
-    const { data } = await axios.patch(`/members/${memberId}`, body)
+    const data = await fileAxiso.patch(`/members/${memberId}`, formData)
     return data
   } catch (error) {
-    return 'Fail'
+    throw new Error(error)
   }
 }

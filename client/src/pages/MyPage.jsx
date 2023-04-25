@@ -16,12 +16,17 @@ export default function MyPage() {
     const title = formData.get('title') || ''
     const aboutMe = formData.get('aboutMe') || ''
     const image = formData.get('image')
-    console.log('formData', image)
-    const memberPatchDto = { displayName, title, aboutMe }
-    const memberImage = { image }
 
-    const response = await changeUserInfo(userInfo.memberId, { memberPatchDto, memberImage })
-    if (response === 'Fail') {
+    const data = new FormData()
+    const blob = new Blob([JSON.stringify({ displayName, title, aboutMe })], {
+      type: 'application/json',
+    })
+
+    data.append('memberPatchDto', blob)
+    data.append('memberImage', image)
+
+    const response = await changeUserInfo(userInfo.memberId, data)
+    if (response.status !== 200) {
       alert('유저 정보 수정에 실패했습니다.')
       return
     }
@@ -34,9 +39,9 @@ export default function MyPage() {
   return (
     <div className={styles.myPageContainer}>
       <div>
-        <h1 className={styles.headName}>{userInfo.displayName || 'Display name'}</h1>
-        <h3 className={styles.headTitle}>{userInfo.title || 'Title'}</h3>
-        <p className={styles.headContent}>{userInfo.aboutMe || 'About me'}</p>
+        <h1 className={styles.headName}>{userInfo?.displayName || 'Display name'}</h1>
+        <h3 className={styles.headTitle}>{userInfo?.title || 'Title'}</h3>
+        <p className={styles.headContent}>{userInfo?.aboutMe || 'About me'}</p>
       </div>
       <form onSubmit={onSubmit}>
         <div className={styles.inputBox}>
