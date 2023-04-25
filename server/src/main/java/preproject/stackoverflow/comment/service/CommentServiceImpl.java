@@ -21,13 +21,6 @@ public abstract class CommentServiceImpl implements CommentService{
 
     @Override
     public Comment updateComment(Comment comment) {
-        // TODO: 댓글 수정 로직을 구현하세요.
-        /*
-        Hint : 1. 댓글을 가져온 후, 댓글이 null이 아닌지 확인하는 메서드를 작성합니다.
-        (memberServiceImpl 클래스의 findVerifiedMember() 메서드를 참조하세요)
-        2. 댓글을 가져온 후, 댓글의 body를 수정하세요 (Spring Data JPA에 해당 코드가 있을것입니다. 찾기 어렵다면 질문 주세요)
-        3. 댓글을 save 하고, 반환합니다.
-         */
 
         Comment findComment = findVerifiedComment(comment.getCommentId());
 
@@ -40,11 +33,6 @@ public abstract class CommentServiceImpl implements CommentService{
 
     @Override
     public void deleteComment(Long commentId) {
-        // TODO: 댓글 삭제 로직을 구현하세요.
-        /*
-        Hint : 1. 위에서 만들었던 댓글이 null이 아닌지 확인하는 메서드를 사용해서 댓글을 가져옵니다.
-        commentRepository의 delete 메서드로 댓글을 삭제합니다.
-         */
           Comment comment = findVerifiedComment(commentId);
           commentRepository.delete(comment);
     }

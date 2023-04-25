@@ -40,7 +40,7 @@ public class AnswerCommentController {
 
     @PatchMapping("/{comment-id}")
     public ResponseEntity patchComment(@Positive @PathVariable("comment-id") long commentId,
-                                       @Valid CommentDTO.Patch patch){
+                                       @Valid @RequestBody CommentDTO.Patch patch){
         patch.setCommentId(commentId);
         Comment comment = commentService.updateComment(mapper.commentPatchDTOToComment(patch));
         return new ResponseEntity<>(mapper.commentToCommentResponseDTO(comment), HttpStatus.OK);

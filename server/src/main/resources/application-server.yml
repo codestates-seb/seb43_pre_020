@@ -41,3 +41,5 @@ jwt:
 aws-s3:
   access-key: ${AWS_S3_ACCESS_KEY}
   secret-access-key: ${AWS_S3_SECRET_ACCESS_KEY}
+config:
+  domain: all
