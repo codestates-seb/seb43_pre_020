@@ -1,18 +1,22 @@
 package preproject.stackoverflow.member.controller;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import preproject.stackoverflow.dto.MultiResponseDTO;
 import preproject.stackoverflow.member.dto.MemberDTO;
 import preproject.stackoverflow.member.entity.Member;
 import preproject.stackoverflow.member.mapper.MemberMapper;
 import preproject.stackoverflow.member.service.MemberService;
+import preproject.stackoverflow.question.dto.QuestionDTO;
 import preproject.stackoverflow.utils.UriCreator;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/members")
@@ -47,6 +51,14 @@ public class MemberController {
     public ResponseEntity<?> getMember(@Positive @PathVariable("member-id") long memberId){
         Member member = memberService.findMember(memberId);
         return new ResponseEntity<>(mapper.memberToMemberResponseDTO(member), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getMembers(@RequestParam @Positive int page,
+                                        @RequestParam @Positive int size){
+        Page<Member> memberPage = memberService.findMembers(page, size);
+        List<MemberDTO.Response> responses = mapper.membersToSimpleResponses(memberPage.getContent());
+        return ResponseEntity.ok(new MultiResponseDTO<>(responses, memberPage));
     }
 
     @DeleteMapping("/{member-id}")
