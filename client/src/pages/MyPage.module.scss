@@ -21,6 +21,9 @@
   padding: 24px;
   border-radius: 3px;
   margin: 30px 0;
+  > * {
+    margin-bottom: 10px;
+  }
 }
 
 .inputContainer {

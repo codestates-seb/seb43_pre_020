@@ -56,7 +56,15 @@ export const getMemberData = async memberId => {
     const { data } = await axios.get(`/members/${memberId}`)
     return data
   } catch (error) {
-    console.log(error.message)
     throw new Error()
+  }
+}
+
+export const changeUserInfo = async (memberId, body) => {
+  try {
+    const { data } = await axios.patch(`/members/${memberId}`, body)
+    return data
+  } catch (error) {
+    return 'Fail'
   }
 }
