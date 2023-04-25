@@ -9,6 +9,7 @@
 .homeHeader {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   h2 {
     font-size: 2.7rem;
   }
@@ -30,10 +31,12 @@
 }
 
 .btn {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 8px;
   cursor: pointer;
   background-color: v.$button-blue;
   color: #fff;
-  padding: 10.4px;
   border-radius: 3px;
   box-shadow: inset 0 1px 0 0 hsla(0, 0%, 100%, 0.4);
   &:hover {
@@ -108,7 +111,7 @@
   text-align: right;
 }
 
-@media screen and (max-width: 950px) {
+@media screen and (max-width: 1024px) {
   .questionContainer {
     flex-direction: column;
   }
