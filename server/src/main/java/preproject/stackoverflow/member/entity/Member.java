@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import preproject.stackoverflow.answer.entity.Answer;
+import preproject.stackoverflow.audit.Auditable;
 import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.question.entity.Question;
 import preproject.stackoverflow.question.entity.QuestionVote;
@@ -18,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Member {
+public class Member extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
@@ -40,8 +41,8 @@ public class Member {
     @Column(nullable = false, length = 20)
     private OAuth2Status oAuth2Status = OAuth2Status.NONE;
     private Long githubId;
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+//    @Column(nullable = false)
+//    private LocalDateTime createdAt = LocalDateTime.now();
     @Column(nullable = false)
     private LocalDateTime lastLoginTime = LocalDateTime.now();
     @Column(nullable = false)

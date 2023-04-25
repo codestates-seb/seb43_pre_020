@@ -45,5 +45,6 @@ public class CommentDTO {
         private long memberId;
         private String commenter;
         private LocalDateTime date;
+        private LocalDateTime updatedAt;
     }
 }
