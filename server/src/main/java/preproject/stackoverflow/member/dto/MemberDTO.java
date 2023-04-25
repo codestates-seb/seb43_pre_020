@@ -39,7 +39,6 @@ public class MemberDTO {
     @Getter
     @AllArgsConstructor
     public static class Response {
-        // TODO : Response에 담을 변수 정확히 공부
         private long memberId;
         private String email;
         private String displayName;
