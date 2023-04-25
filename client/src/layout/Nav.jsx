@@ -1,10 +1,12 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styles from './Nav.module.scss'
 import { navContent } from '../router/routerData'
+import useRouter from '../hooks/useRouter'
 
 export default function Nav() {
-  const { pathname } = useLocation()
-  const getClassName = path => (pathname === path ? styles.itemActive : styles.item)
+  const { currentPath } = useRouter()
+  const getClassName = path =>
+    currentPath.split('/')[1] === path.slice(1) ? styles.itemActive : styles.item
 
   return (
     <nav className={styles.nav}>

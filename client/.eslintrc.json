@@ -21,6 +21,7 @@
     ],
     "react/prop-types": "off",
     "no-shadow": "off",
+    "no-unused-expressions": "off",
     "prettier/prettier": [
       "error",
       {
