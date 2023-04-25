@@ -1,0 +1,153 @@
+@use '../styles/colors' as v;
+
+.container {
+}
+
+.title {
+  width: 100%;
+  padding-bottom: 20px;
+  border-bottom: 1px solid v.$border-gray;
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    .btn {
+      height: 40px;
+      line-height: 40px;
+      padding: 0 8px;
+      background-color: v.$button-blue;
+      color: #fff;
+      border-radius: 3px;
+      &:hover {
+        background-color: #3172c6;
+      }
+    }
+  }
+  .underTitle {
+    display: inline;
+    font-size: 1.5rem;
+    margin-right: 2rem;
+    color: v.$font-gray;
+    span {
+      margin-left: 1rem;
+      color: v.$font-black;
+    }
+  }
+}
+
+h1 {
+  width: calc(100% - 120px);
+  font-size: 2.5rem;
+  color: #3b4045;
+}
+
+.content {
+  margin: 30px 0;
+  padding-right: 24px;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  padding-bottom: 40px;
+  border-bottom: 1px solid v.$border-gray;
+  .paragraph {
+    width: calc(100% - 94px);
+  }
+}
+
+.likes {
+  margin-top: 10px;
+  width: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  img {
+    height: 20px;
+    cursor: pointer;
+  }
+  span {
+    margin: 10px 0;
+  }
+}
+
+.contentDown {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  height: 120px;
+  border-bottom: 1px solid v.$border-gray;
+  .edit {
+    font-size: 2rem;
+    color: v.$font-gray;
+    span {
+      margin-right: 10px;
+    }
+  }
+  .writer {
+    height: 80px;
+    width: 200px;
+    background-color: #dce9f6;
+    padding: 1.5rem;
+    .date {
+      color: v.$font-gray;
+      font-size: 1.2rem;
+    }
+    .questioner {
+      color: v.$font-blue;
+      font-size: 2rem;
+    }
+  }
+}
+
+.comment {
+  margin-top: 30px;
+  font-size: 1.5rem;
+  .body {
+    padding-bottom: 10px;
+    margin-top: 10px;
+    border-bottom: 1px solid #f1f2f3;
+  }
+  p {
+    display: inline;
+  }
+  .commenter {
+    color: v.$font-blue;
+  }
+}
+
+.addComment {
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  .label {
+    width: 100%;
+    color: v.$font-gray;
+  }
+  .input {
+    width: 100%;
+    height: 60px;
+    padding: 5px;
+    margin: 5px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+  }
+  .btn {
+    width: 80px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: v.$font-gray;
+    color: #fff;
+  }
+}
+
+.answer {
+  display: flex;
+  flex-direction: column;
+}
+
+.checked {
+  margin-top: 20px;
+}

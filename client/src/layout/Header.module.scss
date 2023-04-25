@@ -3,6 +3,8 @@
 .outer {
   position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 500;
   width: 100%;
   border-top: 3px solid #f48024;
@@ -13,6 +15,7 @@
 
 .inner {
   margin: 0 auto;
+  width: 100%;
   max-width: 1280px;
   height: 50px;
   display: flex;
@@ -39,7 +42,8 @@
 .btnWrap {
   display: flex;
   align-items: center;
-  gap: 4px;
+  height: 100%;
+  gap: 8px;
   padding: 0 8px;
 }
 
@@ -58,9 +62,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 4px;
   padding: 13px;
-  width: 50px;
-  height: 50px;
+  font-size: 13px;
+  img {
+    width: 24px;
+    height: 24px;
+  }
   &:hover {
     background: v.$bg-gray;
   }
@@ -72,6 +80,7 @@
   background: v.$button-gray;
   border: 1px solid v.$font-blue;
   &:hover {
+    color: v.$font-blue;
     background: v.$button-hovergray;
   }
 }
