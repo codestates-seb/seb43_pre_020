@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            scope:
+              - email
+              - profile
+          github:
+            scope:
+              - read:user
+server:
+  servlet:
+    encoding:
+      force-response: true
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: DEBUG
+jwt:
+  access-token-expiration-minutes: 60
+  refresh-token-expiration-days: 7
