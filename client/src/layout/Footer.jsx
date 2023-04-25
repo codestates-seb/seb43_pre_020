@@ -4,21 +4,25 @@ export default function Footer() {
   return (
     <footer className={styles.footerOuter}>
       <div className={styles.footerInner}>
-        {' '}
-        <img
-          className={styles.logoImg}
-          src={`${process.env.PUBLIC_URL}/assets/logo-only-graphic.svg`}
-          alt='stackoverflow logo img'
-        />
-        <div className={styles.box}>
-          <div>STACK OVERFLOW</div>
-          <ul>
-            <li>Questions</li>
-            <li>Help</li>
-          </ul>
+        <div className={styles.imgSort}>
+          {' '}
+          <a href='/'>
+            <img
+              className={styles.logoImg}
+              src={`${process.env.PUBLIC_URL}/assets/logo-only-graphic.svg`}
+              alt='stackoverflow logo img'
+            />
+          </a>
+          <div className={styles.box}>
+            <h5>STACK OVERFLOW</h5>
+            <ul>
+              <li>Questions</li>
+              <li>Help</li>
+            </ul>
+          </div>
         </div>
         <div className={styles.box}>
-          <div>PRODUCTS</div>
+          <h5>PRODUCTS</h5>
           <ul>
             <li>Teams</li>
             <li>Advertising</li>
@@ -27,7 +31,7 @@ export default function Footer() {
           </ul>
         </div>
         <div className={styles.box}>
-          <div>COMPANY</div>
+          <h5>COMPANY</h5>
           <ul>
             <li>About</li>
             <li>Press</li>
@@ -41,7 +45,7 @@ export default function Footer() {
           </ul>
         </div>
         <div className={styles.box}>
-          <div>STACK EXCHANGE NETWORK</div>
+          <h5>STACK EXCHANGE NETWORK</h5>
           <ul>
             <li>Technology</li>
             <li>Culture & recreation</li>

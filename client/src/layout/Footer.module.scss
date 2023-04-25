@@ -16,11 +16,36 @@
   margin-top: 20px;
   color: v.$font-gray;
   border: 1px solid red;
+  .logoImg {
+    height: 32px;
+  }
+}
+
+.imgSort {
+  display: flex;
+  img {
+    margin-right: 30px;
+  }
 }
 
 .box {
-  div {
-    font-size: 1.5rem;
+  h5 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: v.$border-gray;
+  }
+  ul {
+    margin-top: 15px;
+    font-size: 1.3rem;
+  }
+  li {
+    margin-bottom: 5px;
   }
   border: 1px solid red;
+}
+
+.box2 {
+  display: flex;
+  font-size: 1.3rem;
+  gap: 10px;
 }
