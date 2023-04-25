@@ -4,6 +4,7 @@
   background: v.$font-black;
   color: v.$font-white;
   height: 320px;
+  border: 1px solid red;
 }
 
 .footerInner {
@@ -12,4 +13,14 @@
   max-width: 1328px;
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
+  color: v.$font-gray;
+  border: 1px solid red;
+}
+
+.box {
+  div {
+    font-size: 1.5rem;
+  }
+  border: 1px solid red;
 }
