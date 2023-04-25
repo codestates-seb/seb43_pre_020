@@ -43,15 +43,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.319'
 
-	implementation group: 'io.awspring.cloud', name: 'spring-cloud-starter-aws-parameter-store-config'
 
 }
 
-dependencyManagement { // 블록 추가
-	imports {
-		mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:2.3.3"
-	}
-}
 
 tasks.named('test') {
 	useJUnitPlatform()

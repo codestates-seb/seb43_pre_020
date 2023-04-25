@@ -1,5 +1,8 @@
 spring:
   datasource:
+    url: ${RDS_URL}
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database: mysql
@@ -11,10 +14,14 @@ spring:
       client:
         registration:
           google:
+            clientId: ${SOF_GOOGLE_CLIENT_ID}
+            clientSecret: ${SOF_GOOGLE_CLIENT_SECRET}
             scope:
               - email
               - profile
           github:
+            clientId: ${SOF_GITHUB_CLIENT_ID}
+            clientSecret: ${SOF_GITHUB_CLIENT_SECRET}
             scope:
               - read:user
 server:
@@ -28,11 +35,9 @@ logging:
         orm:
           jpa: DEBUG
 jwt:
+  key: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 60
   refresh-token-expiration-days: 7
-aws:
-  paramstore:
-    enabled: true
-    prefix: /spring-boot-aws
-    name: preproject-stackoverflow-bombom
-    profileSeparator: _
+aws-s3:
+  access-key: ${AWS_S3_ACCESS_KEY}
+  secret-access-key: ${AWS_S3_SECRET_ACCESS_KEY}
