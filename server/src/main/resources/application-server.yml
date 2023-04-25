@@ -30,3 +30,9 @@ logging:
 jwt:
   access-token-expiration-minutes: 60
   refresh-token-expiration-days: 7
+aws:
+  paramstore:
+    enabled: true
+    prefix: /spring-boot-aws
+    name: preproject-stackoverflow-bombom
+    profileSeparator: _
