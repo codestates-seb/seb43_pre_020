@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import MDEditor from '@uiw/react-md-editor'
-import { getDetails, postComment } from '../api/question'
+import { getDetails, postComment, postAnswerComment } from '../api/question'
 import styles from './Question.module.scss'
 import calDate from '../utils/calDate'
 import AnswerForm from '../components/AnswerForm'
@@ -55,7 +55,7 @@ function Question() {
           )}
         </div>
       </div>
-      <Answer data={data} />
+      <Answer data={data} id={id} userInfo={userInfo} end={send} setSend={setSend} />
       <AnswerForm id={id} memberId={userInfo.memberId} send={send} setSend={setSend} />
     </div>
   )
@@ -116,19 +116,28 @@ function Acomment({ answer }) {
   )
 }
 
-function AddComment({ id, memberId, send, setSend }) {
+function AddComment({ id, memberId, send, setSend, answerId }) {
   const [body, setBody] = useState('')
   const handleCommentChange = e => {
     setBody(e.target.value)
   }
   const handleSubmit = e => {
     e.preventDefault()
-    postComment({ id, body, memberId }).then(res => {
-      if (res === 'success') {
-        setSend(send + 1)
-        setBody('')
-      }
-    })
+    if (answerId === undefined) {
+      postComment({ id, body, memberId }).then(res => {
+        if (res === 'success') {
+          setSend(send + 1)
+          setBody('')
+        }
+      })
+    } else {
+      postAnswerComment({ id, body, memberId, answerId }).then(res => {
+        if (res === 'success') {
+          setSend(send + 1)
+          setBody('')
+        }
+      })
+    }
   }
   return (
     <form className={styles.addComment} onSubmit={handleSubmit}>
@@ -150,7 +159,7 @@ function AddComment({ id, memberId, send, setSend }) {
   )
 }
 
-function Answer({ data }) {
+function Answer({ data, id, userInfo, send, setSend }) {
   return (
     <div className={styles.answer}>
       <h1>{data.answers && data.answers.length} Answers</h1>
@@ -185,7 +194,13 @@ function Answer({ data }) {
                 </div>
               </div>
               <Acomment answer={answer} />
-              <AddComment />
+              <AddComment
+                id={id}
+                memberId={userInfo.memberId}
+                send={send}
+                setSend={setSend}
+                answerId={answer.answerId}
+              />
             </div>
           </div>
         ))}
