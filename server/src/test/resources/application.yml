@@ -1,0 +1,5 @@
+spring:
+  config:
+    import:
+      - classpath:/application-local.yml
+      - classpath:/application-server.yml
