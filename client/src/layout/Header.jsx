@@ -11,6 +11,10 @@ export default function Header({ isAuthChecking }) {
     dispatch(LOGOUT())
   }
 
+  const profileImg = userInfo.imageFileName
+    ? `${process.env.REACT_APP_IMAGE_URL}${userInfo.imageFileName}`
+    : `${process.env.PUBLIC_URL}/assets/profile.png`
+
   return (
     <>
       <HeaderContainer>
@@ -21,7 +25,7 @@ export default function Header({ isAuthChecking }) {
           <ButtonWrap>
             {isLogin ? (
               <>
-                <LinkBtn path='/mypage' label={userInfo.displayName} />
+                <LinkBtn path='/mypage' label={userInfo.displayName} profileImg={profileImg} />
                 <LogOutBtn label='Log out' onClick={handleLogOutBtnClick} />
               </>
             ) : (
@@ -68,12 +72,12 @@ function LogOutBtn({ label, onClick }) {
   )
 }
 
-function LinkBtn({ path, label }) {
+function LinkBtn({ path, label, profileImg }) {
   const className = `${path.slice(1)}Btn`
   const children =
     path === '/mypage' ? (
       <>
-        <img src={`${process.env.PUBLIC_URL}/assets/profile.png`} alt='user profile' />
+        <img src={profileImg} alt='user profile' />
         <span>{label}</span>
       </>
     ) : (

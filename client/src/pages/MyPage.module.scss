@@ -4,16 +4,36 @@
   padding: 24px 64px;
 }
 
+.profileImg {
+  width: 164px;
+  height: 164px;
+  overflow: hidden;
+  margin-right: 20px;
+}
+
+.header {
+  display: flex;
+}
+
 .headName {
   color: v.$font-black;
   font-size: 4rem;
-  padding: 10px 0;
 }
 
 .headTitle {
   color: v.$font-gray;
   font-size: 2.5rem;
-  padding: 10px 0;
+}
+
+.dateContainer {
+  display: flex;
+  > * {
+    padding: 5px 10px 5px 0;
+    color: #9199a0;
+  }
+  img {
+    filter: invert(55%) sepia(1%) saturate(4021%) hue-rotate(166deg) brightness(118%) contrast(64%);
+  }
 }
 
 .inputBox {

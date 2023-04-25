@@ -3,7 +3,7 @@ import {
   getRefreshTokenFromLocalStorage,
   removeRefreshTokenFromLocalStorage,
 } from '../utils/refreshTokenHandler'
-import axios, { fileAxiso } from './instance'
+import axios, { fileAxios } from './instance'
 
 export const signup = async ({ displayName, email, password }) => {
   try {
@@ -19,6 +19,7 @@ export const login = async ({ username, password, autoLogin = true }) => {
   try {
     const { headers } = await axios.post('/auth/login', { username, password, autoLogin })
     axios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
+    fileAxios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
     saveRefreshTokenToLocalStorage(headers.get('refresh'))
     return 'success'
   } catch (error) {
@@ -35,6 +36,7 @@ export const refreshAccessToken = async () => {
       },
     })
     axios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
+    fileAxios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
     return 'success'
   } catch (error) {
     removeRefreshTokenFromLocalStorage()
@@ -62,7 +64,7 @@ export const getMemberData = async memberId => {
 
 export const changeUserInfo = async (memberId, formData) => {
   try {
-    const data = await fileAxiso.patch(`/members/${memberId}`, formData)
+    const data = await fileAxios.patch(`/members/${memberId}`, formData)
     return data
   } catch (error) {
     throw new Error(error)

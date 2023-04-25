@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from '../pages/MyPage.module.scss'
 
-const initialImg = `${process.env.PUBLIC_URL}/assets/profile.png`
-export default function ImgInput() {
-  const [preview, setPreview] = useState(initialImg)
+export default function ImgInput({ initial }) {
+  const [preview, setPreview] = useState(initial)
   const [imageFile, setImageFile] = useState(null)
   const inputRef = useRef()
 
@@ -18,14 +17,14 @@ export default function ImgInput() {
   }
 
   useEffect(() => {
-    if (!imageFile) return setPreview(initialImg)
+    if (!imageFile) return setPreview(initial)
 
     const nextPreview = URL.createObjectURL(imageFile)
     setPreview(nextPreview)
 
     return () => {
       URL.revokeObjectURL(nextPreview)
-      setPreview(initialImg)
+      setPreview(initial)
     }
   }, [imageFile])
 
