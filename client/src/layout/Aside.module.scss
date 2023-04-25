@@ -5,3 +5,19 @@
   border: 1px solid #efe5c0;
   border-radius: 3px;
 }
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 10px 15px;
+  background: #faf3d8;
+  border-bottom: 1px solid #efe5c0;
+}
+
+.contents {
+  font-size: 1.2rem;
+  padding: 15px 20px 30px 30px;
+}
+
+li {
+  list-style: disc;
+}
