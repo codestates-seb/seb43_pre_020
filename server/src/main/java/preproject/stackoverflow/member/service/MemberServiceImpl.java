@@ -39,6 +39,7 @@ public class MemberServiceImpl implements MemberService {
     public Member updateMember(Member member, MultipartFile memberImage) {
         Member findMember = findVerifiedMember(member.getMemberId());
 
+
         // DiplayName, title, aboutMe 수정
         Optional.ofNullable(member.getDisplayName())
                 .ifPresent(findMember::setDisplayName);
@@ -47,7 +48,12 @@ public class MemberServiceImpl implements MemberService {
         Optional.ofNullable(member.getAboutMe())
                 .ifPresent(findMember::setAboutMe);
         Optional.ofNullable(memberImage)
-                .ifPresent(file -> findMember.setImageFileName(storageService.store(file, findMember.getImageFileName())));
+                .ifPresent(file -> {
+                    String contentType = file.getContentType();
+                    if(contentType != null && contentType.startsWith("image")){
+                        findMember.setImageFileName(storageService.store(file, findMember.getImageFileName()));
+                    }
+                });
         // 비밀번호 수정 논의
 
         return memberRepository.save(findMember);
