@@ -53,14 +53,12 @@ public class MemberController {
         return new ResponseEntity<>(mapper.memberToMemberResponseDTO(member), HttpStatus.OK);
     }
 
-    @GetMapping("/{member-id}")
+    @GetMapping
     public ResponseEntity<?> getMembers(@RequestParam @Positive int page,
                                         @RequestParam @Positive int size){
         Page<Member> memberPage = memberService.findMembers(page, size);
         List<MemberDTO.Response> responses = mapper.membersToSimpleResponses(memberPage.getContent());
-        // TODO : 피드백 필요. 리팩토링 코드(DTO 패키지)를 쓸지, MemberDTO에 똑같이 만들지.
         return ResponseEntity.ok(new MultiResponseDTO<>(responses, memberPage));
-//        return new ResponseEntity<>(new QuestionDTO.ResponseList(simpleResponses, questionPage), HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")
