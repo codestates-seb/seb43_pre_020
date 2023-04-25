@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import MDEditor from '@uiw/react-md-editor'
 import { getDetails, postComment, postAnswerComment } from '../api/question'
@@ -12,8 +12,7 @@ function Question() {
   const [send, setSend] = useState(0)
   const date = calDate(data.date)
   const { id } = useParams()
-  const { isLogin, userInfo } = useSelector(state => state.auth)
-  const navigate = useNavigate()
+  const { userInfo } = useSelector(state => state.auth)
 
   useEffect(() => {
     async function fetchData() {
@@ -21,7 +20,7 @@ function Question() {
       setData(details)
     }
     fetchData()
-  }, [id, send])
+  }, [send])
 
   return (
     <div className={styles.container}>
@@ -48,14 +47,10 @@ function Question() {
             </div>
           </div>
           <Qcomment data={data} />
-          {isLogin ? (
-            <AddComment id={id} memberId={userInfo.memberId} send={send} setSend={setSend} />
-          ) : (
-            navigate('/login')
-          )}
+          <AddComment id={id} memberId={userInfo.memberId} setSend={setSend} />
         </div>
       </div>
-      <Answer data={data} id={id} userInfo={userInfo} end={send} setSend={setSend} />
+      <Answer data={data} id={id} userInfo={userInfo} send={send} setSend={setSend} />
       <AnswerForm id={id} memberId={userInfo.memberId} send={send} setSend={setSend} />
     </div>
   )
@@ -116,7 +111,7 @@ function Acomment({ answer }) {
   )
 }
 
-function AddComment({ id, memberId, send, setSend, answerId }) {
+function AddComment({ id, memberId, setSend, answerId }) {
   const [body, setBody] = useState('')
   const handleCommentChange = e => {
     setBody(e.target.value)
@@ -126,14 +121,14 @@ function AddComment({ id, memberId, send, setSend, answerId }) {
     if (answerId === undefined) {
       postComment({ id, body, memberId }).then(res => {
         if (res === 'success') {
-          setSend(send + 1)
+          setSend(prev => prev + 1)
           setBody('')
         }
       })
     } else {
       postAnswerComment({ id, body, memberId, answerId }).then(res => {
         if (res === 'success') {
-          setSend(send + 1)
+          setSend(prev => prev + 1)
           setBody('')
         }
       })
