@@ -38,10 +38,10 @@ jwt:
   key: ${jwt.key}
   access-token-expiration-minutes: 60
   refresh-token-expiration-days: 7
+aws-s3:
+  access-key: ${aws.s3.access-key}
+  secret-access-key: ${aws.s3.secret-access-key}
 aws:
-  s3:
-    access-key: ${aws.s3.access-key}
-    secret-access-key: ${aws.s3.secret-access-key}
   paramstore:
     enabled: true
     prefix: /spring-boot-aws
