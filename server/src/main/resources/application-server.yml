@@ -1,5 +1,8 @@
 spring:
   datasource:
+    url: ${spring.datasource.url}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database: mysql
@@ -11,10 +14,14 @@ spring:
       client:
         registration:
           google:
+            clientId: ${spring.security.oauth2.client.registration.google.clientId}
+            clientSecret: ${spring.security.oauth2.client.registration.google.clientSecret}
             scope:
               - email
               - profile
           github:
+            clientId: ${spring.security.oauth2.client.registration.github.clientId}
+            clientSecret: ${spring.security.oauth2.client.registration.github.clientSecret}
             scope:
               - read:user
 server:
@@ -28,9 +35,13 @@ logging:
         orm:
           jpa: DEBUG
 jwt:
+  key: ${jwt.key}
   access-token-expiration-minutes: 60
   refresh-token-expiration-days: 7
 aws:
+  s3:
+    access-key: ${aws.s3.access-key}
+    secret-access-key: ${aws.s3.secret-access-key}
   paramstore:
     enabled: true
     prefix: /spring-boot-aws
