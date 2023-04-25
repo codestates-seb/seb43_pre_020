@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import preproject.stackoverflow.answer.entity.Answer;
+import preproject.stackoverflow.audit.Auditable;
 import preproject.stackoverflow.member.entity.Member;
 import preproject.stackoverflow.question.entity.Question;
 
@@ -15,14 +16,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Comment {
+public class Comment extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
     @Column(nullable = false, length = 2000)
     private String body;
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+//    @Column(nullable = false)
+//    private LocalDateTime createdAt = LocalDateTime.now();
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;

@@ -44,6 +44,7 @@ public class MemberDTO {
         private String aboutMe;
         private String imageFileName;
         private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
         private LocalDateTime lastLoginTime;
         private LocalDateTime lastActivityTime;
         // 비밀번호, 질문 작성수, 답변수, memberStatus 등등 고려

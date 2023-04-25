@@ -3,6 +3,7 @@ package preproject.stackoverflow.question.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Page;
 import preproject.stackoverflow.answer.dto.AnswerDTO;
 import preproject.stackoverflow.comment.dto.CommentDTO;
@@ -62,6 +63,7 @@ public class QuestionDTO {
         private String title;
         private String content;
         private LocalDateTime date;
+        private LocalDateTime updatedAt;
         private long memberId;
         private String questioner;
         private long view;
@@ -90,6 +92,7 @@ public class QuestionDTO {
             private String title;
             private String content;
             private LocalDateTime date;
+            private LocalDateTime updatedAt;
             private long memberId;
             private String questioner;
             private long answers;

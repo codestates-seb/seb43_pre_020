@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import preproject.stackoverflow.answer.entity.Answer;
+import preproject.stackoverflow.audit.Auditable;
 import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.member.entity.Member;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Question {
+public class Question extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +27,8 @@ public class Question {
     private String title;
     @Column(nullable = false, length = 2000)
     private String content;
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+//    @Column(nullable = false)
+//    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(nullable = false)
     private Long view = 0L;
