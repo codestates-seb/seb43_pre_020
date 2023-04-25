@@ -11,7 +11,7 @@ export default function Header({ isAuthChecking }) {
     dispatch(LOGOUT())
   }
 
-  const profileImg = userInfo.imageFileName
+  const profileImg = userInfo?.imageFileName
     ? `${process.env.REACT_APP_IMAGE_URL}${userInfo.imageFileName}`
     : `${process.env.PUBLIC_URL}/assets/profile.png`
 
