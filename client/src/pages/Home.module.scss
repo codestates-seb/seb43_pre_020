@@ -16,6 +16,34 @@
   margin-bottom: 12px;
 }
 
+.secondLine {
+  display: flex;
+
+  justify-content: space-between;
+}
+.sortBtnBox {
+  cursor: pointer;
+  border: 1px solid v.$border-gray;
+  border-radius: 3px;
+}
+
+.sortBtn {
+  padding: 9.6px 14.4px;
+  background-color: #ffffff;
+  color: v.$font-gray;
+
+  &:hover {
+    background-color: v.$bg-lightgray;
+  }
+}
+
+.selectedBtn {
+  padding: 9.6px 14.4px;
+  background-color: #e4e5e7;
+  border: 1px solid v.$border-gray;
+  color: #3c4044;
+}
+
 .line {
   border: 0.7px solid #d7d9dc;
   margin-top: 12px;

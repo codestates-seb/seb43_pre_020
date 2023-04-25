@@ -7,8 +7,9 @@ import { getQuestions } from '../api/question'
 const SIZE = 5
 export default function Home() {
   const [datas, setData] = useState([])
-  const [offset, setOffset] = useState(1)
+  const [page, setPage] = useState(1)
   const [pageBtn, setPageBtn] = useState([1])
+  const [sortQuery, setSortQuery] = useState('')
 
   const makePageBtn = totalElements => {
     const needPage = Math.ceil(totalElements / SIZE)
@@ -19,23 +20,23 @@ export default function Home() {
   }
 
   const handlePage = btn => {
-    setOffset(btn)
+    setPage(btn)
   }
 
   useEffect(() => {
     async function makePage() {
-      await getQuestions({ page: offset, size: SIZE }).then(({ data, pageInfo }) => {
+      await getQuestions({ page, size: SIZE }, sortQuery).then(({ data, pageInfo }) => {
         const newPageBtn = makePageBtn(pageInfo.totalElements)
         setData(data)
         setPageBtn(newPageBtn)
       })
     }
     makePage()
-  }, [offset])
+  }, [page, sortQuery])
 
   return (
     <div className={styles.homeContainer}>
-      <HomeHeader length={datas.length} />
+      <HomeHeader length={datas.length} setQuery={setSortQuery} />
       {datas.map(d => {
         return (
           <div key={d.questionId}>
@@ -49,7 +50,7 @@ export default function Home() {
           <button
             key={btn}
             type='button'
-            className={offset === btn ? styles.clickedBtn : styles.pageBtn}
+            className={page === btn ? styles.clickedBtn : styles.pageBtn}
             onClick={() => handlePage(btn)}
           >
             {btn}
@@ -60,7 +61,34 @@ export default function Home() {
   )
 }
 
-function HomeHeader({ length }) {
+function HomeHeader({ length, setQuery }) {
+  const [sortedValue, setSortedValue] = useState('questionId')
+  const handleClick = e => {
+    setSortedValue(e.target.name)
+  }
+
+  useEffect(() => {
+    switch (sortedValue) {
+      case 'questionId':
+        setQuery('&sortBy=questionId&direction=DESC')
+        break
+      case 'votes':
+        setQuery('&sortBy=votes&direction=DESC')
+        break
+      case 'answered':
+        setQuery('&answered=false')
+        break
+      default:
+        setQuery('')
+    }
+  }, [sortedValue])
+
+  const sortBtn = [
+    ['Newest', 'questionId'],
+    ['Votes', 'votes'],
+    ['Unanswered', 'answered'],
+  ]
+
   return (
     <div>
       <div className={styles.homeHeader}>
@@ -69,7 +97,24 @@ function HomeHeader({ length }) {
           Ask Question
         </Link>
       </div>
-      <h3>{length} questions</h3>
+      <div className={styles.secondLine}>
+        <h3>{length} questions</h3>
+        <div className={styles.sortBtnBox}>
+          {sortBtn.map(btn => {
+            return (
+              <button
+                key={btn[0]}
+                type='button'
+                name={btn[1]}
+                onClick={handleClick}
+                className={sortedValue === btn[1] ? styles.selectedBtn : styles.sortBtn}
+              >
+                {btn[0]}
+              </button>
+            )
+          })}
+        </div>
+      </div>
     </div>
   )
 }
