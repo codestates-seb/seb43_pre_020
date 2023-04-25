@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import preproject.stackoverflow.auth.utils.CustomAuthorityUtils;
 import preproject.stackoverflow.exception.BusinessLogicException;
 import preproject.stackoverflow.exception.ExceptionCode;
@@ -19,11 +20,13 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
+    private final StorageService storageService;
 
-    public MemberServiceImpl(MemberRepository memberRepository, PasswordEncoder passwordEncoder, CustomAuthorityUtils authorityUtils) {
+    public MemberServiceImpl(MemberRepository memberRepository, PasswordEncoder passwordEncoder, CustomAuthorityUtils authorityUtils, StorageService storageService) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityUtils = authorityUtils;
+        this.storageService = storageService;
     }
 
     @Override
@@ -35,8 +38,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member updateMember(Member member) {
+    public Member updateMember(Member member, MultipartFile memberImage) {
         Member findMember = findVerifiedMember(member.getMemberId());
+
 
         // DiplayName, title, aboutMe 수정
         Optional.ofNullable(member.getDisplayName())
@@ -45,6 +49,13 @@ public class MemberServiceImpl implements MemberService {
                 .ifPresent(findMember::setTitle);
         Optional.ofNullable(member.getAboutMe())
                 .ifPresent(findMember::setAboutMe);
+        Optional.ofNullable(memberImage)
+                .ifPresent(file -> {
+                    String contentType = file.getContentType();
+                    if(contentType != null && contentType.startsWith("image")){
+                        findMember.setImageFileName(storageService.store(file, findMember.getImageFileName()));
+                    }
+                });
         // 비밀번호 수정 논의
 
         return memberRepository.save(findMember);

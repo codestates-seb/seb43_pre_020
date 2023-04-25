@@ -30,9 +30,7 @@ public class MemberDTO {
         private Long memberId;
         @NotSpace
         private String displayName;
-        @NotSpace
         private String title;
-        @NotSpace
         private String aboutMe;
     }
 
@@ -44,6 +42,7 @@ public class MemberDTO {
         private String displayName;
         private String title;
         private String aboutMe;
+        private String imageFileName;
         private LocalDateTime createdAt;
         private LocalDateTime lastLoginTime;
         private LocalDateTime lastActivityTime;

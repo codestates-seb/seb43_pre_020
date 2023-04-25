@@ -24,7 +24,7 @@ public class Question {
     private Long questionId;
     @Column(nullable = false, length = 100)
     private String title;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     private String content;
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
