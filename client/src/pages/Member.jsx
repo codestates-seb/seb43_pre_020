@@ -13,19 +13,33 @@ const initialData = {
   aboutMe: '',
 }
 
-export default function Members() {
+export default function Members({ id }) {
   const [memberData, setMemberData] = useState(initialData)
   const { memberId } = useParams()
   useEffect(() => {
-    getMemberData(memberId).then(({ displayName, title, aboutMe, lastActivityTime, createdAt }) => {
-      setMemberData({
-        displayName,
-        title,
-        createdAt,
-        lastActivityTime,
-        aboutMe,
+    if (id) {
+      getMemberData(id).then(({ displayName, title, aboutMe, lastActivityTime, createdAt }) => {
+        setMemberData({
+          displayName,
+          title,
+          createdAt,
+          lastActivityTime,
+          aboutMe,
+        })
       })
-    })
+    } else {
+      getMemberData(memberId).then(
+        ({ displayName, title, aboutMe, lastActivityTime, createdAt }) => {
+          setMemberData({
+            displayName,
+            title,
+            createdAt,
+            lastActivityTime,
+            aboutMe,
+          })
+        }
+      )
+    }
   }, [])
   const joinDate = calJoinDate(memberData.createdAt)
   const activeDate = calDate(memberData.lastActivityTime)

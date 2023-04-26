@@ -7,6 +7,7 @@ const MyPage = lazy(() => import('../pages/MyPage'))
 const Question = lazy(() => import('../pages/Question'))
 const Ask = lazy(() => import('../pages/Ask'))
 const Member = lazy(() => import('../pages/Member'))
+const Members = lazy(() => import('../pages/Members'))
 
 export const routerData = [
   {
@@ -47,7 +48,7 @@ export const routerData = [
   {
     id: 5,
     path: '/members',
-    element: <div>전체 유저 조회 페이지</div>,
+    element: <Members />,
     label: 'Users',
     onNav: true,
   },

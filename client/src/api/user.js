@@ -68,3 +68,13 @@ export const changeUserInfo = async (memberId, body) => {
     return 'Fail'
   }
 }
+
+export const getAllMembersData = async ({ page = 1, size = 12 }) => {
+  try {
+    const { data } = await axios.get(`/members?page=${page}&size=${size}`)
+    return data
+  } catch (error) {
+    console.log('page', page, 'size', size)
+    return error
+  }
+}
