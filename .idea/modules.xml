@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/seb43_pre_020.iml" filepath="$PROJECT_DIR$/.idea/seb43_pre_020.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/stackoverflow.main.iml" filepath="$PROJECT_DIR$/.idea/modules/stackoverflow.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/stackoverflow.test.iml" filepath="$PROJECT_DIR$/.idea/modules/stackoverflow.test.iml" />
     </modules>
   </component>
 </project>
