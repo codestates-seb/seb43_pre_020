@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { getMemberData } from '../api/user'
 import styles from './Member.module.scss'
 import calDate from '../utils/calDate'
@@ -58,7 +58,11 @@ export default function Members({ id }) {
       <div className={styles.imgTextContainer}>
         <img src={memberData.imageFileName} alt='프로필 이미지' className={styles.profileImg} />
         <div>
-          <h2> {memberData.displayName} </h2>
+          {id ? (
+            <Link to={`/members/${id}`}>{memberData.displayName} </Link>
+          ) : (
+            <h2> {memberData.displayName} </h2>
+          )}
           <h4>{memberData.title}</h4>
           <div className={styles.dateContainer}>
             <img src={`${process.env.PUBLIC_URL}/assets/icons/cake.svg`} alt='cake' />
