@@ -3,20 +3,13 @@ import { useEffect, useState } from 'react'
 import styles from './Home.module.scss'
 import Questions from '../components/Questions'
 import { getQuestions } from '../api/question'
+import makePageBtn from '../utils/pageBtn'
 
 const SIZE = 5
 export default function Home() {
   const [datas, setData] = useState([])
   const [offset, setOffset] = useState(1)
   const [pageBtn, setPageBtn] = useState([1])
-
-  const makePageBtn = totalElements => {
-    const needPage = Math.ceil(totalElements / SIZE)
-    const newPageBtn = Array(needPage)
-      .fill()
-      .map((_, i) => i + 1)
-    return newPageBtn
-  }
 
   const handlePage = btn => {
     setOffset(btn)
@@ -25,7 +18,7 @@ export default function Home() {
   useEffect(() => {
     async function makePage() {
       await getQuestions({ page: offset, size: SIZE }).then(({ data, pageInfo }) => {
-        const newPageBtn = makePageBtn(pageInfo.totalElements)
+        const newPageBtn = makePageBtn(pageInfo.totalElements, SIZE)
         setData(data)
         setPageBtn(newPageBtn)
       })
@@ -44,18 +37,7 @@ export default function Home() {
           </div>
         )
       })}
-      {pageBtn.map(btn => {
-        return (
-          <button
-            key={btn}
-            type='button'
-            className={offset === btn ? styles.clickedBtn : styles.pageBtn}
-            onClick={() => handlePage(btn)}
-          >
-            {btn}
-          </button>
-        )
-      })}
+      <PageBtn pageBtn={pageBtn} offset={offset} handlePage={handlePage} />
     </div>
   )
 }
@@ -72,4 +54,19 @@ function HomeHeader({ length }) {
       <h3>{length} questions</h3>
     </>
   )
+}
+
+function PageBtn({ pageBtn, offset, handlePage }) {
+  return pageBtn.map(btn => {
+    return (
+      <button
+        key={btn}
+        type='button'
+        className={offset === btn ? styles.clickedBtn : styles.pageBtn}
+        onClick={() => handlePage(btn)}
+      >
+        {btn}
+      </button>
+    )
+  })
 }
