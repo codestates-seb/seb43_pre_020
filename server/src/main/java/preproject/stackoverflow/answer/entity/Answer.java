@@ -3,6 +3,7 @@ package preproject.stackoverflow.answer.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import preproject.stackoverflow.audit.Auditable;
 import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.member.entity.Member;
@@ -18,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Where(clause = "answer_status <> 'ANSWER_DELETED'")
 public class Answer extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,12 +59,13 @@ public class Answer extends Auditable {
     }
     public enum AnswerStatus{
         ANSWER_REGISTRATION("답변 등록"),
-        ANSWER_ADOPTED("답변 채택");
+        ANSWER_ADOPTED("답변 채택"),
+        ANSWER_DELETED("답변 삭제");
         @Getter
         private String status;
 
         AnswerStatus(String status){
-            this.status =status;
+            this.status = status;
         }
 
 
