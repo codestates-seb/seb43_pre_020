@@ -8,27 +8,51 @@ import makePageBtn from '../utils/pageBtn'
 const SIZE = 5
 export default function Home() {
   const [datas, setData] = useState([])
-  const [offset, setOffset] = useState(1)
+  const [page, setPage] = useState(1)
   const [pageBtn, setPageBtn] = useState([1])
+  const [totalQuestions, setTotalQuestions] = useState(0)
+  const [queryName, setQueryName] = useState('questionId')
+  const [query, setQuery] = useState('')
 
   const handlePage = btn => {
-    setOffset(btn)
+    setPage(btn)
+  }
+
+  const handleClick = e => {
+    switch (e.target.name) {
+      case 'questionId':
+        setQuery('&sortBy=questionId&direction=DESC')
+        setQueryName(e.target.name)
+        break
+      case 'votes':
+        setQuery('&sortBy=votes&direction=DESC')
+        setQueryName(e.target.name)
+        break
+      case 'answered':
+        setQuery('&answered=false')
+        setQueryName(e.target.name)
+        break
+      default:
+        setQuery('')
+        setQueryName('questionId')
+    }
   }
 
   useEffect(() => {
     async function makePage() {
-      await getQuestions({ page: offset, size: SIZE }).then(({ data, pageInfo }) => {
-        const newPageBtn = makePageBtn(pageInfo.totalElements, SIZE)
+      await getQuestions({ page, size: SIZE }, query).then(({ data, pageInfo }) => {
+        const newPageBtn = makePageBtn(pageInfo.totalElements)
+        setTotalQuestions(pageInfo.totalElements)
         setData(data)
         setPageBtn(newPageBtn)
       })
     }
     makePage()
-  }, [offset])
+  }, [page, query])
 
   return (
     <div className={styles.homeContainer}>
-      <HomeHeader length={datas.length} />
+      <HomeHeader length={totalQuestions} queryName={queryName} handleClick={handleClick} />
       {datas.map(d => {
         return (
           <div key={d.questionId}>
@@ -42,7 +66,13 @@ export default function Home() {
   )
 }
 
-function HomeHeader({ length }) {
+function HomeHeader({ length, queryName, handleClick }) {
+  const sortBtn = [
+    ['Newest', 'questionId'],
+    ['Votes', 'votes'],
+    ['Unanswered', 'answered'],
+  ]
+
   return (
     <>
       <div className={styles.homeHeader}>
@@ -51,7 +81,25 @@ function HomeHeader({ length }) {
           Ask Question
         </Link>
       </div>
-      <h3>{length} questions</h3>
+
+      <div className={styles.secondLine}>
+        <h3>{length} questions</h3>
+        <div className={styles.sortBtnBox}>
+          {sortBtn.map(btn => {
+            return (
+              <button
+                key={btn[0]}
+                type='button'
+                name={btn[1]}
+                onClick={handleClick}
+                className={queryName === btn[1] ? styles.selectedBtn : styles.sortBtn}
+              >
+                {btn[0]}
+              </button>
+            )
+          })}
+        </div>
+      </div>
     </>
   )
 }
