@@ -10,20 +10,20 @@ import preproject.stackoverflow.member.service.MemberService;
 import preproject.stackoverflow.question.entity.Question;
 import preproject.stackoverflow.question.entity.QuestionVote;
 import preproject.stackoverflow.question.repository.QuestionRepository;
+import preproject.stackoverflow.question.repository.QuestionVoteRepository;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class QuestionServiceImpl implements QuestionService{
     private final QuestionRepository questionRepository;
+    private final QuestionVoteRepository questionVoteRepository;
     private final MemberService memberService;
 
-    public QuestionServiceImpl(QuestionRepository questionRepository, MemberService memberService) {
+    public QuestionServiceImpl(QuestionRepository questionRepository, QuestionVoteRepository questionVoteRepository, MemberService memberService) {
         this.questionRepository = questionRepository;
+        this.questionVoteRepository = questionVoteRepository;
         this.memberService = memberService;
     }
 
@@ -70,7 +70,7 @@ public class QuestionServiceImpl implements QuestionService{
 
         Page<Question> questionPage = null;
         if (answered.equals("all")) {
-            questionPage = questionRepository.findAllByQuestionNotDeleted(pageRequest);
+            questionPage = questionRepository.findAll(pageRequest);
         } else if (answered.equals("true")){
             questionPage =  questionRepository.findAllByQuestionStatus(pageRequest, Question.QuestionStatus.QUESTION_ANSWERED);
         } else if (answered.equals("false")) {
@@ -122,8 +122,7 @@ public class QuestionServiceImpl implements QuestionService{
             QuestionVote findQuestionVote = vote.get();
             if (questionVote.getQuestionVoteStatus() == QuestionVote.QuestionVoteStatus.NONE) {
                 findQuestion.getQuestionVotes().remove(findQuestionVote);
-                findQuestionVote.setQuestion(null);
-                findQuestionVote.setMember(null);
+                questionVoteRepository.delete(findQuestionVote);
             } else {
                 findQuestionVote.setQuestionVoteStatus(questionVote.getQuestionVoteStatus());
             }
@@ -137,7 +136,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public Question findVerifiedQuestion(Long questionId) {
-        Optional<Question> optionalQuestion = questionRepository.findByIdNotDeleted(questionId);
+        Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         return optionalQuestion.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
     }
 

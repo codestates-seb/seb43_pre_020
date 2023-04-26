@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import preproject.stackoverflow.answer.entity.Answer;
 import preproject.stackoverflow.answer.entity.AnswerVote;
 import preproject.stackoverflow.answer.repository.AnswerRepository;
+import preproject.stackoverflow.answer.repository.AnswerVoteRepository;
 import preproject.stackoverflow.exception.BusinessLogicException;
 import preproject.stackoverflow.exception.ExceptionCode;
 import preproject.stackoverflow.member.entity.Member;
@@ -17,11 +18,13 @@ import java.util.Optional;
 @Transactional
 public class AnswerServiceImpl implements AnswerService {
     private final AnswerRepository answerRepository;
+    private final AnswerVoteRepository answerVoteRepository;
     private final MemberService memberService;
     private final QuestionService questionService;
 
-    public AnswerServiceImpl(AnswerRepository answerRepository, MemberService memberService, QuestionService questionService) {
+    public AnswerServiceImpl(AnswerRepository answerRepository, AnswerVoteRepository answerVoteRepository, MemberService memberService, QuestionService questionService) {
         this.answerRepository = answerRepository;
+        this.answerVoteRepository = answerVoteRepository;
         this.memberService = memberService;
         this.questionService = questionService;
     }
@@ -45,7 +48,8 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public void deleteAnswer(Long answerId) {
         Answer findAnswer = findVerifiedAnswer(answerId);
-        answerRepository.delete(findAnswer);
+        findAnswer.setAnswerStatus(Answer.AnswerStatus.ANSWER_DELETED);
+        answerRepository.save(findAnswer);
     }
 
     @Override
@@ -71,17 +75,14 @@ public class AnswerServiceImpl implements AnswerService {
             AnswerVote findAnswerVote = vote.get();
             if (answerVote.getAnswerVoteStatus() == AnswerVote.AnswerVoteStatus.NONE) {
                 findAnswer.getAnswerVotes().remove(findAnswerVote);
-                findAnswerVote.setAnswer(null);
-                findAnswerVote.setMember(null);
+                answerVoteRepository.delete(findAnswerVote);
             } else {
                 findAnswerVote.setAnswerVoteStatus(answerVote.getAnswerVoteStatus());
             }
+        } else if (answerVote.getAnswerVoteStatus() != AnswerVote.AnswerVoteStatus.NONE) {
+            findAnswer.addAnswerVote(answerVote);
         }
-            else if (answerVote.getAnswerVoteStatus() != AnswerVote.AnswerVoteStatus.NONE) {
-                findAnswer.addAnswerVote(answerVote);
-            }
-            return findAnswer;
-
-        }
+        return findAnswer;
     }
+}
 
