@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import preproject.stackoverflow.answer.entity.Answer;
+import preproject.stackoverflow.answer.entity.AnswerVote;
 import preproject.stackoverflow.audit.Auditable;
 import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.question.entity.Question;
@@ -57,6 +58,8 @@ public class Member extends Auditable {
     private List<Comment> comments = new ArrayList<>();
     @OneToMany(mappedBy = "member")
     private List<QuestionVote> questionVotes = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<AnswerVote> answerVotes = new ArrayList<>();
 
     public void addQuestion(Question question) {
         questions.add(question);

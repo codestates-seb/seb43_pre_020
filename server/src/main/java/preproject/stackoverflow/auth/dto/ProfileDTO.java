@@ -34,9 +34,9 @@ public class ProfileDTO {
     }
     @Getter
     @AllArgsConstructor
-    public  static  class  AnswerVote{
+    public static class AnswerVote{
         private long answerId;
-        private preproject.stackoverflow.answer.entity.AnswerVote.AnswerVoteStatus VoteStatus;
+        private preproject.stackoverflow.answer.entity.AnswerVote.AnswerVoteStatus voteStatus;
 
     }
 

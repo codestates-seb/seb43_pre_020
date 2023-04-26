@@ -14,6 +14,7 @@ public interface CommentMapper {
     @Mapping(source = "createdAt", target = "date")
     @Mapping(source = "member.memberId", target = "memberId")
     @Mapping(source = "member.displayName", target = "commenter")
+    @Mapping(source = "member.imageFileName", target = "imageFileName")
     CommentDTO.Response commentToCommentResponseDTO(Comment comment);
 
     @Named("commentsToCommentResponseDTOs")
