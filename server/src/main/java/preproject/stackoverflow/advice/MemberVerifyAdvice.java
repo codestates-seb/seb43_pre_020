@@ -57,7 +57,7 @@ public class MemberVerifyAdvice {
         long authenticatedMemberId = Long.parseLong(request.getUserPrincipal().getName());
         long memberId = extractIdFromUri(request, "/members/");
 
-        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        Optional<Member> optionalMember = memberRepository.findByMemberIdAndMemberStatus(memberId, Member.MemberStatus.MEMBER_ACTIVE);
         optionalMember.ifPresentOrElse(member -> {
             if (member.getMemberId() != authenticatedMemberId) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
         }, () -> {
@@ -148,7 +148,7 @@ public class MemberVerifyAdvice {
         long memberId = Long.parseLong(beanWrapper.getPropertyValue("memberId").toString());
         if(memberId != authenticatedMemberId) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
 
-        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        Optional<Member> optionalMember = memberRepository.findByMemberIdAndMemberStatus(memberId, Member.MemberStatus.MEMBER_ACTIVE);
         optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
     }

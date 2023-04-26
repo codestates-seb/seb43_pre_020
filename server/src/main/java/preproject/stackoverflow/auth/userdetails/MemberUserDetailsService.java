@@ -22,7 +22,7 @@ public class MemberUserDetailsService implements UserDetailsService {
     private final CustomAuthorityUtils authorityUtils;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Member> optionalMember = memberRepository.findByEmail(username);
+        Optional<Member> optionalMember = memberRepository.findByEmailAndMemberStatus(username, Member.MemberStatus.MEMBER_ACTIVE);
         Member member = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         return new MemberUserDetails(member);
