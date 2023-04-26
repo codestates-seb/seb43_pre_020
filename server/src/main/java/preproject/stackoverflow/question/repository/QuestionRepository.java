@@ -11,14 +11,5 @@ import preproject.stackoverflow.question.entity.Question;
 import java.util.Optional;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-    @Query("FROM Question q LEFT JOIN q.answers a ON a.answerStatus = 'ANSWER_DELETED' " +
-            "LEFT JOIN a.comments ac ON ac.commentStatus = 'COMMENT_DELETED' " +
-            "LEFT JOIN q.comments qc ON qc.commentStatus = 'COMMENT_DELETED' " +
-            "WHERE q.questionId = :questionId")
-    Optional<Question> findByIdNotDeleted(long questionId);
-
-    @Query("FROM Question q WHERE q.questionStatus <> 'QUESTION_DELETED'")
-    Page<Question> findAllByQuestionNotDeleted(Pageable pageable);
-
     Page<Question> findAllByQuestionStatus(Pageable pageable, Question.QuestionStatus questionStatus);
 }
