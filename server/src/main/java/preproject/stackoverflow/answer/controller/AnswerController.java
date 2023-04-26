@@ -36,7 +36,7 @@ public class AnswerController {
         post.setQuestionId(questionId);
         Answer answer = answerService.createAnswer(mapper.answerPostDtoToAnswer(post));
         URI uri = UriCreator.createUri(ANSWER_DEFAULT_URL, answer.getAnswerId());
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(mapper.answerToAnswerResponseDTO(answer));
     }
     @PatchMapping("/{answer-id}")
     public ResponseEntity<?> patchAnswer(@Valid @RequestBody AnswerDTO.Patch patch,

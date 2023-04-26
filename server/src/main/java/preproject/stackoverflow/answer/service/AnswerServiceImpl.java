@@ -6,6 +6,7 @@ import preproject.stackoverflow.answer.entity.Answer;
 import preproject.stackoverflow.answer.repository.AnswerRepository;
 import preproject.stackoverflow.exception.BusinessLogicException;
 import preproject.stackoverflow.exception.ExceptionCode;
+import preproject.stackoverflow.member.entity.Member;
 import preproject.stackoverflow.member.service.MemberService;
 import preproject.stackoverflow.question.service.QuestionService;
 
@@ -24,7 +25,8 @@ public class AnswerServiceImpl implements AnswerService{
         this.questionService = questionService;
     }
     public Answer createAnswer(Answer answer){
-        verifyAnswer(answer);
+        Member member = verifyAnswer(answer);
+        answer.setMember(member);
         return answerRepository.save(answer);
     }
 
@@ -49,10 +51,10 @@ public class AnswerServiceImpl implements AnswerService{
         return optionalAnswer.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
     }
 
-    private void verifyAnswer(Answer answer) {
-        Long memberId = answer.getMember().getMemberId();
-        memberService.findVerifiedMember(memberId);
+    private Member verifyAnswer(Answer answer) {
         Long questionId = answer.getQuestion().getQuestionId();
         questionService.findVerifiedQuestion(questionId);
+        Long memberId = answer.getMember().getMemberId();
+        return memberService.findVerifiedMember(memberId);
     }
 }
