@@ -33,11 +33,27 @@ public class Answer {
     private Question question;
     @OneToMany(mappedBy = "answer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "answer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<AnswerVote> answerVotes = new ArrayList<>();
+
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
     @Enumerated(value = EnumType.STRING)
     @Column(length = 30, nullable = false)
     private AnswerStatus answerStatus = AnswerStatus.ANSWER_REGISTRATION;
+    public  void  addAnswerVote(AnswerVote answerVote){
+        answerVotes.add(answerVote);
+    }
+
+    public long getVotes(){
+        long upVotes = answerVotes.stream()
+                .filter(answerVote -> answerVote.getAnswerVoteStatus() == AnswerVote.AnswerVoteStatus.UPVOTE)
+                .count();
+        long downVotes = answerVotes.stream()
+                .filter(answerVote -> answerVote.getAnswerVoteStatus() == AnswerVote.AnswerVoteStatus.DOWNVOTE)
+                .count();
+        return  upVotes - downVotes;
+    }
     public enum AnswerStatus{
         ANSWER_REGISTRATION("답변 등록"),
         ANSWER_ADOPTED("답변 채택");
@@ -50,6 +66,7 @@ public class Answer {
 
 
     }
+
 }
 
 
