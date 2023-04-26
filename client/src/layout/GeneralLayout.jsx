@@ -19,6 +19,7 @@ export default function GeneralLayout({ children }) {
     const userInfoRes = await getCurrentUserInfo()
     if (userInfoRes) {
       console.log('has accessToken, 로그인 성공!!')
+      dispatch(LOGIN(userInfoRes))
       // 리덕스 스토어에 사용자 인증 정보 저장(로그인 상태, 유저 정보)
       dispatch(LOGIN(userInfoRes))
       return
