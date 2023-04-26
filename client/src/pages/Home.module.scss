@@ -140,6 +140,16 @@
 
 .nameAndDate {
   text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
+  img {
+    height: 22px;
+    width: 22px;
+    display: inline;
+    margin-right: 5px;
+  }
 }
 
 .questioner {
