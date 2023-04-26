@@ -41,7 +41,7 @@ export default function Home() {
   useEffect(() => {
     async function makePage() {
       await getQuestions({ page, size: SIZE }, query).then(({ data, pageInfo }) => {
-        const newPageBtn = makePageBtn(pageInfo.totalElements)
+        const newPageBtn = makePageBtn(pageInfo.totalElements, SIZE)
         setTotalQuestions(pageInfo.totalElements)
         setData(data)
         setPageBtn(newPageBtn)
@@ -61,7 +61,7 @@ export default function Home() {
           </div>
         )
       })}
-      <PageBtn pageBtn={pageBtn} offset={offset} handlePage={handlePage} />
+      <PageBtn pageBtn={pageBtn} offset={page} handlePage={handlePage} />
     </div>
   )
 }

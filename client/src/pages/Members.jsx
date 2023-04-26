@@ -28,8 +28,8 @@ function Members() {
       <div className={styles.cardWrap}>
         {members?.map(member => {
           return (
-            <div className={styles.card}>
-              <Member key={member.memberId} id={member.memberId} />
+            <div className={styles.card} key={member.memberId}>
+              <Member id={member.memberId} />
             </div>
           )
         })}
