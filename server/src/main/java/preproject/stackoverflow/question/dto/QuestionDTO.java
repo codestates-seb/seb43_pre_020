@@ -66,6 +66,7 @@ public class QuestionDTO {
         private LocalDateTime updatedAt;
         private long memberId;
         private String questioner;
+        private String imageFileName;
         private long view;
         private long votes;
         private Question.QuestionStatus questionStatus;
@@ -95,6 +96,7 @@ public class QuestionDTO {
             private LocalDateTime updatedAt;
             private long memberId;
             private String questioner;
+            private String imageFileName;
             private long answers;
             private long votes;
             private Question.QuestionStatus questionStatus;

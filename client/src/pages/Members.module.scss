@@ -1,3 +1,40 @@
-.usersContainer {
+@use '../styles/colors' as v;
+
+.container {
   padding: 24px 16px;
+}
+
+.cardWrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.card {
+  width: 500px;
+}
+
+.clickedBtn {
+  font-size: 1.3rem;
+  width: 25px;
+  height: 25px;
+  padding: 0 8px;
+  border: 1px solid #d7d9dc;
+  border-radius: 3px;
+  background-color: #e5883e;
+  color: v.$font-white;
+  margin-left: 5px;
+}
+
+.pageBtn {
+  font-size: 1.3rem;
+  width: 25px;
+  height: 25px;
+  margin-left: 5px;
+  padding: 0 8px;
+  border: 1px solid #d7d9dc;
+  border-radius: 3px;
+  &:hover {
+    background-color: #d6d9db;
+  }
 }

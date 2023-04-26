@@ -51,13 +51,13 @@ public class MemberVerifyAdvice {
      * 회원 수정, 회원 삭제 주체 검증
      * @param joinPoint
      */
-    @Before("execution(* patchMember(..)) || execution(* deleteMember(..))")
+    @Before("execution(* patchMember(..)) || execution(!void deleteMember(..))")
     public void verifyMember(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         long authenticatedMemberId = Long.parseLong(request.getUserPrincipal().getName());
         long memberId = extractIdFromUri(request, "/members/");
 
-        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        Optional<Member> optionalMember = memberRepository.findByMemberIdAndMemberStatus(memberId, Member.MemberStatus.MEMBER_ACTIVE);
         optionalMember.ifPresentOrElse(member -> {
             if (member.getMemberId() != authenticatedMemberId) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
         }, () -> {
@@ -66,10 +66,10 @@ public class MemberVerifyAdvice {
     }
 
     /**
-     * 질문 수정, 질문 삭제 주체 검증
+     * 질문 수정, 질문 삭제, 답변 채택 주체 검증
      * @param joinPoint
      */
-    @Before("execution(* patchQuestion(..)) || execution(* deleteQuestion(..)) || execution(* postAnsweredQuestion(..))")
+    @Before("execution(* patchQuestion(..)) || execution(!void deleteQuestion(..)) || execution(* postAnsweredQuestion(..))")
     public void verifyMemberInQuestion(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         long authenticatedMemberId = Long.parseLong(request.getUserPrincipal().getName());
@@ -89,7 +89,7 @@ public class MemberVerifyAdvice {
      * 답변 수정, 답변 삭제 주체 검증
      * @param joinPoint
      */
-    @Before("execution(* patchAnswer(..)) || execution(* deleteAnswer(..))")
+    @Before("execution(* patchAnswer(..)) || execution(!void deleteAnswer(..))")
     public void verifyMemberInAnswer(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         long authenticatedMemberId = Long.parseLong(request.getUserPrincipal().getName());
@@ -109,7 +109,7 @@ public class MemberVerifyAdvice {
      * 댓글 수정, 댓글 삭제 주체 검증
      * @param joinPoint
      */
-    @Before("execution(* patchComment(..)) || execution(* deleteComment(..))")
+    @Before("execution(* patchComment(..)) || execution(!void deleteComment(..))")
     public void verifyMemberInComment(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         long authenticatedMemberId = Long.parseLong(request.getUserPrincipal().getName());
@@ -148,7 +148,7 @@ public class MemberVerifyAdvice {
         long memberId = Long.parseLong(beanWrapper.getPropertyValue("memberId").toString());
         if(memberId != authenticatedMemberId) throw new AccessDeniedException(HttpStatus.FORBIDDEN.toString());
 
-        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        Optional<Member> optionalMember = memberRepository.findByMemberIdAndMemberStatus(memberId, Member.MemberStatus.MEMBER_ACTIVE);
         optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
     }

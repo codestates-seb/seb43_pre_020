@@ -3,6 +3,7 @@ package preproject.stackoverflow.question.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import preproject.stackoverflow.answer.entity.Answer;
 import preproject.stackoverflow.audit.Auditable;
 import preproject.stackoverflow.comment.entity.Comment;
@@ -18,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Where(clause = "question_status <> 'QUESTION_DELETED'")
 public class Question extends Auditable {
 
     @Id

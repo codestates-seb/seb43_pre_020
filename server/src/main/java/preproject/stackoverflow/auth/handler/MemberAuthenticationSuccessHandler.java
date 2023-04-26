@@ -4,14 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import preproject.stackoverflow.auth.dto.LoginDTO;
-import preproject.stackoverflow.auth.jwt.JwtTokenizer;
-import preproject.stackoverflow.exception.BusinessLogicException;
-import preproject.stackoverflow.exception.ExceptionCode;
 import preproject.stackoverflow.member.entity.Member;
-import preproject.stackoverflow.member.repository.MemberRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

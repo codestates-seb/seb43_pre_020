@@ -34,7 +34,8 @@ public abstract class CommentServiceImpl implements CommentService{
     @Override
     public void deleteComment(Long commentId) {
           Comment comment = findVerifiedComment(commentId);
-          commentRepository.delete(comment);
+          comment.setCommentStatus(Comment.CommentStatus.COMMENT_DELETED);
+          commentRepository.save(comment);
     }
 
     public Comment findVerifiedComment(long commentId){

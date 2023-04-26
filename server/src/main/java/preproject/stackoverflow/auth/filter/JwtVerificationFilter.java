@@ -104,7 +104,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      */
     @Transactional
     private void setActivityTime(Long memberId) {
-        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        Optional<Member> optionalMember = memberRepository.findByMemberIdAndMemberStatus(memberId, Member.MemberStatus.MEMBER_ACTIVE);
         Member member = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         member.setLastActivityTime(LocalDateTime.now());
         memberRepository.save(member);
@@ -127,7 +127,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      * @return
      */
     private String delegateAccessToken(Long memberId) {
-        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        Optional<Member> optionalMember = memberRepository.findByMemberIdAndMemberStatus(memberId, Member.MemberStatus.MEMBER_ACTIVE);
         Member member = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         Map<String, Object> claims = new HashMap<>();
