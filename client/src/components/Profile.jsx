@@ -13,7 +13,7 @@ function Profile({ type }) {
         name={type}
         type='text'
         onKeyDown={e => e.code === 'Enter' && e.preventDefault()}
-        required
+        required={type === 'displayName'}
       />
     </div>
   )

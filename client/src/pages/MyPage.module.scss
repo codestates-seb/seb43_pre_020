@@ -4,16 +4,36 @@
   padding: 24px 64px;
 }
 
+.profileImg {
+  width: 164px;
+  height: 164px;
+  overflow: hidden;
+  margin-right: 20px;
+}
+
+.header {
+  display: flex;
+}
+
 .headName {
   color: v.$font-black;
   font-size: 4rem;
-  padding: 10px 0;
 }
 
 .headTitle {
   color: v.$font-gray;
   font-size: 2.5rem;
-  padding: 10px 0;
+}
+
+.dateContainer {
+  display: flex;
+  > * {
+    padding: 5px 10px 5px 0;
+    color: #9199a0;
+  }
+  img {
+    filter: invert(55%) sepia(1%) saturate(4021%) hue-rotate(166deg) brightness(118%) contrast(64%);
+  }
 }
 
 .inputBox {
@@ -29,17 +49,16 @@
 .inputContainer {
   display: flex;
   flex-direction: column;
+  input {
+    padding: 7.8px 9.1px;
+    border: 1px solid #bbbfc4;
+    border-radius: 3px;
+  }
 }
 
 .inputTitle {
   font-size: 2rem;
   font-weight: 600;
-}
-
-input {
-  padding: 7.8px 9.1px;
-  border: 1px solid #bbbfc4;
-  border-radius: 3px;
 }
 
 .btn {
@@ -52,5 +71,37 @@ input {
   box-shadow: inset 0 1px 0 0 hsla(0, 0%, 100%, 0.4);
   &:hover {
     background-color: #3172c6;
+  }
+}
+
+.preview {
+  display: block;
+  width: 164px;
+  height: 147px;
+  overflow: hidden;
+}
+
+.imgChangeBtn {
+  display: block;
+  width: 164px;
+  padding: 8px 0;
+  background-color: #535960;
+  color: v.$font-white;
+  text-align: center;
+  cursor: pointer;
+}
+
+.fileInput {
+  display: none;
+}
+
+.imgClearBtn {
+  color: v.$font-blue;
+  margin-top: 10px;
+  padding: 10px;
+
+  &:hover {
+    border-radius: 3px;
+    background-color: #f1f8fe;
   }
 }

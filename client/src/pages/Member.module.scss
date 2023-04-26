@@ -1,5 +1,6 @@
 .memberContainer {
   padding: 24px 16px;
+  display: flex;
   h2 {
     font-size: 4rem;
     font-weight: 500;
@@ -12,6 +13,13 @@
     font-weight: 500;
     color: #9199a0;
   }
+}
+
+.profileImg {
+  width: 164px;
+  height: 164px;
+  overflow: hidden;
+  margin-right: 20px;
 }
 
 .dateContainer {
