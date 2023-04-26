@@ -3,7 +3,9 @@ package preproject.stackoverflow.question.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import preproject.stackoverflow.answer.entity.Answer;
+import preproject.stackoverflow.audit.Auditable;
 import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.member.entity.Member;
 
@@ -17,17 +19,18 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Question {
+@Where(clause = "question_status <> 'QUESTION_DELETED'")
+public class Question extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
     @Column(nullable = false, length = 100)
     private String title;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     private String content;
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+//    @Column(nullable = false)
+//    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(nullable = false)
     private Long view = 0L;

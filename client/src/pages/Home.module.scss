@@ -1,7 +1,6 @@
 @use '../styles/colors' as v;
 
 .homeContainer {
-  padding: 24px 16px;
   h3 {
     font-size: 2rem;
   }
@@ -10,10 +9,39 @@
 .homeHeader {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   h2 {
     font-size: 2.7rem;
   }
   margin-bottom: 12px;
+}
+
+.secondLine {
+  display: flex;
+
+  justify-content: space-between;
+}
+.sortBtnBox {
+  cursor: pointer;
+  border: 1px solid v.$border-gray;
+  border-radius: 3px;
+}
+
+.sortBtn {
+  padding: 9.6px 14.4px;
+  background-color: #ffffff;
+  color: v.$font-gray;
+
+  &:hover {
+    background-color: v.$bg-lightgray;
+  }
+}
+
+.selectedBtn {
+  padding: 9.6px 14.4px;
+  background-color: #e4e5e7;
+  border: 1px solid v.$border-gray;
+  color: #3c4044;
 }
 
 .line {
@@ -22,20 +50,37 @@
 }
 
 .pageBtn {
-  padding: 5px;
+  font-size: 1.3rem;
+  width: 25px;
+  height: 25px;
+  margin-left: 5px;
+  padding: 0 8px;
+  border: 1px solid #d7d9dc;
+  border-radius: 3px;
+  &:hover {
+    background-color: #d6d9db;
+  }
 }
 
 .clickedBtn {
-  padding: 5px;
-  font-weight: 900;
+  font-size: 1.3rem;
+  width: 25px;
+  height: 25px;
+  padding: 0 8px;
+  border: 1px solid #d7d9dc;
+  border-radius: 3px;
+  background-color: #e5883e;
+  color: v.$font-white;
+  margin-left: 5px;
 }
 
 .btn {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 8px;
   cursor: pointer;
   background-color: v.$button-blue;
   color: #fff;
-  padding: 10.4px;
-  margin: 0 8px;
   border-radius: 3px;
   box-shadow: inset 0 1px 0 0 hsla(0, 0%, 100%, 0.4);
   &:hover {
@@ -95,6 +140,16 @@
 
 .nameAndDate {
   text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
+  img {
+    height: 22px;
+    width: 22px;
+    display: inline;
+    margin-right: 5px;
+  }
 }
 
 .questioner {
@@ -110,7 +165,7 @@
   text-align: right;
 }
 
-@media screen and (max-width: 950px) {
+@media screen and (max-width: 1024px) {
   .questionContainer {
     flex-direction: column;
   }

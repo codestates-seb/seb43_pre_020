@@ -1,9 +1,12 @@
 package preproject.stackoverflow.auth;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
+import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,9 +30,13 @@ import preproject.stackoverflow.auth.utils.CustomAuthorityUtils;
 import preproject.stackoverflow.member.repository.MemberRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Configuration
 public class SecurityConfiguration {
+    @Getter
+    @Value("${config.domain}")
+    private String domain;
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final MemberRepository memberRepository;
@@ -97,7 +104,8 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("*"));
+        String client = domain.equals("all") ? "*" : domain;
+        corsConfiguration.setAllowedOrigins(List.of(client));
         corsConfiguration.setAllowedMethods(List.of("POST", "GET", "PATCH", "DELETE", "OPTIONS"));
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);

@@ -1,69 +1,75 @@
 @use '../styles/colors' as v;
 
-.signContainer {
+.includeAllContainer {
+  display: flex;
+  max-width: 1328px;
+  min-height: calc(100% - 373px);
+  margin: 0 auto;
+  padding: 0 24px;
+  justify-content: space-between;
+  overflow: hidden;
+}
+.includeAllContent {
+  display: flex;
+  gap: 24px;
+  padding: 24px 0 24px 24px;
+  width: calc(100% - 164px);
+  overflow: hidden;
+  & > div {
+    width: calc(100% - 284px);
+  }
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    & > div {
+      width: 100%;
+    }
+  }
+}
+
+.includeHeaderContainer {
+  display: flex;
   width: 100%;
   height: calc(100% - 53px);
+  justify-content: center;
+  background: v.$bg-gray;
+  overflow: hidden;
+}
+.includeHeaderContent {
   display: flex;
   justify-content: center;
-  align-items: stretch;
-  background: v.$bg-gray;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
 }
 
-.askContainer {
+.includeHeaderFooterContainer {
+  display: flex;
+  justify-content: center;
   width: 100%;
   min-height: calc(100% - 373px);
+  background: v.$bg-gray;
+  overflow: hidden;
+}
+.includeHeaderFooterContent {
   display: flex;
   justify-content: center;
-  background: v.$bg-gray;
+  width: 100%;
+  overflow: hidden;
 }
 
-.userContainer {
-  max-width: 1280px;
+.includeHeaderFooterNavContainer {
+  display: flex;
+  max-width: 1328px;
   min-height: calc(100% - 373px);
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  & > div {
-    flex-basis: calc(100% - 164px);
+  padding: 0 24px;
+  overflow: hidden;
+  .content {
+    width: calc(100% - 164px);
+    overflow: hidden;
   }
 }
-
-.container {
-  max-width: 1280px;
-  min-height: calc(100% - 373px);
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-}
-
-.content {
-  margin-top: 24px;
-  flex-basis: calc(100% - 164px);
-  display: flex;
-  justify-content: space-between;
-  & > div {
-    flex-basis: calc(100% - 304px);
-  }
-}
-
-.aside {
-  flex-basis: 280px;
-  height: 500px;
-  background: #fcf7e4;
-  border: 1px solid #efe5c0;
-  border-radius: 3px;
-}
-
-.footerOuter {
-  background: v.$font-black;
-  color: v.$font-white;
-  height: 320px;
-}
-
-.footerInner {
-  margin: 0 auto;
-  max-width: 1280px;
-  display: flex;
-  justify-content: space-between;
+.includeHeaderFooterNavContent {
+  width: calc(100% - 164px);
+  overflow: hidden;
 }

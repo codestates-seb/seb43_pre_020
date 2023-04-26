@@ -44,6 +44,8 @@ public class CommentDTO {
         private String body;
         private long memberId;
         private String commenter;
+        private String imageFileName;
         private LocalDateTime date;
+        private LocalDateTime updatedAt;
     }
 }

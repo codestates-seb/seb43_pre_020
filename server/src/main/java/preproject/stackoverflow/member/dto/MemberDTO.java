@@ -30,22 +30,21 @@ public class MemberDTO {
         private Long memberId;
         @NotSpace
         private String displayName;
-        @NotSpace
         private String title;
-        @NotSpace
         private String aboutMe;
     }
 
     @Getter
     @AllArgsConstructor
     public static class Response {
-        // TODO : Response에 담을 변수 정확히 공부
         private long memberId;
         private String email;
         private String displayName;
         private String title;
         private String aboutMe;
+        private String imageFileName;
         private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
         private LocalDateTime lastLoginTime;
         private LocalDateTime lastActivityTime;
         // 비밀번호, 질문 작성수, 답변수, memberStatus 등등 고려
