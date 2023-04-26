@@ -62,7 +62,7 @@ export default function Home() {
 
 function HomeHeader({ length }) {
   return (
-    <div>
+    <>
       <div className={styles.homeHeader}>
         <h2>All Questions</h2>
         <Link to='/ask' className={styles.btn}>
@@ -70,6 +70,6 @@ function HomeHeader({ length }) {
         </Link>
       </div>
       <h3>{length} questions</h3>
-    </div>
+    </>
   )
 }

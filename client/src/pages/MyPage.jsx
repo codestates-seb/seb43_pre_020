@@ -10,6 +10,7 @@ import calJoinDate from '../utils/calJoinDate'
 export default function MyPage() {
   const { userInfo } = useSelector(state => state.auth)
   const { routeTo } = useRouter()
+
   const profileImg = userInfo.imageFileName
     ? `${process.env.REACT_APP_IMAGE_URL}${userInfo.imageFileName}`
     : `${process.env.PUBLIC_URL}/assets/profile.png`
@@ -21,6 +22,7 @@ export default function MyPage() {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
     const displayName = formData.get('displayName')
+
     const title = formData.get('title') || ''
     const aboutMe = formData.get('aboutMe') || ''
     const image = formData.get('image')
@@ -59,6 +61,7 @@ export default function MyPage() {
           </div>
           <p className={styles}>{userInfo?.aboutMe || 'About me'}</p>
         </span>
+
       </div>
       <form onSubmit={onSubmit}>
         <div className={styles.inputBox}>
