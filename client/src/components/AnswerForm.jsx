@@ -1,19 +1,26 @@
 import MDEditor from '@uiw/react-md-editor'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import styles from '../pages/Question.module.scss'
 import { postAnswer } from '../api/question'
 
-function AnswerForm({ id, memberId, send, setSend }) {
+function AnswerForm({ id, fetchData }) {
+  const { isLogin, userInfo } = useSelector(state => state.auth)
   const [body, setBody] = useState('')
   const handleChange = value => {
     setBody(value)
   }
+
   const handleSubmit = e => {
     e.preventDefault()
-    postAnswer({ id, body, memberId }).then(res => {
+    if (!isLogin) {
+      alert('Please login first')
+      return
+    }
+    postAnswer({ id, body, memberId: userInfo.memberId }).then(res => {
       if (res === 'success') {
-        setSend(send + 1)
         setBody('')
+        fetchData()
       }
     })
   }
