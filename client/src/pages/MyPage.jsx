@@ -61,7 +61,6 @@ export default function MyPage() {
           </div>
           <p className={styles}>{userInfo?.aboutMe || 'About me'}</p>
         </span>
-
       </div>
       <form onSubmit={onSubmit}>
         <div className={styles.inputBox}>

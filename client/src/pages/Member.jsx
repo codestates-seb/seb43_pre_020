@@ -54,20 +54,22 @@ export default function Members({ id }) {
   const activeDate = calDate(memberData.lastActivityTime)
 
   return (
-    <div className={styles.memberContainer}>
-      <img src={memberData.imageFileName} alt='프로필 이미지' className={styles.profileImg} />
-      <div>
-        <h2> {memberData.displayName} </h2>
-        <h4>{memberData.title}</h4>
-        <div className={styles.dateContainer}>
-          <img src={`${process.env.PUBLIC_URL}/assets/icons/cake.svg`} alt='cake' />
-          <span>Member {joinDate}</span>
-          <img src={`${process.env.PUBLIC_URL}/assets/icons/clock.svg`} alt='clock' />
-          <span>Last seen {activeDate}</span>
+    <div className={styles.container}>
+      <div className={styles.imgTextContainer}>
+        <img src={memberData.imageFileName} alt='프로필 이미지' className={styles.profileImg} />
+        <div>
+          <h2> {memberData.displayName} </h2>
+          <h4>{memberData.title}</h4>
+          <div className={styles.dateContainer}>
+            <img src={`${process.env.PUBLIC_URL}/assets/icons/cake.svg`} alt='cake' />
+            <span>Member {joinDate}</span>
+            <img src={`${process.env.PUBLIC_URL}/assets/icons/clock.svg`} alt='clock' />
+            <span>Last seen {activeDate}</span>
+          </div>
         </div>
-        <h3>About</h3>
-        <p>{memberData.aboutMe}</p>
       </div>
+      <h3>About</h3>
+      <p className={styles.aboutMe}>{memberData.aboutMe}</p>
     </div>
   )
 }

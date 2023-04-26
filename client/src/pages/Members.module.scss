@@ -1,8 +1,13 @@
-.Container {
+.container {
   padding: 24px 16px;
 }
 
-.CardWrap {
+.cardWrap {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.card {
+  width: 500px;
 }

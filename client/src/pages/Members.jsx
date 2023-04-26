@@ -15,11 +15,15 @@ function Members() {
   }, [])
 
   return (
-    <div className={styles.Container}>
+    <div className={styles.container}>
       <div>Users</div>
-      <div className={styles.CardWrap}>
+      <div className={styles.cardWrap}>
         {members?.map(member => {
-          return <Member key={member.memberId} id={member.memberId} />
+          return (
+            <div className={styles.card}>
+              <Member key={member.memberId} id={member.memberId} />
+            </div>
+          )
         })}
       </div>
     </div>
