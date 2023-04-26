@@ -2,6 +2,7 @@ package preproject.stackoverflow.auth.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import preproject.stackoverflow.answer.entity.AnswerVote;
 import preproject.stackoverflow.auth.dto.ProfileDTO;
 import preproject.stackoverflow.member.entity.Member;
 import preproject.stackoverflow.question.dto.QuestionDTO;
@@ -19,4 +20,10 @@ public interface AuthMapper {
     ProfileDTO.QuestionVote questionVoteToProfileQuestionVote(QuestionVote questionVote);
 
     List<ProfileDTO.QuestionVote> questionVotesToProfileQuestionVotes(List<QuestionVote> questionVotes);
+
+    @Mapping(source = "answer.answerId", target = "answerId")
+    @Mapping(source = "answerVoteStatus", target = "voteStatus")
+    ProfileDTO.AnswerVote answerVoteToProfileAnswerVote(AnswerVote answerVote);
+
+    List<ProfileDTO.AnswerVote> answerVotesToProfileAnswerVotes(List<AnswerVote> answerVotes);
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import preproject.stackoverflow.answer.entity.Answer;
+import preproject.stackoverflow.answer.entity.AnswerVote;
 import preproject.stackoverflow.comment.dto.CommentDTO;
 
 import javax.validation.constraints.NotBlank;
@@ -42,5 +43,16 @@ public class AnswerDTO {
         private LocalDateTime date;
         private LocalDateTime updatedAt;
         private List<CommentDTO.Response> comments;
+        private long votes;
+    }
+    @Getter
+    public static  class VotePost{
+        @Setter
+        private long answerId;
+        @Positive
+        private long memberId;
+        private AnswerVote.AnswerVoteStatus voteStatus;
+
+
     }
 }

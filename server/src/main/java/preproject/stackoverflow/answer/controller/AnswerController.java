@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import preproject.stackoverflow.answer.dto.AnswerDTO;
 import preproject.stackoverflow.answer.entity.Answer;
+import preproject.stackoverflow.answer.entity.AnswerVote;
 import preproject.stackoverflow.answer.mapper.AnswerMapper;
 import preproject.stackoverflow.answer.service.AnswerService;
 import preproject.stackoverflow.answer.service.AnswerServiceImpl;
@@ -49,6 +50,15 @@ public class AnswerController {
     public ResponseEntity<?> deleteAnswer(@PathVariable("answer-id") @Positive long answerId){
         answerService.deleteAnswer(answerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/{answer-id}/votes")
+    public ResponseEntity<?> postAnswerVotes(@Valid @RequestBody AnswerDTO.VotePost votePost,
+                                             @Positive @PathVariable("answer-id") long answerId){
+        votePost.setAnswerId(answerId);
+        AnswerVote answerVote = mapper.answerVoteDTOToAnswerVote(votePost);
+        Answer answer = answerService.addVoteToAnswer(answerVote);
+        return new ResponseEntity<>(answer.getVotes(), HttpStatus.OK);
     }
 
 }

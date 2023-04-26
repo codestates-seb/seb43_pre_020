@@ -127,7 +127,8 @@ public class QuestionServiceImpl implements QuestionService{
             } else {
                 findQuestionVote.setQuestionVoteStatus(questionVote.getQuestionVoteStatus());
             }
-        } else if (questionVote.getQuestionVoteStatus() != QuestionVote.QuestionVoteStatus.NONE){
+        }
+        else if (questionVote.getQuestionVoteStatus() != QuestionVote.QuestionVoteStatus.NONE){
             findQuestion.addQuestionVote(questionVote);
         }
         findQuestion.setVotes();
