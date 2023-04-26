@@ -25,7 +25,7 @@ public class AuthenticationSuccessHandlerUtils {
 
     @Transactional
     void setLoginTime(Member member) {
-        Member findMember = memberRepository.findById(member.getMemberId())
+        Member findMember = memberRepository.findByMemberIdAndMemberStatus(member.getMemberId(), Member.MemberStatus.MEMBER_ACTIVE)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         findMember.setLastLoginTime(LocalDateTime.now());
         memberRepository.save(findMember);
