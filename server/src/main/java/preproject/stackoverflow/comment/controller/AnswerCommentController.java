@@ -35,7 +35,7 @@ public class AnswerCommentController {
         post.setAnswerId(answerId);
         Comment comment = commentService.createComment(mapper.commentPostDTOToComment(post));
         URI uri = UriCreator.createUri(ANSWER_COMMENT_DEFAULT_URL, comment.getCommentId());
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(mapper.commentToCommentResponseDTO(comment));
     }
 
     @PatchMapping("/{comment-id}")

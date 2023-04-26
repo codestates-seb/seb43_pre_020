@@ -37,6 +37,7 @@ public class AnswerDTO {
         private String body;
         private long memberId;
         private String answerer;
+        private String imageFileName;
         private Answer.AnswerStatus answerStatus;
         private LocalDateTime date;
         private LocalDateTime updatedAt;
