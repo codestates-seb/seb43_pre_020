@@ -23,6 +23,7 @@ public interface QuestionMapper {
 
     @Mapping(source = "member.memberId", target = "memberId")
     @Mapping(source = "member.displayName", target = "questioner")
+    @Mapping(source = "member.imageFileName", target = "imageFileName")
     @Mapping(source = "createdAt", target = "date")
     @Mapping(target = "answers", qualifiedByName = "answersToAnswerResponseDTOs")
     @Mapping(target = "comments", qualifiedByName = "commentsToCommentResponseDTOs")
@@ -31,6 +32,7 @@ public interface QuestionMapper {
     @Mapping(source = "createdAt", target = "date")
     @Mapping(source = "member.memberId", target = "memberId")
     @Mapping(source = "member.displayName", target = "questioner")
+    @Mapping(source = "member.imageFileName", target = "imageFileName")
     @Mapping(target = "answers", expression = "java(question.getAnswers().size())")
     QuestionDTO.ResponseList.SimpleResponse questionToSimpleResponse(Question question);
 
