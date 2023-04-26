@@ -25,9 +25,9 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class AWSS3StorageService implements StorageService{
-    @Value("${aws.s3.access-key}")
+    @Value("${aws-s3.access-key}")
     private String accessKey;
-    @Value("${aws.s3.secret-access-key}")
+    @Value("${aws-s3.secret-access-key}")
     private String secretKey;
     private AmazonS3 s3Client;
     private Regions clientRegion = Regions.AP_NORTHEAST_2;

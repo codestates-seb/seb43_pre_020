@@ -11,6 +11,7 @@ const initialData = {
   createdAt: new Date(),
   lastActivityTime: new Date(),
   aboutMe: '',
+  imageFileName: `${process.env.PUBLIC_URL}/assets/profile.png`,
 }
 
 export default function Members({ id }) {
@@ -18,24 +19,32 @@ export default function Members({ id }) {
   const { memberId } = useParams()
   useEffect(() => {
     if (id) {
-      getMemberData(id).then(({ displayName, title, aboutMe, lastActivityTime, createdAt }) => {
-        setMemberData({
-          displayName,
-          title,
-          createdAt,
-          lastActivityTime,
-          aboutMe,
-        })
-      })
-    } else {
-      getMemberData(memberId).then(
-        ({ displayName, title, aboutMe, lastActivityTime, createdAt }) => {
+      getMemberData(id).then(
+        ({ displayName, title, aboutMe, lastActivityTime, createdAt, imageFileName }) => {
           setMemberData({
             displayName,
             title,
             createdAt,
             lastActivityTime,
             aboutMe,
+            imageFileName: imageFileName
+              ? `${process.env.REACT_APP_IMAGE_URL}${imageFileName}`
+              : `${process.env.PUBLIC_URL}/assets/profile.png`,
+          })
+        }
+      )
+    } else {
+      getMemberData(memberId).then(
+        ({ displayName, title, aboutMe, lastActivityTime, createdAt, imageFileName }) => {
+          setMemberData({
+            displayName,
+            title,
+            createdAt,
+            lastActivityTime,
+            aboutMe,
+            imageFileName: imageFileName
+              ? `${process.env.REACT_APP_IMAGE_URL}${imageFileName}`
+              : `${process.env.PUBLIC_URL}/assets/profile.png`,
           })
         }
       )
@@ -46,16 +55,19 @@ export default function Members({ id }) {
 
   return (
     <div className={styles.memberContainer}>
-      <h2> {memberData.displayName} </h2>
-      <h4>{memberData.title}</h4>
-      <div className={styles.dateContainer}>
-        <img src={`${process.env.PUBLIC_URL}/assets/icons/cake.svg`} alt='cake' />
-        <span>Member {joinDate}</span>
-        <img src={`${process.env.PUBLIC_URL}/assets/icons/clock.svg`} alt='clock' />
-        <span>Last seen {activeDate}</span>
+      <img src={memberData.imageFileName} alt='프로필 이미지' className={styles.profileImg} />
+      <div>
+        <h2> {memberData.displayName} </h2>
+        <h4>{memberData.title}</h4>
+        <div className={styles.dateContainer}>
+          <img src={`${process.env.PUBLIC_URL}/assets/icons/cake.svg`} alt='cake' />
+          <span>Member {joinDate}</span>
+          <img src={`${process.env.PUBLIC_URL}/assets/icons/clock.svg`} alt='clock' />
+          <span>Last seen {activeDate}</span>
+        </div>
+        <h3>About</h3>
+        <p>{memberData.aboutMe}</p>
       </div>
-      <h3>About</h3>
-      <p>{memberData.aboutMe}</p>
     </div>
   )
 }

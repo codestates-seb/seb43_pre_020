@@ -20,6 +20,7 @@ public class ProfileDTO {
     private List<QuestionVote> questionVotes;
     private Member.OAuth2Status oAuth2Status;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private LocalDateTime lastLoginTime;
     private LocalDateTime lastActivityTime;
 
