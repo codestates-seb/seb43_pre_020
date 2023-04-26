@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import preproject.stackoverflow.answer.entity.Answer;
+import preproject.stackoverflow.audit.Auditable;
 import preproject.stackoverflow.comment.entity.Comment;
 import preproject.stackoverflow.member.entity.Member;
 
@@ -17,21 +18,22 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Question {
+public class Question extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
     @Column(nullable = false, length = 100)
     private String title;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     private String content;
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
 //    @Column(nullable = false)
-//    private LocalDateTime modifiedAt = LocalDateTime.now();
+//    private LocalDateTime createdAt = LocalDateTime.now();
+
     @Column(nullable = false)
     private Long view = 0L;
+    @Column(nullable = false)
+    private Long votes = 0L;
 
     // 질문 상태 : 등록, 답변 완료, 삭제
     @Enumerated(EnumType.STRING)
@@ -52,14 +54,14 @@ public class Question {
         questionVotes.add(questionVote);
     }
 
-    public long getVotes() {
+    public void setVotes() {
         long upVotes = questionVotes.stream()
                 .filter(questionVote -> questionVote.getQuestionVoteStatus() == QuestionVote.QuestionVoteStatus.UPVOTE)
                 .count();
         long downVotes = questionVotes.stream()
                 .filter(questionVote -> questionVote.getQuestionVoteStatus() == QuestionVote.QuestionVoteStatus.DOWNVOTE)
                 .count();
-        return upVotes - downVotes;
+        votes = upVotes - downVotes;
     }
 
     public enum QuestionStatus {

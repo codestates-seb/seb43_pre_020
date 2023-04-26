@@ -1,17 +1,72 @@
-import axios from './instance'
+import {
+  saveRefreshTokenToLocalStorage,
+  getRefreshTokenFromLocalStorage,
+  removeRefreshTokenFromLocalStorage,
+} from '../utils/refreshTokenHandler'
+import axios, { fileAxios } from './instance'
 
-const signin = async ({ displayName, email, password }) => {
+export const signup = async ({ displayName, email, password }) => {
   try {
-    const response = await axios.post('/members', { displayName, email, password })
-    console.log(response)
+    await axios.post('/members', { displayName, email, password })
     return 'success'
   } catch (error) {
-    if (error.response.status === 409) {
-      return '409-fail'
-    }
+    console.log(error)
+    return error.response.status === 409 ? '409-fail' : 'fail'
+  }
+}
+
+export const login = async ({ username, password, autoLogin = true }) => {
+  try {
+    const { headers } = await axios.post('/auth/login', { username, password, autoLogin })
+    axios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
+    fileAxios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
+    saveRefreshTokenToLocalStorage(headers.get('refresh'))
+    return 'success'
+  } catch (error) {
     console.log(error)
     return 'fail'
   }
 }
 
-export default signin
+export const refreshAccessToken = async () => {
+  try {
+    const { headers } = await axios.get('/auth/refresh', {
+      headers: {
+        Refresh: getRefreshTokenFromLocalStorage(),
+      },
+    })
+    axios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
+    fileAxios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
+    return 'success'
+  } catch (error) {
+    removeRefreshTokenFromLocalStorage()
+    return 'fail'
+  }
+}
+
+export const getCurrentUserInfo = async () => {
+  try {
+    const userInfoRes = await axios.get('/profile')
+    return userInfoRes.data
+  } catch (error) {
+    return null
+  }
+}
+
+export const getMemberData = async memberId => {
+  try {
+    const { data } = await axios.get(`/members/${memberId}`)
+    return data
+  } catch (error) {
+    throw new Error()
+  }
+}
+
+export const changeUserInfo = async (memberId, formData) => {
+  try {
+    const data = await fileAxios.patch(`/members/${memberId}`, formData)
+    return data
+  } catch (error) {
+    throw new Error(error)
+  }
+}

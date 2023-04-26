@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import styles from './Home.module.scss'
 import Questions from '../components/Questions'
-import getQuestions from '../api/question'
+import { getQuestions } from '../api/question'
 
 const SIZE = 5
 export default function Home() {
@@ -49,7 +49,7 @@ export default function Home() {
           <button
             key={btn}
             type='button'
-            className={styles.pageBtn}
+            className={offset === btn ? styles.clickedBtn : styles.pageBtn}
             onClick={() => handlePage(btn)}
           >
             {btn}
@@ -62,7 +62,7 @@ export default function Home() {
 
 function HomeHeader({ length }) {
   return (
-    <div>
+    <>
       <div className={styles.homeHeader}>
         <h2>All Questions</h2>
         <Link to='/ask' className={styles.btn}>
@@ -70,6 +70,6 @@ function HomeHeader({ length }) {
         </Link>
       </div>
       <h3>{length} questions</h3>
-    </div>
+    </>
   )
 }

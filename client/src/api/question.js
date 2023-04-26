@@ -1,6 +1,6 @@
 import axios from './instance'
 
-const getQuestions = async ({ page, size }) => {
+export async function getQuestions({ page, size }) {
   const query = `page=${page}&size=${size}`
   try {
     const { data } = await axios.get(`/questions?${query}`)
@@ -10,4 +10,24 @@ const getQuestions = async ({ page, size }) => {
   }
 }
 
-export default getQuestions
+export async function getDetails(id) {
+  try {
+    const { data } = await axios.get(`/questions/${id}`)
+    return data
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export async function postQuestion(body) {
+  try {
+    const response = await axios.post('/questions', body)
+    return response
+  } catch (error) {
+    if (error.response.data.message === 'Bad Request') {
+      const { fieldErrors, violationErrors } = error.response.data
+      throw new Error(fieldErrors || violationErrors)
+    }
+    throw new Error(error.message)
+  }
+}

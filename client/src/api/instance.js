@@ -10,3 +10,12 @@ const request = axios.create({
 })
 
 export default request
+
+export const fileAxios = axios.create({
+  // baseURL: '',
+  timeout: 1000,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    'ngrok-skip-browser-warning': '69420',
+  },
+})

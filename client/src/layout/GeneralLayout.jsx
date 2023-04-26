@@ -1,66 +1,74 @@
-import { useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import useRouter from '../hooks/useRouter'
 import Header from './Header'
 import Nav from './Nav'
+import Footer from './Footer'
+import Aside from './Aside'
 import styles from './GeneralLayout.module.scss'
+import { getCurrentUserInfo, refreshAccessToken } from '../api/user'
+import { getRefreshTokenFromLocalStorage } from '../utils/refreshTokenHandler'
+import { LOGIN } from '../store/authSlice'
 
 export default function GeneralLayout({ children }) {
-  const { pathname } = useLocation()
+  const [isAuthChecking, setIsAuthChecking] = useState(true)
+  const { currentPath } = useRouter()
+  const dispatch = useDispatch()
 
-  if (pathname === '/login' || pathname === '/signup') {
-    return (
-      <>
-        <Header />
-        <div className={styles.signContainer}>{children}</div>
-      </>
-    )
+  const authHandler = async () => {
+    const userInfoRes = await getCurrentUserInfo()
+    if (userInfoRes) {
+      console.log('has accessToken, 로그인 성공!!')
+      // 리덕스 스토어에 사용자 인증 정보 저장(로그인 상태, 유저 정보)
+      dispatch(LOGIN(userInfoRes))
+      return
+    }
+
+    if (!getRefreshTokenFromLocalStorage()) return
+
+    const refreshRes = await refreshAccessToken()
+    if (refreshRes === 'success') {
+      const userInfoRes = await getCurrentUserInfo()
+      userInfoRes && dispatch(LOGIN(userInfoRes))
+    }
   }
 
-  if (pathname === '/ask') {
-    return (
-      <>
-        <Header />
-        <div className={styles.askContainer}>{children}</div>
-        <Footer />
-      </>
-    )
-  }
+  useEffect(() => {
+    authHandler().then(() => setIsAuthChecking(false))
+    // TODO
+    // 1. 로그인 상태 x => 로그인이 필요한 페이지면 로그인 페이지로 이동 /mypage, /ask
+    // 2. 로그인 상태 o => 로그인상태로 접근 x 페이지면 흠으로 이동 /login, /signup
+  }, [currentPath])
 
-  if (pathname === '/mypage') {
-    return (
-      <>
-        <Header />
-        <div className={styles.userContainer}>
-          <Nav />
-          {children}
-        </div>
-        <Footer />
-      </>
-    )
+  const getLayoutOptionName = currentPath => {
+    const path = currentPath.split('/')[1]
+    if (path === 'ask') return 'includeHeaderFooter'
+    if (path === 'login' || path === 'signup') return 'includeHeader'
+    if (path === 'mypage' || path === 'members' || path === 'tags' || path === 'companies')
+      return 'includeHeaderFooterNav'
+    return 'includeAll'
   }
+  const layoutOption = {
+    includeHeaderFooterNav: { header: true, footer: true, nav: true, aside: false },
+    includeHeaderFooter: { header: true, footer: true, nav: false, aside: false },
+    includeHeader: { header: true, footer: false, nav: false, aside: false },
+    includeAll: { header: true, footer: true, nav: true, aside: true },
+  }
+  const layoutOptionName = getLayoutOptionName(currentPath)
+
+  const { nav, aside, footer } = layoutOption[layoutOptionName]
 
   return (
     <>
-      <Header />
-      <div className={styles.container}>
-        <Nav />
-        <div className={styles.content}>
+      <Header isAuthChecking={isAuthChecking} />
+      <div className={styles[`${layoutOptionName}Container`]}>
+        {nav && <Nav />}
+        <div className={styles[`${layoutOptionName}Content`]}>
           {children}
-          <Aside />
+          {aside && <Aside />}
         </div>
       </div>
-      <Footer />
+      {footer && <Footer />}
     </>
-  )
-}
-
-function Aside() {
-  return <aside className={styles.aside}>aside</aside>
-}
-
-function Footer() {
-  return (
-    <footer className={styles.footerOuter}>
-      <div className={styles.footerInner}>footer</div>
-    </footer>
   )
 }
