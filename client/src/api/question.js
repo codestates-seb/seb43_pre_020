@@ -24,12 +24,10 @@ export async function postQuestion(body) {
     const response = await axios.post('/questions', body)
     return response
   } catch (error) {
-    throw new Error()
-    // if (error.response.data.message === 'Bad Request') {
-    //   const { fieldErrors, violationErrors } = error.response.data
-    //   console.log('fieldErrors 출력', fieldErrors || violationErrors)
-    // } else {
-    //   console.log('일반 에러 메세지', error.message)
-    // }
+    if (error.response.data.message === 'Bad Request') {
+      const { fieldErrors, violationErrors } = error.response.data
+      throw new Error(fieldErrors || violationErrors)
+    }
+    throw new Error(error.message)
   }
 }
