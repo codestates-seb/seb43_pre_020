@@ -39,6 +39,7 @@ public class AnswerDTO {
         private String answerer;
         private Answer.AnswerStatus answerStatus;
         private LocalDateTime date;
+        private LocalDateTime updatedAt;
         private List<CommentDTO.Response> comments;
     }
 }

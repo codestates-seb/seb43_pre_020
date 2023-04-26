@@ -88,13 +88,14 @@ function HomeHeader({ length, sortedValue, setSortedValue }) {
   ]
 
   return (
-    <div>
+    <>
       <div className={styles.homeHeader}>
         <h2>All Questions</h2>
         <Link to='/ask' className={styles.btn}>
           Ask Question
         </Link>
       </div>
+
       <div className={styles.secondLine}>
         <h3>{length} questions</h3>
         <div className={styles.sortBtnBox}>
@@ -114,5 +115,6 @@ function HomeHeader({ length, sortedValue, setSortedValue }) {
         </div>
       </div>
     </div>
+    </>
   )
 }

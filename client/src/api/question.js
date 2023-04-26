@@ -19,3 +19,18 @@ export async function getDetails(id) {
     throw new Error(error)
   }
 }
+
+export async function postQuestion(body) {
+  try {
+    const response = await axios.post('/questions', body)
+    return response
+  } catch (error) {
+    throw new Error()
+    // if (error.response.data.message === 'Bad Request') {
+    //   const { fieldErrors, violationErrors } = error.response.data
+    //   console.log('fieldErrors 출력', fieldErrors || violationErrors)
+    // } else {
+    //   console.log('일반 에러 메세지', error.message)
+    // }
+  }
+}
