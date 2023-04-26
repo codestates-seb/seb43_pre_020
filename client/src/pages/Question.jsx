@@ -1,191 +1,751 @@
-import React, { useState, useEffect, useRef } from 'react'
+/* eslint-disable react/jsx-props-no-spreading */
+import { useState, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import MDEditor from '@uiw/react-md-editor'
 import useRouter from '../hooks/useRouter'
-import { getDetails, postComment, postAnswerComment } from '../api/question'
+import {
+  getDetails,
+  deleteQuestion,
+  patchQuestion,
+  deleteComment,
+  patchComment,
+  postComment,
+  adoptAnswer,
+  voteQuestion,
+  voteAnswer,
+  postAnswerComment,
+  deleteAnswerComment,
+  patchAnswerComment,
+} from '../api/question'
 import styles from './Question.module.scss'
 import calDate from '../utils/calDate'
-// import AnswerForm from '../components/AnswerForm'
+import AnswerForm from '../components/AnswerForm'
 
-function Question() {
+export default function Question() {
   const { id } = useParams()
-  const { isLogin, userInfo } = useSelector(state => state.auth)
   const [data, setData] = useState({})
-  const [send, setSend] = useState(0)
 
-  console.log(data.questionId)
-  console.log(data.memberId)
-
-  const handleUpClick = () => {
-    if (!isLogin) {
-      alert('로그인필요!')
-      return
-    }
-    console.log('좋아요up')
-  }
-
-  const handleDownClick = () => {
-    if (!isLogin) {
-      alert('로그인필요!')
-      return
-    }
-    console.log('좋아요down')
-  }
-
-  const handleEditClick = () => {
-    if (!isLogin) {
-      alert('로그인필요!')
-      return
-    }
-    console.log('EditClick')
-  }
-
-  const handleDeleteClick = () => {
-    if (!isLogin) {
-      alert('로그인필요!')
-      return
-    }
-    console.log('DeleteClick')
-  }
-
-  const handleSubmitComment = () => {
-    if (!isLogin) {
-      alert('로그인필요!')
-      return
-    }
-    console.log('댓글등록')
+  const fetchData = () => {
+    getDetails(id).then(res => {
+      setData(res)
+    })
   }
 
   useEffect(() => {
-    async function fetchData() {
-      const details = await getDetails(id)
-      setData(details)
-    }
     fetchData()
-  }, [send])
+  }, [])
+
+  const questionData = {
+    title: data.title,
+    questionId: data.questionId,
+    memberId: data.memberId,
+    questionStatus: data.questionStatus,
+    content: data.content,
+    votes: data.votes,
+    date: data.date,
+    questioner: data.questioner,
+    imageFileName: data.imageFileName,
+    comments: data.comments,
+  }
 
   return (
     <div className={styles.container}>
       <QuestionTitle title={data.title} date={data.date} view={data.view} />
-      <div className={styles.content}>
-        <Votes
-          status={null}
-          votes={data.votes}
-          upHandler={handleUpClick}
-          downHandler={handleDownClick}
-        />
-        <div className={styles.paragraph} data-color-mode='light'>
-          <MDEditor.Markdown source={data.content} />
-          <div className={styles.contentDown}>
-            <ContentController
-              writerId={data.memberId}
-              editHandler={handleEditClick}
-              deleteHandler={handleDeleteClick}
+      <QuestionContent {...questionData} />
+      {data.answers?.length ? (
+        <div className={styles.answer}>
+          <h1>{data.answers.length} Answers</h1>
+          {data.answers.map(answerData => (
+            <Answer
+              key={answerData.answerId}
+              questionId={questionData.questionId}
+              {...answerData}
             />
-            <Writer
-              type='question'
-              date={data.date}
-              writer={data.questioner}
-              writerId={data.memberId}
-            />
-          </div>
-          <CommentList comments={data.comments} />
-          <CommentForm submitHandler={handleSubmitComment} />
+          ))}
         </div>
-      </div>
-      {data.answers?.length ? <Answers data={data.answers} /> : null}
-      {/* <AnswerForm id={id} memberId={userInfo.memberId} send={send} setSend={setSend} /> */}
+      ) : null}
+      <AnswerForm id={id} fetchData={fetchData} />
     </div>
   )
 }
 
-function Answers({ data }) {
+function QuestionContent({
+  questionId,
+  memberId,
+  questionStatus,
+  content,
+  votes,
+  date,
+  questioner,
+  imageFileName,
+  comments,
+  title,
+}) {
+  const { isLogin, userInfo } = useSelector(state => state.auth)
+  const { routeTo } = useRouter()
+  const [isEditMode, setIsEditMode] = useState(false)
+  const [contentValue, setContentValue] = useState(content)
+  const [editingContentValue, setEditingContentValue] = useState(contentValue)
+  console.log(contentValue)
+  const handleEditClick = () => {
+    setIsEditMode(true)
+  }
+
+  const handleChange = event => {
+    setEditingContentValue(event)
+  }
+
+  const handleEditCancel = () => {
+    setEditingContentValue(contentValue)
+    setIsEditMode(false)
+  }
+
+  const handleEditSubmit = async () => {
+    const body = { title, content: editingContentValue }
+    const response = await patchQuestion(questionId, body)
+    if (response === 'fail') {
+      alert('질문 수정에 실패했습니다.')
+      return
+    }
+    setContentValue(editingContentValue)
+    setIsEditMode(false)
+  }
+
+  const handleDeleteClick = async () => {
+    const res = await deleteQuestion(questionId)
+    if (res === 'success') {
+      routeTo('/')
+    } else {
+      alert('Delete Failed')
+    }
+  }
+
+  useEffect(() => {
+    setContentValue(content)
+    // setEditingContentValue(contentValue)
+  }, [content])
+
   return (
-    <div className={styles.answer}>
-      <h1>{data.length} Answers</h1>
-      {data.map(({ answerId, answerStatus, votes, answerer, body, comments, date, memberId }) => (
-        <div className={styles.content} key={answerId}>
-          <Votes
-            status={answerStatus}
-            votes={votes}
-            upHandler={() => console.log('좋아요up')}
-            downHandler={() => console.log('좋아요down')}
-          />
-          <div className={styles.paragraph} data-color-mode='light'>
-            <MDEditor.Markdown source={body} />
-            <div className={styles.contentDown}>
-              <ContentController
-                writerId={memberId}
-                editHandler={() => console.log('click edit')}
-                deleteHandler={() => console.log('click delete')}
-              />
-              <Writer type='answer' date={date} writer={answerer} />
+    <div className={styles.content}>
+      <QuestionVotes questionId={questionId} questionStatus={questionStatus} votes={votes} />
+      <div className={styles.paragraph} data-color-mode='light'>
+        {isEditMode ? (
+          <>
+            <MDEditor value={editingContentValue} onChange={handleChange} preview='edit' required />
+            <div className={styles.editBtnWrap}>
+              <button type='submit' className={styles.editBtn} onClick={handleEditSubmit}>
+                Edit your Question
+              </button>
+              <button type='button' className={styles.editCancelBtn} onClick={handleEditCancel}>
+                Edit Cancel
+              </button>
             </div>
-            <CommentList comments={comments} />
-            <CommentForm submitHandler={() => console.log('댓글등록')} />
-          </div>
+          </>
+        ) : (
+          <MDEditor.Markdown source={contentValue} />
+        )}
+        <div className={styles.contentDown}>
+          {isLogin && userInfo.memberId === memberId && !isEditMode && (
+            <ContentController editHandler={handleEditClick} deleteHandler={handleDeleteClick} />
+          )}
+          <Writer
+            type='question'
+            date={date}
+            writer={questioner}
+            writerId={memberId}
+            writerImg={imageFileName}
+          />
         </div>
-      ))}
+        <QuestionComments questionId={questionId} comments={comments} />
+      </div>
     </div>
   )
 }
 
-function ContentController({ writerId, editHandler, deleteHandler }) {
-  const { userInfo } = useSelector(state => state.auth)
-  const isShow = userInfo?.memberId === writerId
+function QuestionComments({ questionId, comments }) {
+  const { isLogin, userInfo } = useSelector(state => state.auth)
+  const [commentsData, setCommentsData] = useState(comments)
+
+  const handleCommentSubmit = async comment => {
+    if (!isLogin) {
+      alert('Please login first.')
+      return
+    }
+    const res = await postComment(questionId, comment, userInfo.memberId)
+    if (res === 'fail') {
+      alert('Comment Post Failed')
+      return
+    }
+    setCommentsData([...commentsData, res])
+  }
+
+  useEffect(() => {
+    setCommentsData(comments)
+  }, [comments])
+
   return (
-    isShow && (
-      <div className={styles.edit}>
-        <button type='button' onClick={editHandler}>
-          Edit
-        </button>{' '}
-        <button type='button' onClick={deleteHandler}>
-          Delete
-        </button>
-      </div>
-    )
+    <div className={styles.comment}>
+      {commentsData?.map(commentData => (
+        <QuestionComment
+          key={commentData.commentId}
+          questionId={questionId}
+          commentsData={commentsData}
+          setCommentsData={setCommentsData}
+          {...commentData}
+        />
+      ))}
+      <CommentForm submitHandler={handleCommentSubmit} />
+    </div>
   )
 }
 
-function Writer({ type, date, writer, writerId }) {
+function QuestionComment({
+  questionId,
+  commentsData,
+  setCommentsData,
+  commentId,
+  body,
+  memberId,
+  commenter,
+  date,
+  imageFileName,
+}) {
+  const { isLogin, userInfo } = useSelector(state => state.auth)
+  const [isEditmode, setIsEditmode] = useState(false)
+  const [content, setContent] = useState(body)
+  const [editingContent, setEditingContent] = useState(content)
+  const [finalDate, setFinalDate] = useState(date)
+
+  const handleChange = ({ target }) => setEditingContent(target.value)
+
+  const handleEditClick = () => setIsEditmode(true)
+
+  const handleCancelClick = () => {
+    setIsEditmode(false)
+    setEditingContent(content)
+  }
+
+  const handleDeleteClick = async () => {
+    const response = await deleteComment(questionId, commentId)
+    if (response === 'fail') {
+      alert('Comment Delete Failed')
+      return
+    }
+    setCommentsData(commentsData.filter(comment => comment.commentId !== commentId))
+  }
+
+  const handleSubmit = async event => {
+    event.preventDefault()
+    const res = await patchComment(questionId, editingContent, commentId)
+    if (res === 'fail') {
+      alert('Comment Edit Failed')
+      return
+    }
+    setContent(res.body)
+    setFinalDate(res.date)
+    setIsEditmode(false)
+  }
+
+  return (
+    <div className={styles.body} key={commentId}>
+      {isEditmode ? (
+        <form className={styles.addComment} onSubmit={handleSubmit}>
+          <label className={styles.label} htmlFor='comment'>
+            Edit comment
+          </label>
+          <textarea
+            className={styles.input}
+            id='comment'
+            name='comment'
+            value={editingContent}
+            onChange={handleChange}
+            required
+          />
+          <div className={styles.editBtns}>
+            <button className={styles.cancleText} type='button' onClick={handleCancelClick}>
+              Cancel
+            </button>
+            <button className={styles.submitText} type='submit'>
+              Submit
+            </button>
+          </div>
+        </form>
+      ) : (
+        <>
+          <p>{content} -</p>
+          {imageFileName ? (
+            <img
+              className={styles.miniProfileImg}
+              src={`${process.env.REACT_APP_IMAGE_URL}${imageFileName}`}
+              alt='commenter'
+            />
+          ) : (
+            <img
+              className={styles.miniProfileImg}
+              src={`${process.env.PUBLIC_URL}/assets/profile.png`}
+              alt='default img'
+            />
+          )}
+          <span className={styles.commenter}>
+            <Link to={`/members/${memberId}`}>{commenter}</Link>
+          </span>
+          <span className={styles.date}> {calDate(finalDate)}</span>
+          {isLogin && userInfo.memberId === memberId && (
+            <>
+              <button type='button' onClick={handleEditClick}>
+                <img
+                  className={styles.editIcon}
+                  src={`${process.env.PUBLIC_URL}/assets/icons/pen.svg`}
+                  alt='edit'
+                />
+              </button>
+              <button type='button' onClick={handleDeleteClick}>
+                <img
+                  className={styles.deleteIcon}
+                  src={`${process.env.PUBLIC_URL}/assets/icons/trash.svg`}
+                  alt='delete'
+                />
+              </button>
+            </>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
+
+function QuestionVotes({ questionId, votes }) {
+  const { isLogin, userInfo } = useSelector(state => state.auth)
+  const [voteCount, setVoteCount] = useState(votes)
+  const [voteStatus, setVoteStatus] = useState('NONE')
+
+  const getVoteStatus = () => {
+    if (!userInfo) return 'NONE'
+    const voteInfo = userInfo.questionVotes.find(vote => vote.questionId === questionId)
+    if (!voteInfo) return 'NONE'
+    return voteInfo.voteStatus
+  }
+
+  useEffect(() => {
+    setVoteCount(votes)
+    setVoteStatus(getVoteStatus())
+  }, [votes])
+
+  const handleUpClick = async () => {
+    if (!isLogin) {
+      alert('Please login first.')
+      return
+    }
+    const nextStatus = voteStatus === 'UPVOTE' ? 'NONE' : 'UPVOTE'
+    const res = await voteQuestion(nextStatus, questionId, userInfo.memberId)
+    if (res.status === 'success') {
+      setVoteStatus(nextStatus)
+      setVoteCount(res.votes)
+    } else {
+      alert('Voting Failed')
+    }
+  }
+
+  const handleDownClick = async () => {
+    if (!isLogin) {
+      alert('Please login first.')
+      return
+    }
+    const nextStatus = voteStatus === 'DOWNVOTE' ? 'NONE' : 'DOWNVOTE'
+    const res = await voteQuestion(nextStatus, questionId, userInfo.memberId)
+    if (res.status === 'success') {
+      setVoteStatus(nextStatus)
+      setVoteCount(res.votes)
+    } else {
+      alert(`${'DOWNVOTE'} :  Voting Failed`)
+    }
+  }
+
+  return (
+    <div className={styles.likes}>
+      <button type='button' onClick={handleUpClick}>
+        <img
+          className={styles.likeBtn}
+          src={`${process.env.PUBLIC_URL}/assets/icons/arrow-up-${
+            voteStatus === 'UPVOTE' ? 'green' : 'gray'
+          }.svg`}
+          alt='likes up button'
+        />
+      </button>
+
+      <span>{voteCount}</span>
+
+      <button type='button' onClick={handleDownClick}>
+        <img
+          className={styles.likeBtn}
+          src={`${process.env.PUBLIC_URL}/assets/icons/arrow-down-${
+            voteStatus === 'DOWNVOTE' ? 'green' : 'gray'
+          }.svg`}
+          alt='likes down button'
+        />
+      </button>
+    </div>
+  )
+}
+
+function Answer({
+  questionId,
+  answerId,
+  body,
+  memberId,
+  answerer,
+  answerStatus,
+  date,
+  comments,
+  imageFileName,
+  // updatedAt,
+  votes,
+}) {
+  // const { isLogin, userInfo } = useSelector(state => state.auth)
+  const [isEditMode, setIsEditMode] = useState(false)
+
+  const handleEditClick = () => {
+    // TODO: 답변 수정 기능
+    console.log('답변수정버튼클릭')
+    setIsEditMode(true)
+  }
+
+  const handleDeleteClick = async () => {
+    // TODO: 답변 삭제 기능
+    console.log('답변삭제버튼클릭')
+  }
+
+  return (
+    <div className={styles.content} key={answerId}>
+      <AnswerVotes
+        questionId={questionId}
+        answerId={answerId}
+        memberId={memberId}
+        votes={votes}
+        answerStatus={answerStatus}
+      />
+      <div className={styles.paragraph} data-color-mode='light'>
+        {isEditMode ? <MDEditor.Markdown source={body} /> : <MDEditor.Markdown source={body} />}
+        <div className={styles.contentDown}>
+          <ContentController
+            writerId={memberId}
+            editHandler={handleEditClick}
+            deleteHandler={handleDeleteClick}
+          />
+          <Writer
+            type='answer'
+            date={date}
+            writer={answerer}
+            writerId={memberId}
+            writerImg={imageFileName}
+          />
+        </div>
+        <AnswerComments questionId={questionId} answerId={answerId} comments={comments} />
+      </div>
+    </div>
+  )
+}
+
+function AnswerComments({ questionId, answerId, comments }) {
+  const { isLogin, userInfo } = useSelector(state => state.auth)
+  const [commentsData, setCommentsData] = useState(comments)
+
+  const handleCommentSubmit = async comment => {
+    if (!isLogin) {
+      alert('Please login first.')
+      return
+    }
+    const res = await postAnswerComment(questionId, comment, userInfo.memberId, answerId)
+    if (res === 'fail') {
+      alert('Answer Comment Post Failed')
+      return
+    }
+    setCommentsData([...commentsData, res])
+  }
+
+  useEffect(() => {
+    setCommentsData(comments)
+  }, [comments])
+
+  return (
+    <div className={styles.comment}>
+      {console.log(commentsData)}
+      {commentsData?.map(commentData => (
+        <AnswerComment
+          key={commentData.commentId}
+          questionId={questionId}
+          answerId={answerId}
+          commentsData={commentsData}
+          setCommentsData={setCommentsData}
+          {...commentData}
+        />
+      ))}
+      <CommentForm submitHandler={handleCommentSubmit} />
+    </div>
+  )
+}
+
+function AnswerComment({
+  questionId,
+  answerId,
+  commentsData,
+  setCommentsData,
+  body,
+  commentId,
+  commenter,
+  date,
+  imageFileName,
+  memberId,
+  // updatedAt,
+}) {
+  const { isLogin, userInfo } = useSelector(state => state.auth)
+  const [isEditmode, setIsEditmode] = useState(false)
+  const [content, setContent] = useState(body)
+  const [editingContent, setEditingContent] = useState(content)
+  const [finalDate, setFinalDate] = useState(date)
+
+  const handleChange = ({ target }) => setEditingContent(target.value)
+
+  const handleEditClick = () => setIsEditmode(true)
+
+  const handleCancelClick = () => {
+    setIsEditmode(false)
+    setEditingContent(content)
+  }
+
+  const handleDeleteClick = async () => {
+    const response = await deleteAnswerComment(questionId, answerId, commentId)
+    if (response === 'fail') {
+      alert('Comment Delete Failed')
+      return
+    }
+    setCommentsData(commentsData.filter(comment => comment.commentId !== commentId))
+  }
+
+  const handleEditSubmit = async event => {
+    event.preventDefault()
+    const res = await patchAnswerComment(questionId, answerId, commentId, editingContent)
+    if (res === 'fail') {
+      alert('Answer Comment Edit Failed')
+      return
+    }
+    setContent(res.body)
+    setFinalDate(res.date)
+    setIsEditmode(false)
+  }
+
+  return (
+    <div className={styles.body} key={commentId}>
+      {isEditmode ? (
+        <form className={styles.addComment} onSubmit={handleEditSubmit}>
+          <label className={styles.label} htmlFor='comment'>
+            Edit comment
+          </label>
+          <textarea
+            className={styles.input}
+            id='comment'
+            name='comment'
+            value={editingContent}
+            onChange={handleChange}
+            required
+          />
+          <div className={styles.editBtns}>
+            <button className={styles.cancleText} type='button' onClick={handleCancelClick}>
+              Cancel
+            </button>
+            <button className={styles.submitText} type='submit'>
+              Submit
+            </button>
+          </div>
+        </form>
+      ) : (
+        <>
+          <p>{content} -</p>
+          {imageFileName ? (
+            <img
+              className={styles.miniProfileImg}
+              src={`${process.env.REACT_APP_IMAGE_URL}${imageFileName}`}
+              alt='commenter'
+            />
+          ) : (
+            <img
+              className={styles.miniProfileImg}
+              src={`${process.env.PUBLIC_URL}/assets/profile.png`}
+              alt='default img'
+            />
+          )}
+          <span className={styles.commenter}>
+            <Link to={`/members/${memberId}`}>{commenter}</Link>
+          </span>
+          <span className={styles.date}> {calDate(finalDate)}</span>
+          {isLogin && userInfo.memberId === memberId && (
+            <>
+              <button type='button' onClick={handleEditClick}>
+                <img
+                  className={styles.editIcon}
+                  src={`${process.env.PUBLIC_URL}/assets/icons/pen.svg`}
+                  alt='edit'
+                />
+              </button>
+              <button type='button' onClick={handleDeleteClick}>
+                <img
+                  className={styles.deleteIcon}
+                  src={`${process.env.PUBLIC_URL}/assets/icons/trash.svg`}
+                  alt='delete'
+                />
+              </button>
+            </>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
+
+function AnswerVotes({ questionId, answerId, votes, answerStatus }) {
+  const { isLogin, userInfo } = useSelector(state => state.auth)
+  const [voteCount, setVoteCount] = useState(votes)
+  const [voteStatus, setVoteStatus] = useState('NONE')
+  const [adoptStatus, setAdoptStatus] = useState(answerStatus)
+
+  const getVoteStatus = () => {
+    if (!userInfo) return 'NONE'
+    const voteInfo = userInfo.answerVotes.find(vote => vote.answerId === answerId)
+    if (!voteInfo) return 'NONE'
+    return voteInfo.voteStatus
+  }
+
+  useEffect(() => {
+    setVoteCount(votes)
+    setVoteStatus(getVoteStatus())
+    setAdoptStatus(answerStatus)
+  }, [votes, answerStatus])
+
+  const handleUpClick = async () => {
+    if (!isLogin) {
+      alert('Please login first.')
+      return
+    }
+    const nextStatus = voteStatus === 'UPVOTE' ? 'NONE' : 'UPVOTE'
+    const res = await voteAnswer(nextStatus, questionId, answerId, userInfo.memberId)
+    if (res.status === 'success') {
+      setVoteStatus(nextStatus)
+      setVoteCount(res.votes)
+    } else {
+      alert('Voting Failed')
+    }
+  }
+
+  const handleDownClick = async () => {
+    if (!isLogin) {
+      alert('Please login first.')
+      return
+    }
+    const nextStatus = voteStatus === 'DOWNVOTE' ? 'NONE' : 'DOWNVOTE'
+    const res = await voteAnswer(nextStatus, questionId, answerId, userInfo.memberId)
+    if (res.status === 'success') {
+      setVoteStatus(nextStatus)
+      setVoteCount(res.votes)
+    } else {
+      alert(`${'DOWNVOTE'} :  Voting Failed`)
+    }
+  }
+
+  const handleAdoptedClick = async () => {
+    if (!isLogin) {
+      alert('Please login first.')
+      return
+    }
+    const res = await adoptAnswer(questionId, answerId)
+    if (res === 'fail') {
+      alert('Only questioners can adopt.')
+      return
+    }
+    setAdoptStatus('ANSWER_ADOPTED')
+  }
+
+  return (
+    <div className={styles.likes}>
+      <button type='button' onClick={handleUpClick}>
+        <img
+          className={styles.likeBtn}
+          src={`${process.env.PUBLIC_URL}/assets/icons/arrow-up-${
+            voteStatus === 'UPVOTE' ? 'green' : 'gray'
+          }.svg`}
+          alt='likes up button'
+        />
+      </button>
+
+      <span>{voteCount}</span>
+
+      <button type='button' onClick={handleDownClick}>
+        <img
+          className={styles.likeBtn}
+          src={`${process.env.PUBLIC_URL}/assets/icons/arrow-down-${
+            voteStatus === 'DOWNVOTE' ? 'green' : 'gray'
+          }.svg`}
+          alt='likes down button'
+        />
+      </button>
+
+      <button
+        type='button'
+        onClick={handleAdoptedClick}
+        className={styles[`${adoptStatus}_BTN`]}
+        disabled={adoptStatus === 'ANSWER_ADOPTED'}
+      >
+        <img
+          className={styles.checked}
+          src={`${process.env.PUBLIC_URL}/assets/icons/check-${
+            adoptStatus === 'ANSWER_ADOPTED' ? 'green' : 'gray'
+          }.svg`}
+          alt='adopted answer'
+        />
+      </button>
+    </div>
+  )
+}
+
+function ContentController({ editHandler, deleteHandler }) {
+  return (
+    <div className={styles.edit}>
+      <button type='button' onClick={editHandler}>
+        Edit
+      </button>{' '}
+      <button type='button' onClick={deleteHandler}>
+        Delete
+      </button>
+    </div>
+  )
+}
+
+function Writer({ type, date, writer, writerId, writerImg }) {
   const label = type === 'question' ? 'Asked' : 'Answered'
 
   return (
     <div className={styles.writer}>
-      <div className={styles.date}>
-        {label} {calDate(date)}
-      </div>
-      <div className={styles.questioner}>
-        <Link to={`/members/${writerId}`}>{writer}</Link>
-      </div>
-    </div>
-  )
-}
-
-function Votes({ status, votes, upHandler, downHandler }) {
-  return (
-    <div className={styles.likes}>
-      <button type='button' onClick={upHandler}>
+      {writerImg ? (
         <img
-          src={`${process.env.PUBLIC_URL}/assets/icons/arrow-up-gray.svg`}
-          alt='likes up button'
+          className={styles.profileImg}
+          src={`${process.env.REACT_APP_IMAGE_URL}${writerImg}`}
+          alt='writer'
         />
-      </button>
-      <span>{votes}</span>
-      <button type='button' onClick={downHandler}>
+      ) : (
         <img
-          src={`${process.env.PUBLIC_URL}/assets/icons/arrow-down-gray.svg`}
-          alt='likes down button'
-        />
-      </button>
-      {status === 'ANSWER_ADOPTED' && (
-        <img
-          className={styles.checked}
-          src={`${process.env.PUBLIC_URL}/assets/icons/check-green.svg`}
-          alt='adopted answer'
+          className={styles.profileImg}
+          src={`${process.env.PUBLIC_URL}/assets/profile.png`}
+          alt='default img'
         />
       )}
+      <div className={styles.rightSide}>
+        <div className={styles.date}>
+          {label} {calDate(date)}
+        </div>
+        <div className={styles.questioner}>
+          <Link to={`/members/${writerId}`}>{writer}</Link>
+        </div>
+      </div>
     </div>
   )
 }
@@ -211,23 +771,9 @@ function QuestionTitle({ title, date, view }) {
         </button>
       </div>
       <div className={styles.underTitle}>
-        Asked <span>{calDate(date)}</span>
-        Viewes <span>{view}</span>
+        <span>Asked {calDate(date)}</span>
+        <span>Views {view}</span>
       </div>
-    </div>
-  )
-}
-
-function CommentList({ comments }) {
-  return (
-    <div className={styles.comment}>
-      {comments?.map(({ commentId, body, commenter, date }) => (
-        <div className={styles.body} key={commentId}>
-          <p>{body} -</p>
-          <span className={styles.commenter}> {commenter}</span>
-          <span className={styles.date}> {calDate(date)}</span>
-        </div>
-      ))}
     </div>
   )
 }
@@ -256,48 +802,3 @@ function CommentForm({ submitHandler }) {
     </form>
   )
 }
-
-// function AddComment({ id, memberId, setSend, answerId }) {
-//   const [body, setBody] = useState('')
-//   const handleCommentChange = e => {
-//     setBody(e.target.value)
-//   }
-//   const handleSubmit = e => {
-//     e.preventDefault()
-//     if (answerId === undefined) {
-//       postComment({ id, body, memberId }).then(res => {
-//         if (res === 'success') {
-//           setSend(prev => prev + 1)
-//           setBody('')
-//         }
-//       })
-//     } else {
-//       postAnswerComment({ id, body, memberId, answerId }).then(res => {
-//         if (res === 'success') {
-//           setSend(prev => prev + 1)
-//           setBody('')
-//         }
-//       })
-//     }
-//   }
-//   return (
-//     <form className={styles.addComment} onSubmit={handleSubmit}>
-//       <label className={styles.label} htmlFor='comment'>
-//         Add comment
-//       </label>
-//       <textarea
-//         className={styles.input}
-//         id='comment'
-//         name='comment'
-//         value={body}
-//         onChange={handleCommentChange}
-//         required
-//       />
-//       <button className={styles.btn} type='submit'>
-//         Submit
-//       </button>
-//     </form>
-//   )
-// }
-
-export default Question
