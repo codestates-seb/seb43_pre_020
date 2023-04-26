@@ -1,0 +1,117 @@
+@use '../styles/colors' as v;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: v.$bg-gray;
+  span {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    a {
+      margin-left: 5px;
+      color: v.$font-blue;
+      &:hover {
+        color: lighten($color: v.$font-blue, $amount: 15%);
+      }
+    }
+  }
+}
+
+.logoImg {
+  height: 37px;
+  width: 32px;
+  margin-bottom: 30px;
+}
+
+.Oauths {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.googleBtn {
+  height: 38px;
+  width: 278px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid #d6d9dc;
+  border-radius: 5px;
+  background-color: #f8f9f9;
+  font-size: 1.2rem;
+  color: v.$font-black;
+  &:hover {
+    background-color: darken(#f8f9f9, 1%);
+  }
+}
+
+.githubBtn {
+  @extend .googleBtn;
+  background-color: #303337;
+  color: #fff;
+  img {
+    filter: invert(100%);
+  }
+  &:hover {
+    background-color: darken(#303337, 10%);
+  }
+}
+
+.form {
+  height: 300px;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  background-color: #fff;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 1.5rem;
+  font-weight: bolder;
+  margin-bottom: 18px;
+}
+
+.input {
+  height: 33px;
+  width: 230px;
+  padding: 1rem;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  &:focus {
+    border: 1px solid #59a4de;
+    outline: 4px solid #d9eaf7;
+  }
+}
+
+.LoginBtn {
+  height: 40px;
+  width: 230px;
+  color: #fff;
+  font-size: 1.2rem;
+  background-color: v.$button-blue;
+  border: none;
+  border-radius: 4px;
+  margin: 20px 0;
+  &:hover {
+    background-color: darken(v.$button-blue, 10%);
+  }
+}
+
+.remember {
+  width: 230px;
+  input {
+    vertical-align: middle;
+  }
+}
