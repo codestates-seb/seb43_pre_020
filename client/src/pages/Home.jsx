@@ -10,6 +10,8 @@ export default function Home() {
   const [page, setPage] = useState(1)
   const [pageBtn, setPageBtn] = useState([1])
   const [totalQuestions, setTotalQuestions] = useState(0)
+  const [queryName, setQueryName] = useState('questionId')
+  const [query, setQuery] = useState('')
 
   const makePageBtn = totalElements => {
     const needPage = Math.ceil(totalElements / SIZE)
@@ -23,9 +25,29 @@ export default function Home() {
     setPage(btn)
   }
 
+  const handleClick = e => {
+    switch (e.target.name) {
+      case 'questionId':
+        setQuery('&sortBy=questionId&direction=DESC')
+        setQueryName(e.target.name)
+        break
+      case 'votes':
+        setQuery('&sortBy=votes&direction=DESC')
+        setQueryName(e.target.name)
+        break
+      case 'answered':
+        setQuery('&answered=false')
+        setQueryName(e.target.name)
+        break
+      default:
+        setQuery('')
+        setQueryName('questionId')
+    }
+  }
+
   useEffect(() => {
     async function makePage() {
-      await getQuestions({ page, size: SIZE }).then(({ data, pageInfo }) => {
+      await getQuestions({ page, size: SIZE }, query).then(({ data, pageInfo }) => {
         const newPageBtn = makePageBtn(pageInfo.totalElements)
         setTotalQuestions(pageInfo.totalElements)
         setData(data)
@@ -33,16 +55,11 @@ export default function Home() {
       })
     }
     makePage()
-  }, [page])
+  }, [page, query])
 
   return (
     <div className={styles.homeContainer}>
-      <HomeHeader
-        length={totalQuestions}
-        page={page}
-        setTotalQuestions={setTotalQuestions}
-        setData={setData}
-      />
+      <HomeHeader length={totalQuestions} queryName={queryName} handleClick={handleClick} />
       {datas.map(d => {
         return (
           <div key={d.questionId}>
@@ -67,34 +84,7 @@ export default function Home() {
   )
 }
 
-function HomeHeader({ length, page, setTotalQuestions, setData }) {
-  const [queryName, setQueryName] = useState('questionId')
-  let query = ''
-  const handleClick = e => {
-    switch (e.target.name) {
-      case 'questionId':
-        query = '&sortBy=questionId&direction=DESC'
-        setQueryName(e.target.name)
-        break
-      case 'votes':
-        query = '&sortBy=votes&direction=DESC'
-        setQueryName(e.target.name)
-        break
-      case 'answered':
-        query = '&answered=false'
-        setQueryName(e.target.name)
-        break
-      default:
-        query = ''
-        setQueryName('questionId')
-    }
-
-    getQuestions({ page, size: SIZE }, query).then(({ data, pageInfo }) => {
-      setTotalQuestions(pageInfo.totalElements)
-      setData(data)
-    })
-  }
-
+function HomeHeader({ length, queryName, handleClick }) {
   const sortBtn = [
     ['Newest', 'questionId'],
     ['Votes', 'votes'],
@@ -128,7 +118,6 @@ function HomeHeader({ length, page, setTotalQuestions, setData }) {
           })}
         </div>
       </div>
-    </div>
     </>
   )
 }
