@@ -3,16 +3,17 @@
 .footerOuter {
   background: v.$font-black;
   color: v.$font-white;
-  height: 320px;
 }
 
 .footerInner {
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 24px 24px;
   max-width: 1328px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   color: v.$font-gray;
+  overflow: hidden;
   .logoImg {
     height: 32px;
   }
