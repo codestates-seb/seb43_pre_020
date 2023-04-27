@@ -25,7 +25,6 @@ function Preview({ data, writeDone, setWriteDone }) {
     e.preventDefault()
     const response = await postQuestion(body)
     if (response.status !== 201) {
-      console.log(response)
       alert('질문 등록에 실패했습니다')
       return
     }
