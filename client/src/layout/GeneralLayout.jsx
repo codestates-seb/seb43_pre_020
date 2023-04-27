@@ -19,20 +19,24 @@ export default function GeneralLayout({ children }) {
     const userInfoRes = await getCurrentUserInfo()
     if (userInfoRes) {
       dispatch(LOGIN(userInfoRes))
-      return
+      return 'success'
     }
 
-    if (!getRefreshTokenFromLocalStorage()) return
+    if (!getRefreshTokenFromLocalStorage()) return 'fail'
 
     const refreshRes = await refreshAccessToken()
     if (refreshRes === 'success') {
       const userInfoRes = await getCurrentUserInfo()
       userInfoRes && dispatch(LOGIN(userInfoRes))
+      return 'success'
     }
+    return 'fail'
   }
 
   useEffect(() => {
-    authHandler().then(() => setIsAuthChecking(false))
+    authHandler().then(() => {
+      setIsAuthChecking(false)
+    })
   }, [currentPath])
 
   const getLayoutOptionName = currentPath => {
