@@ -59,7 +59,9 @@ export default function Members({ id }) {
         <img src={memberData.imageFileName} alt='프로필 이미지' className={styles.profileImg} />
         <div>
           {id ? (
-            <Link to={`/members/${id}`}>{memberData.displayName} </Link>
+            <Link to={`/members/${id}`}>
+              <h2>{memberData.displayName}</h2>
+            </Link>
           ) : (
             <h2> {memberData.displayName} </h2>
           )}
