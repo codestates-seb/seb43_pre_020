@@ -19,14 +19,23 @@ export default function GeneralLayout({ children }) {
     const userInfoRes = await getCurrentUserInfo()
     if (userInfoRes) {
       console.log('has accessToken, 로그인 성공!!')
+      console.log('제네럴레이아웃 authHandler: userInfoRes')
+      console.log(userInfoRes)
       dispatch(LOGIN(userInfoRes))
       return
     }
 
-    if (!getRefreshTokenFromLocalStorage()) return
+    console.log('accessToken 없어서 로그인 실패!!')
+
+    if (!getRefreshTokenFromLocalStorage()) {
+      console.log('refreshToken 없어서 로그인 실패!!')
+      return
+    }
 
     const refreshRes = await refreshAccessToken()
+    console.log('refreshToken 으로 엑세스토큰 발급 요청')
     if (refreshRes === 'success') {
+      console.log('refreshToken 으로 엑세스토큰 발급 성공!!')
       const userInfoRes = await getCurrentUserInfo()
       userInfoRes && dispatch(LOGIN(userInfoRes))
     }

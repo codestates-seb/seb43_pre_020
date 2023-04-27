@@ -18,9 +18,19 @@ export const signup = async ({ displayName, email, password }) => {
 export const login = async ({ username, password, autoLogin = true }) => {
   try {
     const { headers } = await axios.post('/auth/login', { username, password, autoLogin })
-    axios.defaults.headers.common.Authorization = `${headers.get('Authorization')}`
-    fileAxios.defaults.headers.common.Authorization = `${headers.get('Authorization')}`
+    console.log("login 요청의 응답 : headers.get('Authorization')")
+    console.log(headers.get('Authorization'))
+    console.log("login 요청의 응답 : headers.get('authorization')")
+    console.log(headers.get('authorization'))
+    console.log(headers.get('Refresh'))
+    console.log("login 요청의 응답 : headers.get('Refresh')")
+    console.log(headers.get('refresh'))
+    console.log("login 요청의 응답 : headers.get('refresh')")
+    axios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
+    fileAxios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
     saveRefreshTokenToLocalStorage(headers.get('refresh'))
+    console.log('로컬스토리지에 리프레시토큰 확인 :')
+    console.log(getRefreshTokenFromLocalStorage())
     return 'success'
   } catch (error) {
     console.log(error)
@@ -32,11 +42,12 @@ export const refreshAccessToken = async () => {
   try {
     const { headers } = await axios.get('/auth/refresh', {
       headers: {
-        Refresh: getRefreshTokenFromLocalStorage(),
+        refresh: getRefreshTokenFromLocalStorage(),
       },
     })
-    axios.defaults.headers.common.Authorization = `${headers.get('Authorization')}`
-    fileAxios.defaults.headers.common.Authorization = `${headers.get('Authorization')}`
+    console.log('refreshAccessToken: 리프레시 토큰으로 새로운 액세스 토큰을 받아옴')
+    axios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
+    fileAxios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
     return 'success'
   } catch (error) {
     removeRefreshTokenFromLocalStorage()
