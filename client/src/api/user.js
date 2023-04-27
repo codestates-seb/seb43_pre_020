@@ -18,8 +18,8 @@ export const signup = async ({ displayName, email, password }) => {
 export const login = async ({ username, password, autoLogin = true }) => {
   try {
     const { headers } = await axios.post('/auth/login', { username, password, autoLogin })
-    axios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
-    fileAxios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
+    axios.defaults.headers.common.Authorization = `${headers.get('Authorization')}`
+    fileAxios.defaults.headers.common.Authorization = `${headers.get('Authorization')}`
     saveRefreshTokenToLocalStorage(headers.get('refresh'))
     return 'success'
   } catch (error) {
@@ -35,8 +35,8 @@ export const refreshAccessToken = async () => {
         Refresh: getRefreshTokenFromLocalStorage(),
       },
     })
-    axios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
-    fileAxios.defaults.headers.common.Authorization = `${headers.get('authorization')}`
+    axios.defaults.headers.common.Authorization = `${headers.get('Authorization')}`
+    fileAxios.defaults.headers.common.Authorization = `${headers.get('Authorization')}`
     return 'success'
   } catch (error) {
     removeRefreshTokenFromLocalStorage()
