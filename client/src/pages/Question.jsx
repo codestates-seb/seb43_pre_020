@@ -410,15 +410,12 @@ function Answer({
   const [editingContentValue, setEditingContentValue] = useState(contentValue)
 
   const handleEditClick = () => {
-    // TODO: 답변 수정 기능
-    console.log('답변수정버튼클릭')
     setIsEditMode(true)
     setEditingContentValue(contentValue)
   }
 
   const handleChange = event => {
     setEditingContentValue(event)
-    console.log(editingContentValue)
   }
 
   const handleEditCancel = () => {
@@ -510,7 +507,6 @@ function AnswerComments({ questionId, answerId, comments }) {
 
   return (
     <div className={styles.comment}>
-      {console.log(commentsData)}
       {commentsData?.map(commentData => (
         <AnswerComment
           key={commentData.commentId}
