@@ -457,7 +457,7 @@ function Answer({
             <MDEditor value={editingContentValue} onChange={handleChange} preview='edit' required />
             <div className={styles.editBtnWrap}>
               <button type='submit' className={styles.editBtn} onClick={handleEditSubmit}>
-                Edit your Question
+                Edit your Answer
               </button>
               <button type='button' className={styles.editCancelBtn} onClick={handleEditCancel}>
                 Edit Cancel
