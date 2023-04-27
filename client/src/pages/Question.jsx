@@ -401,10 +401,9 @@ function Answer({
   date,
   comments,
   imageFileName,
-  // updatedAt,
   votes,
 }) {
-  // const { isLogin, userInfo } = useSelector(state => state.auth)
+  const { isLogin, userInfo } = useSelector(state => state.auth)
   const [isEditMode, setIsEditMode] = useState(false)
   const [contentValue, setContentValue] = useState(body)
   const [editingContentValue, setEditingContentValue] = useState(contentValue)
@@ -465,11 +464,9 @@ function Answer({
           <MDEditor.Markdown source={contentValue} />
         )}
         <div className={styles.contentDown}>
-          <ContentController
-            writerId={memberId}
-            editHandler={handleEditClick}
-            deleteHandler={handleDeleteClick}
-          />
+          {isLogin && userInfo.memberId === memberId && !isEditMode && (
+            <ContentController editHandler={handleEditClick} deleteHandler={handleDeleteClick} />
+          )}
           <Writer
             type='answer'
             date={date}
