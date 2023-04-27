@@ -14,6 +14,7 @@ import {
   adoptAnswer,
   voteQuestion,
   voteAnswer,
+  deleteAnswer,
   postAnswerComment,
   deleteAnswerComment,
   patchAnswerComment,
@@ -61,6 +62,7 @@ export default function Question() {
             <Answer
               key={answerData.answerId}
               questionId={questionData.questionId}
+              refreshData={fetchData}
               {...answerData}
             />
           ))}
@@ -402,6 +404,7 @@ function Answer({
   comments,
   imageFileName,
   votes,
+  refreshData,
 }) {
   const { isLogin, userInfo } = useSelector(state => state.auth)
   const [isEditMode, setIsEditMode] = useState(false)
@@ -434,8 +437,12 @@ function Answer({
   }
 
   const handleDeleteClick = async () => {
-    // TODO: 답변 삭제 기능
-    console.log('답변삭제버튼클릭')
+    const res = await deleteAnswer(questionId, answerId)
+    if (res === 'success') {
+      refreshData()
+    } else {
+      alert('Delete Failed')
+    }
   }
 
   return (
