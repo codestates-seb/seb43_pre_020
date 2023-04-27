@@ -17,6 +17,7 @@ import {
   postAnswerComment,
   deleteAnswerComment,
   patchAnswerComment,
+  patchAnswer,
 } from '../api/question'
 import styles from './Question.module.scss'
 import calDate from '../utils/calDate'
@@ -87,9 +88,10 @@ function QuestionContent({
   const [isEditMode, setIsEditMode] = useState(false)
   const [contentValue, setContentValue] = useState(content)
   const [editingContentValue, setEditingContentValue] = useState(contentValue)
-  console.log(contentValue)
+
   const handleEditClick = () => {
     setIsEditMode(true)
+    setEditingContentValue(contentValue)
   }
 
   const handleChange = event => {
@@ -404,11 +406,35 @@ function Answer({
 }) {
   // const { isLogin, userInfo } = useSelector(state => state.auth)
   const [isEditMode, setIsEditMode] = useState(false)
+  const [contentValue, setContentValue] = useState(body)
+  const [editingContentValue, setEditingContentValue] = useState(contentValue)
 
   const handleEditClick = () => {
     // TODO: 답변 수정 기능
     console.log('답변수정버튼클릭')
     setIsEditMode(true)
+    setEditingContentValue(contentValue)
+  }
+
+  const handleChange = event => {
+    setEditingContentValue(event)
+    console.log(editingContentValue)
+  }
+
+  const handleEditCancel = () => {
+    setEditingContentValue(contentValue)
+    setIsEditMode(false)
+  }
+
+  const handleEditSubmit = async () => {
+    const body = { body: editingContentValue }
+    const response = await patchAnswer(questionId, body, answerId)
+    if (response === 'fail') {
+      alert('질문 수정에 실패했습니다.')
+      return
+    }
+    setContentValue(editingContentValue)
+    setIsEditMode(false)
   }
 
   const handleDeleteClick = async () => {
@@ -426,7 +452,21 @@ function Answer({
         answerStatus={answerStatus}
       />
       <div className={styles.paragraph} data-color-mode='light'>
-        {isEditMode ? <MDEditor.Markdown source={body} /> : <MDEditor.Markdown source={body} />}
+        {isEditMode ? (
+          <>
+            <MDEditor value={editingContentValue} onChange={handleChange} preview='edit' required />
+            <div className={styles.editBtnWrap}>
+              <button type='submit' className={styles.editBtn} onClick={handleEditSubmit}>
+                Edit your Question
+              </button>
+              <button type='button' className={styles.editCancelBtn} onClick={handleEditCancel}>
+                Edit Cancel
+              </button>
+            </div>
+          </>
+        ) : (
+          <MDEditor.Markdown source={contentValue} />
+        )}
         <div className={styles.contentDown}>
           <ContentController
             writerId={memberId}
