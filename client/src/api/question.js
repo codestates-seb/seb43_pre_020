@@ -24,7 +24,6 @@ export async function deleteQuestion(questionId) {
     await axios.delete(`/questions/${questionId}`)
     return 'success'
   } catch (error) {
-    console.log(error)
     return 'fail'
   }
 }
@@ -38,7 +37,6 @@ export async function postComment(id, body, memberId) {
     const res = await axios.post(`/questions/${id}/comments`, data)
     return res.data
   } catch (error) {
-    console.log(error)
     return 'fail'
   }
 }
@@ -48,18 +46,15 @@ export async function deleteAnswer(questionId, answerId) {
     await axios.delete(`/questions/${questionId}/answers/${answerId}`)
     return 'success'
   } catch (error) {
-    console.log(error)
     return 'fail'
   }
 }
 
 export async function deleteComment(id, commentId) {
   try {
-    // console.log('deleteComment의 id body commentId ', id, commentId)
     await axios.delete(`/questions/${id}/comments/${commentId}`)
     return 'success'
   } catch (error) {
-    console.log(error)
     return 'fail'
   }
 }
@@ -69,7 +64,6 @@ export async function deleteAnswerComment(questionId, answerId, commentId) {
     await axios.delete(`/questions/${questionId}/answers/${answerId}/comments/${commentId}`)
     return 'success'
   } catch (error) {
-    console.log(error)
     return 'fail'
   }
 }
@@ -83,7 +77,6 @@ export async function postAnswer({ id, body, memberId }) {
     await axios.post(`/questions/${id}/answers`, data)
     return 'success'
   } catch (error) {
-    console.log(error)
     return 'fail'
   }
 }
@@ -93,7 +86,6 @@ export async function patchComment(id, body, commentId) {
     const { data } = await axios.patch(`/questions/${id}/comments/${commentId}`, { body })
     return data
   } catch (error) {
-    console.log(error)
     return 'fail'
   }
 }
@@ -106,7 +98,6 @@ export async function patchAnswerComment(questionId, answerId, commentId, body) 
     )
     return data
   } catch (error) {
-    console.log(error)
     return 'fail'
   }
 }
@@ -120,7 +111,6 @@ export async function postAnswerComment(id, body, memberId, answerId) {
     const res = await axios.post(`/questions/${id}/answers/${answerId}/comments`, data)
     return res.data
   } catch (error) {
-    console.log(error)
     return 'fail'
   }
 }
@@ -131,7 +121,6 @@ export async function adoptAnswer(questionId, answerId) {
     await axios.post(`/questions/${questionId}`, data)
     return 'success'
   } catch (error) {
-    console.log(error)
     return 'fail'
   }
 }
@@ -145,7 +134,6 @@ export async function voteQuestion(voteStatus, questionId, memberId) {
       votes: res.data,
     }
   } catch (error) {
-    console.log(error)
     return {
       status: 'fail',
       votes: null,
@@ -162,7 +150,6 @@ export async function voteAnswer(voteStatus, questionId, answerId, memberId) {
       votes: res.data,
     }
   } catch (error) {
-    console.log(error)
     return {
       status: 'fail',
       votes: null,
@@ -175,7 +162,6 @@ export async function patchQuestion(questionId, body) {
     const { data } = await axios.patch(`/questions/${questionId}`, body)
     return data
   } catch (error) {
-    console.log(error)
     return 'fail'
   }
 }
@@ -198,7 +184,6 @@ export async function patchAnswer(questionId, body, answerId) {
     const { data } = await axios.patch(`/questions/${questionId}/answers/${answerId}`, body)
     return data
   } catch (error) {
-    console.log(error)
     return 'fail'
   }
 }

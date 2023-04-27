@@ -18,7 +18,6 @@ export default function GeneralLayout({ children }) {
   const authHandler = async () => {
     const userInfoRes = await getCurrentUserInfo()
     if (userInfoRes) {
-      console.log('has accessToken, 로그인 성공!!')
       dispatch(LOGIN(userInfoRes))
       return
     }
@@ -34,9 +33,6 @@ export default function GeneralLayout({ children }) {
 
   useEffect(() => {
     authHandler().then(() => setIsAuthChecking(false))
-    // TODO
-    // 1. 로그인 상태 x => 로그인이 필요한 페이지면 로그인 페이지로 이동 /mypage, /ask
-    // 2. 로그인 상태 o => 로그인상태로 접근 x 페이지면 흠으로 이동 /login, /signup
   }, [currentPath])
 
   const getLayoutOptionName = currentPath => {
