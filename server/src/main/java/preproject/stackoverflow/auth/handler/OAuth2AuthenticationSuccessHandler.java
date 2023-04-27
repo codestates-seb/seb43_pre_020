@@ -61,7 +61,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
             } else {
                 if(findMember.getMemberStatus()== Member.MemberStatus.MEMBER_QUIT) throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
-                findMember.setDisplayName(name);
                 return findMember;
             }
         } else {
@@ -78,8 +77,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String name = oAuth2User.getAttribute("login");
         Long githubId = oAuth2User.<Integer>getAttribute("id").longValue();
         Optional<Member> optionalMember = memberRepository.findByGithubId(githubId);
-        if (optionalMember.isPresent() && optionalMember.get().getMemberStatus() == Member.MemberStatus.MEMBER_ACTIVE) {
-            return optionalMember.get();
+        if (optionalMember.isPresent()) {
+            Member findMember = optionalMember.get();
+            if(findMember.getMemberStatus()== Member.MemberStatus.MEMBER_QUIT) throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+            return findMember;
         } else {
             member.setEmail(email);
             member.setDisplayName(name);
