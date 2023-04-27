@@ -753,7 +753,7 @@ function ContentController({ editHandler, deleteHandler }) {
       <button type='button' onClick={editHandler}>
         Edit
       </button>{' '}
-      <button type='button' onClick={deleteHandler}>
+      <button className={styles.controllerDeleteBtn} type='button' onClick={deleteHandler}>
         Delete
       </button>
     </div>

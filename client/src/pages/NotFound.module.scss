@@ -1,0 +1,30 @@
+@use '../styles/colors' as v;
+
+.container {
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.title {
+  font-size: 2.4rem;
+}
+.content {
+  margin: 24px 0;
+  line-height: 1.6;
+  color: v.$font-gray;
+}
+.link {
+  display: block;
+  margin: 0 auto;
+  width: 120px;
+  height: 40px;
+  line-height: 40px;
+  color: v.$font-white;
+  border-radius: 3px;
+  background-color: #e5883e;
+}
+.logo {
+  margin: 0 auto 24px;
+}

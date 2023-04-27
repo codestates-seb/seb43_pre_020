@@ -8,6 +8,8 @@ const Question = lazy(() => import('../pages/Question'))
 const Ask = lazy(() => import('../pages/Ask'))
 const Member = lazy(() => import('../pages/Member'))
 const Members = lazy(() => import('../pages/Members'))
+const NotFound = lazy(() => import('../pages/NotFound'))
+const NotReady = lazy(() => import('../components/NotReady'))
 
 export const routerData = [
   {
@@ -69,21 +71,21 @@ export const routerData = [
   {
     id: 8,
     path: '/tags',
-    element: <div>Tags</div>,
+    element: <NotReady label='Tags' />,
     label: 'Tags',
     onNav: true,
   },
   {
     id: 9,
     path: '/companies',
-    element: <div>Companies</div>,
+    element: <NotReady label='Companies' />,
     label: 'Companies',
     onNav: true,
   },
   {
     id: 10,
     path: '/*',
-    element: <div>404 Not Found</div>,
+    element: <NotFound />,
     label: '404',
     onNav: false,
   },

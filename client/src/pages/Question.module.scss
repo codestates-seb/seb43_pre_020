@@ -80,9 +80,6 @@ h1 {
     margin-right: auto;
     font-size: 2rem;
     color: v.$font-gray;
-    span {
-      margin-right: 10px;
-    }
   }
   .writer {
     height: 80px;
@@ -259,4 +256,9 @@ h1 {
   &:hover {
     background-color: #fbf2f2;
   }
+}
+
+.controllerDeleteBtn {
+  margin-left: 8px;
+  color: #b33b39;
 }
