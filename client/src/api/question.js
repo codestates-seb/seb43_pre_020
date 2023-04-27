@@ -43,6 +43,16 @@ export async function postComment(id, body, memberId) {
   }
 }
 
+export async function deleteAnswer(questionId, answerId) {
+  try {
+    await axios.delete(`/questions/${questionId}/answers/${answerId}`)
+    return 'success'
+  } catch (error) {
+    console.log(error)
+    return 'fail'
+  }
+}
+
 export async function deleteComment(id, commentId) {
   try {
     // console.log('deleteComment의 id body commentId ', id, commentId)
