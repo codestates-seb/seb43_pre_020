@@ -12,27 +12,36 @@ import { LOGIN } from '../store/authSlice'
 
 export default function GeneralLayout({ children }) {
   const [isAuthChecking, setIsAuthChecking] = useState(true)
-  const { currentPath } = useRouter()
+  const { currentPath, routeTo } = useRouter()
   const dispatch = useDispatch()
 
   const authHandler = async () => {
     const userInfoRes = await getCurrentUserInfo()
     if (userInfoRes) {
       dispatch(LOGIN(userInfoRes))
-      return
+      return 'success'
     }
 
-    if (!getRefreshTokenFromLocalStorage()) return
+    if (!getRefreshTokenFromLocalStorage()) return 'fail'
 
     const refreshRes = await refreshAccessToken()
     if (refreshRes === 'success') {
       const userInfoRes = await getCurrentUserInfo()
       userInfoRes && dispatch(LOGIN(userInfoRes))
+      return 'success'
     }
+    return 'fail'
   }
 
   useEffect(() => {
-    authHandler().then(() => setIsAuthChecking(false))
+    authHandler().then(res => {
+      if (res === 'fail' && (currentPath === '/mypage' || currentPath === '/ask')) {
+        routeTo('/login')
+      } else if (res === 'success' && (currentPath === '/login' || currentPath === '/signup')) {
+        routeTo('/')
+      }
+      setIsAuthChecking(false)
+    })
   }, [currentPath])
 
   const getLayoutOptionName = currentPath => {
