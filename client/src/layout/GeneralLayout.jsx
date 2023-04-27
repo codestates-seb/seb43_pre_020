@@ -12,7 +12,7 @@ import { LOGIN } from '../store/authSlice'
 
 export default function GeneralLayout({ children }) {
   const [isAuthChecking, setIsAuthChecking] = useState(true)
-  const { currentPath, routeTo } = useRouter()
+  const { currentPath } = useRouter()
   const dispatch = useDispatch()
 
   const authHandler = async () => {
@@ -34,12 +34,7 @@ export default function GeneralLayout({ children }) {
   }
 
   useEffect(() => {
-    authHandler().then(res => {
-      if (res === 'fail' && (currentPath === '/mypage' || currentPath === '/ask')) {
-        routeTo('/login')
-      } else if (res === 'success' && (currentPath === '/login' || currentPath === '/signup')) {
-        routeTo('/')
-      }
+    authHandler().then(() => {
       setIsAuthChecking(false)
     })
   }, [currentPath])
