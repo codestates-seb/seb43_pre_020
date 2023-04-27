@@ -182,3 +182,13 @@ export async function postQuestion(body) {
     throw new Error(error.message)
   }
 }
+
+export async function patchAnswer(questionId, body, answerId) {
+  try {
+    const { data } = await axios.patch(`/questions/${questionId}/answers/${answerId}`, body)
+    return data
+  } catch (error) {
+    console.log(error)
+    return 'fail'
+  }
+}
