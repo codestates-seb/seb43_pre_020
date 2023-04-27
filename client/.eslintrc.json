@@ -13,6 +13,7 @@
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
     "jsx-a11y/label-has-associated-control": [
       2,
       {
@@ -22,6 +23,7 @@
     "react/prop-types": "off",
     "no-shadow": "off",
     "no-unused-expressions": "off",
+    "no-alert": "off",
     "prettier/prettier": [
       "error",
       {
