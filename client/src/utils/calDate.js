@@ -5,13 +5,8 @@ function calDate(date) {
   const aWeek = 1000 * 60 * 60 * 24 * 7
   const aMonth = 1000 * 60 * 60 * 24 * 30.5
   const anYear = 1000 * 60 * 60 * 24 * 365
-  const koreaTimeDiff = 9 * 60 * 60 * 1000
 
-  const now = new Date(date)
-  const utcNow = now.getTime() + now.getTimezoneOffset() * 60 * 1000
-  const koreaNow = new Date(utcNow + koreaTimeDiff)
-
-  const created = new Date(koreaNow)
+  const created = new Date(date)
   const difference = new Date() - created
   if (difference < aMinute) {
     return 'now'
