@@ -7,7 +7,8 @@ function calDate(date) {
   const anYear = 1000 * 60 * 60 * 24 * 365
 
   const created = new Date(date)
-  const difference = new Date() - created
+  const KR_TIME_DIFF = 9 * 60 * 60 * 1000
+  const difference = new Date() - created - KR_TIME_DIFF
   if (difference < aMinute) {
     return 'now'
   }
@@ -20,7 +21,7 @@ function calDate(date) {
     return `${hour}시간 전`
   }
   if (difference < aWeek) {
-    const day = parseInt(difference / anHour, 10)
+    const day = parseInt(difference / aDay, 10)
     return `${day}일 전`
   }
   if (difference < aMonth) {

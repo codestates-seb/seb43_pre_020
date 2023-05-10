@@ -5,7 +5,8 @@ export default function calJoinDate(date) {
   const anYear = 1000 * 60 * 60 * 24 * 365
 
   const joined = new Date(date)
-  const difference = new Date() - joined
+  const KR_TIME_DIFF = 9 * 60 * 60 * 1000
+  const difference = new Date() - joined - KR_TIME_DIFF
 
   if (difference < aDay) {
     return 'since today'
